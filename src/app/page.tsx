@@ -10,10 +10,7 @@ export default function Home() {
 
     return (
         <main className={styles.main}>
-            <TypingSection
-                isComplete={isComplete}
-                setIsComplete={setIsComplete}
-            />
+            <TypingSection setIsComplete={setIsComplete} />
         </main>
     );
 }
