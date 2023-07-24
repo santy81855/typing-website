@@ -1,0 +1,99 @@
+.main {
+    width: 100%;
+    background-color: lightblue;
+    position: relative;
+}
+
+.main:focus {
+    outline: none;
+}
+
+.textContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    background-color: rgb(0, 0, 0, 0);
+    border: none;
+    gap: 0.5em;
+    justify-content: center;
+}
+
+.textContainer .word {
+    background-color: rgb(0, 0, 0, 0);
+    display: flex;
+    position: relative;
+}
+.textContainer .letter {
+    font-size: var(--font-size-medium);
+    line-height: 1.2;
+    letter-spacing: 1px;
+    text-shadow: 0 0 0 black;
+    position: relative;
+}
+
+.default {
+    color: black;
+}
+
+.correct {
+    color: green;
+}
+
+.incorrect {
+    color: red;
+}
+
+.extra {
+    color: rgba(218, 44, 44, 1);
+}
+
+.invisible {
+    opacity: 0;
+}
+
+.givenTextContainer {
+    color: black;
+}
+
+.typedTextContainer {
+    color: green;
+}
+
+.cursor {
+    color: black;
+    background-color: black;
+    width: 2px;
+    height: 1.2em;
+    display: inline;
+    position: absolute;
+    left: 0;
+    top: 0;
+    animation: blink 1s infinite;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.moveCursor {
+    animation: moveCursorAnimation 1s linear 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes moveCursorAnimation {
+    0% {
+        transform: translateX(0) translateY(0);
+    }
+    100% {
+        transform: translateX(var(--dx)) translateY(var(--dy));
+    }
+}
