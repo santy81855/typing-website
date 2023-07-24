@@ -1,6 +1,6 @@
 "use client";
-import styles from "@/styles/TypingArea.module.css";
-import React, { useState, useEffect } from "react";
+import styles from "@/styles/TypingSection.module.css";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 
 type InputArray = JSX.Element[];
 type props = {
@@ -69,10 +69,6 @@ const TypingSection = ({ setIsComplete }: props) => {
         cursorPositionY += diffY;
     };
 
-    const inputDivClicked = (e) => {
-        e.preventDefault();
-    };
-
     const makeCorrect = (element: HTMLElement | Element) => {
         element.classList.add(styles.correct);
         element.classList.remove(styles.default);
@@ -98,7 +94,8 @@ const TypingSection = ({ setIsComplete }: props) => {
         element.classList.remove(styles.incorrect);
     };
 
-    const typing = (e) => {
+    const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        console.log(e);
         const key = e.key;
         // get the len of the current word
         var curWordElement = document.getElementById(`word${curWordIndex}`);
@@ -315,12 +312,7 @@ const TypingSection = ({ setIsComplete }: props) => {
     };
 
     return (
-        <main
-            className={styles.main}
-            tabIndex={0}
-            onKeyDown={typing}
-            onClick={inputDivClicked}
-        >
+        <main className={styles.main} tabIndex={0} onKeyDown={typing}>
             <div className={styles.textContainer}>{textArray}</div>
         </main>
     );
