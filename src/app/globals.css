@@ -2,6 +2,9 @@
     --max-width: 1200px;
     --doc-height: 100%;
     --nav-height: 60px;
+    --passage-text-align: center;
+    --passage-font-size: 1.5rem;
+    --row-height: 1.5rem;
     --border-radius: 15px;
     --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
         "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
@@ -36,6 +39,21 @@
     /*easy to read font that looks pretty*/
     --font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
         "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+}
+
+:root.font-small {
+    --passage-font-size: 1rem;
+    --row-height: 1rem;
+}
+
+:root.font-medium {
+    --passage-font-size: 1.5rem;
+    --row-height: 1.5rem;
+}
+
+:root.font-large {
+    --passage-font-size: 2rem;
+    --row-height: 2rem;
 }
 
 :root.dark-theme {

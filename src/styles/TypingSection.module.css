@@ -1,6 +1,5 @@
 .main {
     width: 100%;
-    background-color: lightblue;
     position: relative;
 }
 
@@ -15,18 +14,23 @@
     flex-wrap: wrap;
     background-color: rgb(0, 0, 0, 0);
     border: none;
-    gap: 0.5em;
-    justify-content: center;
+    row-gap: var(--row-height);
+    column-gap: 0.5rem;
+    justify-content: var(--passage-text-align);
+    overflow-y: hidden;
+    max-height: calc(3 * var(--row-height) + 3 * var(--row-height));
 }
 
 .textContainer .word {
     background-color: rgb(0, 0, 0, 0);
     display: flex;
     position: relative;
+    align-items: center;
+    height: var(--row-height);
 }
+
 .textContainer .letter {
-    font-size: var(--font-size-medium);
-    line-height: 1.2;
+    font-size: var(--passage-font-size);
     letter-spacing: 1px;
     text-shadow: 0 0 0 black;
     position: relative;
@@ -64,7 +68,7 @@
     color: black;
     background-color: black;
     width: 2px;
-    height: 1.2em;
+    height: 1.5rem;
     display: inline;
     position: absolute;
     left: 0;

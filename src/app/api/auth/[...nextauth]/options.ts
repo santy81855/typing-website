@@ -1,9 +1,12 @@
 import type { NextAuthOptions } from "next-auth";
+import { prisma } from "@/lib/prisma";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 export const options: NextAuthOptions = {
+    adapter: PrismaAdapter(prisma),
     providers: [
         GitHubProvider({
             clientId: process.env.GITHUB_ID as string,
@@ -22,6 +25,11 @@ export const options: NextAuthOptions = {
                     type: "text",
                     placeholder: "your-username",
                 },
+                email: {
+                    label: "Email:",
+                    type: "text",
+                    placeholder: "your-email",
+                },
                 password: {
                     label: "Password:",
                     type: "password",
@@ -31,10 +39,15 @@ export const options: NextAuthOptions = {
             async authorize(credentials) {
                 /*this is where i would retrieve the credentials from the database storing the user information*/
                 /*example: https://next-auth.js.org/configuration/providers/credentials*/
-                const user = { id: "42", name: "Dave", password: "nextauth" };
+                const user = {
+                    id: "42",
+                    username: "testusername",
+                    email: "TestUser@test.com",
+                    password: "testpassword",
+                };
 
                 if (
-                    credentials?.username === user.name &&
+                    credentials?.username === user.username &&
                     credentials?.password === user.password
                 ) {
                     return user;

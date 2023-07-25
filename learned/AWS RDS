@@ -1,0 +1,17 @@
+# Create and connect AWS RDS postgres
+
+### Step 1: Create RDS instance
+
+-   Important values:
+    -   allow public access
+    -   Edit VPC Security groups to allow Custom TCP traffic on the database port from any IPv4 and IPv6 addresses
+
+### Step 2: Get the DATABASE_URL
+
+-   The database url goes in the .env file and should follow the following format:
+
+```
+DATABASE_URL="postgresql://USERNAME:PASSWORD@HOST:PORT/NAME?connect_timeout=30"
+```
+
+The "connect_timeout=30" is optional, but sometimes with RDS the connection can time out.

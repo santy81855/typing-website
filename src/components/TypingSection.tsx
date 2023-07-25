@@ -5,14 +5,15 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 type InputArray = JSX.Element[];
 type props = {
     setIsComplete: (isComplete: boolean) => void;
+    passage: string[];
 };
 
-const TypingSection = ({ setIsComplete }: props) => {
+const TypingSection = ({ setIsComplete, passage }: props) => {
     useEffect(() => {
         createTextArray();
-    }, []);
+    }, [passage]);
 
-    var wordArray = ["word1", "word2", "word3", "word4"];
+    //var passage = ["word1", "word2", "word3", "word4"];
     const [textArray, setTextArray] = useState<InputArray>([]);
     const [userInput, setUserInput] = useState<InputArray>([]);
     var curLetterIndex = 0;
@@ -95,13 +96,14 @@ const TypingSection = ({ setIsComplete }: props) => {
     };
 
     const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        console.log(e);
         const key = e.key;
         // get the len of the current word
         var curWordElement = document.getElementById(`word${curWordIndex}`);
         if (curWordElement === null) {
             return;
         }
+        // print the height of the curWordElement
+        console.log(curWordElement.getBoundingClientRect().height);
         // get how many children curWordElement has
         // if it is the first word we subtract one because of the cursor
         var numLetters =
@@ -115,7 +117,7 @@ const TypingSection = ({ setIsComplete }: props) => {
                 // if the key is a space move to the next word
                 if (key === " ") {
                     // if the user is on the last word
-                    if (curWordIndex === wordArray.length - 1) {
+                    if (curWordIndex === passage.length - 1) {
                         // end the typing test
                         setIsComplete(true);
                         return;
@@ -217,7 +219,7 @@ const TypingSection = ({ setIsComplete }: props) => {
             }
 
             // if the user is on the last word
-            if (curWordIndex === wordArray.length - 1) {
+            if (curWordIndex === passage.length - 1) {
                 curLetterIndex = numLetters - 1;
                 moveCursor("forward", "letter");
                 // end the typing test
@@ -241,7 +243,7 @@ const TypingSection = ({ setIsComplete }: props) => {
                 moveCursor("forward", "letter");
                 // if this is the last letter of the last word
                 if (
-                    curWordIndex === wordArray.length - 1 &&
+                    curWordIndex === passage.length - 1 &&
                     curLetterIndex === numLetters - 1
                 ) {
                     // end the typing test
@@ -268,7 +270,7 @@ const TypingSection = ({ setIsComplete }: props) => {
     const createTextArray = () => {
         // for every word in the array creat an input element
         setTextArray(
-            wordArray.map((word, wordIndex) => {
+            passage.map((word, wordIndex) => {
                 return wordIndex == 0 ? (
                     <div
                         key={wordIndex}
