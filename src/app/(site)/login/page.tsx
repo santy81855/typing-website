@@ -76,6 +76,7 @@ const Login = () => {
                                         email: e.target.value,
                                     });
                                 }}
+                                placeholder="Email:"
                             />
                         </div>
                         <div className={styles.inputContainer}>
@@ -99,6 +100,7 @@ const Login = () => {
                                         password: e.target.value,
                                     });
                                 }}
+                                placeholder="Password:"
                             />
                         </div>
                         <button
