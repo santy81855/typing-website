@@ -6,9 +6,6 @@
     --passage-font-size: 1.5rem;
     --row-height: 1.5rem;
     --border-radius: 15px;
-    --font-mono: ui-monospace, Menlo, Monaco, "Cascadia Mono", "Segoe UI Mono",
-        "Roboto Mono", "Oxygen Mono", "Ubuntu Monospace", "Source Code Pro",
-        "Fira Mono", "Droid Sans Mono", "Courier New", monospace;
     --background-color-rgb: 240, 240, 240;
     --text-color-rgb: 41, 41, 41;
     --accent-color-primary-rgb: 250, 243, 62;
