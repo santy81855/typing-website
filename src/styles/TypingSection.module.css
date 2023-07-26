@@ -19,6 +19,16 @@
     justify-content: var(--passage-text-align);
     overflow-y: hidden;
     max-height: calc(3 * var(--row-height) + 3 * var(--row-height));
+    position: relative;
+}
+
+.textContainer .invisibleInput {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
 }
 
 .textContainer .word {

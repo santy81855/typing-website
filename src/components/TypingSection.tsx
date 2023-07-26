@@ -96,14 +96,17 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
     };
 
     const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        // get the event target
+        var target = e.target as HTMLElement;
+        if (target?.tagName.toLowerCase() === "input") {
+            return;
+        }
         const key = e.key;
         // get the len of the current word
         var curWordElement = document.getElementById(`word${curWordIndex}`);
         if (curWordElement === null) {
             return;
         }
-        // print the height of the curWordElement
-        console.log(curWordElement.getBoundingClientRect().height);
         // get how many children curWordElement has
         // if it is the first word we subtract one because of the cursor
         var numLetters =
@@ -313,9 +316,31 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
         );
     };
 
+    const handleInvisibleInput = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        const keyPress = new KeyboardEvent("keydown", {
+            key: e.key,
+            bubbles: true,
+            cancelable: true,
+        });
+        // pass the event to the main div
+        const mainElement = document.getElementById("main");
+        if (mainElement !== null) {
+            mainElement.dispatchEvent(keyPress);
+        }
+    };
+
     return (
-        <main className={styles.main} tabIndex={0} onKeyDown={typing}>
-            <div className={styles.textContainer}>{textArray}</div>
+        <main id="main" className={styles.main} tabIndex={0} onKeyDown={typing}>
+            <div className={styles.textContainer}>
+                {textArray}
+                <input
+                    type="text"
+                    value={""}
+                    onChange={() => {}}
+                    onKeyDown={handleInvisibleInput}
+                    className={styles.invisibleInput}
+                />
+            </div>
         </main>
     );
 };
