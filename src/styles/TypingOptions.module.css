@@ -1,15 +1,22 @@
 .main {
     display: flex;
-    flex-direction: column;
+    width: fit-content;
+    align-self: center;
+    gap: var(--gap-medium);
     justify-content: center;
     align-items: center;
-    width: 100%;
     position: relative;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-medium);
+    background-color: rgb(var(--background-color-rgb));
+    -webkit-box-shadow: var(--top-left-box-shadow);
+    box-shadow: var(--top-left-box-shadow);
+    border-radius: 1.2rem;
 }
 
 .mainOptions {
     display: flex;
-    gap: var(--gap-small);
+    gap: var(--gap-medium);
 }
 
 .mainOptions button {
@@ -17,18 +24,53 @@
     background-color: transparent;
     color: rgb(var(--text-color-rgb));
     cursor: pointer;
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
+    padding-inline: var(--padding-inline-medium);
+    padding-block: var(--padding-block-medium);
+}
+
+.activeButton {
+    box-shadow: var(--inset-box-shadow);
+    border-radius: 1.2rem;
 }
 
 .subOptions {
     display: flex;
-    gap: var(--gap-small);
+    gap: var(--gap-medium);
 }
 
-.subOptions button {
+.activeSubButton {
     border: none;
     background-color: transparent;
     color: rgb(var(--text-color-rgb));
     cursor: pointer;
     font-size: var(--font-size-medium);
+
+    border: none;
+    outline: none;
+    background-color: rgb(var(--background-color-rgb));
+    -webkit-box-shadow: var(--button-box-shadow);
+    box-shadow: var(--button-box-shadow);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+.subButton {
+    border: none;
+    background-color: transparent;
+    color: rgb(var(--text-color-rgb));
+    cursor: pointer;
+    font-size: var(--font-size-medium);
+
+    border: none;
+    outline: none;
+    background-color: rgb(var(--background-color-rgb));
+    -webkit-box-shadow: var(--button-box-shadow);
+    box-shadow: var(--button-box-shadow-hover);
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
 }

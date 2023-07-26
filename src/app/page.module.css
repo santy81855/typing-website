@@ -2,6 +2,17 @@
     height: calc(100% - var(--nav-height));
     display: flex;
     flex-direction: column;
+    align-items: center;
     padding-inline: var(--padding-inline-xlarge);
     overflow-y: auto;
+    padding-block-start: var(--padding-block-large);
+    gap: var(--gap-xlarge);
+}
+
+.typingContainer {
+    padding-block-start: var(--padding-block-x2large);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100%;
 }

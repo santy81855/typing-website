@@ -12,7 +12,7 @@ export default function Home() {
     const [isComplete, setIsComplete] = useState(false);
     const [passage, setPassage] = useState([""]);
     const [testType, setTestType] = useState("time"); // "time" or "wordCount"
-    const [wordCount, setWordCount] = useState(30); // number of words to type
+    const [wordCount, setWordCount] = useState(50); // number of words to type
     const [time, setTime] = useState(60); // number of seconds to type for
     const [wpm, setWpm] = useState(0); // words per minute
     const [numChars, setNumChars] = useState(0); // number of characters to type
@@ -80,14 +80,16 @@ export default function Home() {
                     accuracy={accuracy}
                 />
             ) : (
-                <TypingSection
-                    areaRef={typingAreaRef}
-                    isComplete={isComplete}
-                    setIsComplete={setIsComplete}
-                    passage={passage}
-                    setNumErrors={setNumErrors}
-                    focusTypingArea={focusTypingArea}
-                />
+                <div className={styles.typingContainer}>
+                    <TypingSection
+                        areaRef={typingAreaRef}
+                        isComplete={isComplete}
+                        setIsComplete={setIsComplete}
+                        passage={passage}
+                        setNumErrors={setNumErrors}
+                        focusTypingArea={focusTypingArea}
+                    />
+                </div>
             )}
             {JSON.stringify(session, null, 2)}
         </main>

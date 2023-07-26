@@ -84,8 +84,20 @@
     border-radius: 0.8rem;
     margin: 0.5rem 0;
     -webkit-appearance: none;
+    color: rgb(var(--text-color-rgb));
 }
 
+.inputContainer input:-webkit-autofill,
+.inputContainer input:-webkit-autofill:hover,
+.inputContainer input:-webkit-autofill:focus,
+.inputContainer input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: rgb(var(--text-color-rgb));
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-box-shadow: var(--inset-box-shadow);
+    box-shadow: var(--inset-box-shadow);
+    -webkit-appearance: none;
+}
 .inputContainer input:focus {
     -webkit-box-shadow: var(--inset-box-shadow-hover);
     box-shadow: var(--inset-box-shadow-hover);
@@ -104,6 +116,7 @@
     height: 3rem;
     cursor: pointer;
     width: 100%;
+    color: rgb(var(--text-color-rgb));
 }
 
 .providerContainer button:hover {
@@ -113,6 +126,7 @@
 
 .submit {
     margin-block: var(--padding-block-medium);
+    color: rgb(var(--text-color-rgb));
 }
 
 .line {

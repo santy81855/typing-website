@@ -32,6 +32,7 @@ const TypingSection = ({
     var cursorPositionX = 0;
     var cursorPositionY = 0;
     var numErrors = 0;
+    var newLineCounter = 0;
 
     var letterStack: string[] = [];
 
@@ -71,6 +72,29 @@ const TypingSection = ({
             }
         }
         var diffY = activeLetterRect.top - cursorRect.top;
+
+        if (diffY > 5) {
+            newLineCounter++;
+            if (newLineCounter > 1) {
+                console.log("need to shift up");
+                const textContainer = document.getElementById("textContainer");
+
+                if (textContainer !== null) {
+                    // get the line height
+                    const rowHeight = getComputedStyle(
+                        document.documentElement
+                    ).getPropertyValue("--row-height");
+                    // Convert remValue to pixels
+                    const pixels =
+                        parseFloat(rowHeight) *
+                        parseFloat(
+                            getComputedStyle(document.documentElement).fontSize
+                        );
+                    textContainer.scrollBy(0, pixels * 2);
+                }
+                // transforrm the area ref up by 20px
+            }
+        }
 
         // translate the cursor to the left of the active letter
         cursor.style.transform = `translate(${cursorPositionX + diffX}px, ${
@@ -354,7 +378,7 @@ const TypingSection = ({
                 onKeyDown={typing}
                 ref={areaRef}
             >
-                <div className={styles.textContainer}>
+                <div id="textContainer" className={styles.textContainer}>
                     {textArray}
                     <input
                         type="text"

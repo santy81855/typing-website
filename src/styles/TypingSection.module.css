@@ -1,10 +1,29 @@
 .main {
     width: 100%;
+    max-width: var(--max-width);
     position: relative;
+    padding-inline: var(--padding-inline-x2large);
+    padding-block: var(--padding-block-xlarge);
+    /*background-color: rgb(var(--background-color-rgb));*/
+    -webkit-box-shadow: var(--top-left-box-shadow);
+    box-shadow: var(--top-left-box-shadow);
+    border-radius: 1.2rem;
+    background-image: url("/images/paper-3.jpg");
+    background-repeat: repeat;
+    background-size: cover;
+    background-position: center;
 }
 
 .main:focus {
     outline: none;
+}
+
+.textContainer::-webkit-scrollbar {
+    width: 0 !important;
+}
+
+.textContainer::-webkit-scrollbar {
+    display: none;
 }
 
 .textContainer {
@@ -17,10 +36,15 @@
     row-gap: var(--row-height);
     column-gap: 0.5rem;
     justify-content: var(--passage-text-align);
-    overflow-y: hidden;
     height: fit-content;
+    min-height: calc(3 * var(--row-height) + 3 * var(--row-height));
     max-height: calc(3 * var(--row-height) + 3 * var(--row-height));
     position: relative;
+    padding-block-start: calc(0.3 * var(--row-height));
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    padding-block-end: calc(3 * var(--row-height));
 }
 
 .textContainer .invisibleInput {
@@ -52,11 +76,11 @@
 }
 
 .correct {
-    color: green;
+    color: var(--correct-letter-color);
 }
 
 .incorrect {
-    color: red;
+    color: var(--incorrect-letter-color);
 }
 
 .extra {
