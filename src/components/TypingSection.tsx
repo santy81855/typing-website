@@ -4,11 +4,22 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 
 type InputArray = JSX.Element[];
 type props = {
+    isComplete: boolean;
     setIsComplete: (isComplete: boolean) => void;
     passage: string[];
+    setNumErrors: (numErrors: number) => void;
+    areaRef: React.RefObject<HTMLDivElement>;
+    focusTypingArea: () => void;
 };
 
-const TypingSection = ({ setIsComplete, passage }: props) => {
+const TypingSection = ({
+    isComplete,
+    setIsComplete,
+    passage,
+    setNumErrors,
+    areaRef,
+    focusTypingArea,
+}: props) => {
     useEffect(() => {
         createTextArray();
     }, [passage]);
@@ -20,9 +31,7 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
     var curWordIndex = 0;
     var cursorPositionX = 0;
     var cursorPositionY = 0;
-    var numIncorrectChars = 0;
-    const [numExtraLetters, setNumExtraLetters] = useState(0);
-    const [firstWrongIndex, setFirstWrongIndex] = useState(-1);
+    var numErrors = 0;
 
     var letterStack: string[] = [];
 
@@ -62,10 +71,12 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
             }
         }
         var diffY = activeLetterRect.top - cursorRect.top;
+
         // translate the cursor to the left of the active letter
         cursor.style.transform = `translate(${cursorPositionX + diffX}px, ${
             cursorPositionY + diffY
         }px)`;
+
         cursorPositionX += diffX;
         cursorPositionY += diffY;
     };
@@ -123,6 +134,8 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
                     if (curWordIndex === passage.length - 1) {
                         // end the typing test
                         setIsComplete(true);
+                        // set how many errors there were
+                        setNumErrors(numErrors);
                         return;
                     }
                     curWordIndex++;
@@ -135,7 +148,7 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
                 // otherwise the user is adding extra letters to the word
                 else {
                     // increment the number of incorrect letters
-                    numIncorrectChars++;
+                    numErrors++;
                     // add a div element to the curWordElement as a new child
                     var newDiv = document.createElement("div");
                     newDiv.classList.add(styles.letter);
@@ -215,6 +228,7 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
             var start =
                 curWordIndex === 0 ? curLetterIndex + 1 : curLetterIndex;
             for (var i = start; i < curWordElement.childElementCount; i++) {
+                numErrors++;
                 var child = curWordElement.children[i];
                 if (child !== null) {
                     makeIncorrect(child);
@@ -227,6 +241,7 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
                 moveCursor("forward", "letter");
                 // end the typing test
                 setIsComplete(true);
+                setNumErrors(numErrors);
                 return;
             }
             curWordIndex++;
@@ -251,6 +266,7 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
                 ) {
                     // end the typing test
                     setIsComplete(true);
+                    setNumErrors(numErrors);
                     return;
                 }
                 // move to the next letter
@@ -259,7 +275,7 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
             // if it is incorrect
             else {
                 // increment the incorrect letter counter
-                numIncorrectChars++;
+                numErrors++;
                 // make the letter incorrect
                 makeIncorrect(activeLetter);
                 // move the cursor to the next letter
@@ -330,18 +346,26 @@ const TypingSection = ({ setIsComplete, passage }: props) => {
     };
 
     return (
-        <main id="main" className={styles.main} tabIndex={0} onKeyDown={typing}>
-            <div className={styles.textContainer}>
-                {textArray}
-                <input
-                    type="text"
-                    value={""}
-                    onChange={() => {}}
-                    onKeyDown={handleInvisibleInput}
-                    className={styles.invisibleInput}
-                />
-            </div>
-        </main>
+        <>
+            <main
+                id="main"
+                className={styles.main}
+                tabIndex={0}
+                onKeyDown={typing}
+                ref={areaRef}
+            >
+                <div className={styles.textContainer}>
+                    {textArray}
+                    <input
+                        type="text"
+                        value={""}
+                        onChange={() => {}}
+                        onKeyDown={handleInvisibleInput}
+                        className={styles.invisibleInput}
+                    />
+                </div>
+            </main>
+        </>
     );
 };
 

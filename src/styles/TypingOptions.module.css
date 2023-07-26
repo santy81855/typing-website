@@ -1,0 +1,34 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.mainOptions {
+    display: flex;
+    gap: var(--gap-small);
+}
+
+.mainOptions button {
+    border: none;
+    background-color: transparent;
+    color: rgb(var(--text-color-rgb));
+    cursor: pointer;
+    font-size: var(--font-size-medium);
+}
+
+.subOptions {
+    display: flex;
+    gap: var(--gap-small);
+}
+
+.subOptions button {
+    border: none;
+    background-color: transparent;
+    color: rgb(var(--text-color-rgb));
+    cursor: pointer;
+    font-size: var(--font-size-medium);
+}
