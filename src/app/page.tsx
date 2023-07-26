@@ -4,7 +4,11 @@ import TypingSection from "@/components/TypingSection";
 import React, { useState, useEffect } from "react";
 import { english } from "@/lib/words";
 
+import { useSession } from "next-auth/react";
+
 export default function Home() {
+    const { data: session } = useSession();
+
     const [isComplete, setIsComplete] = useState(false);
     // generate a long list of words
     const [passage, setPassage] = useState([""]);
@@ -21,6 +25,7 @@ export default function Home() {
     return (
         <main className={styles.main}>
             <TypingSection setIsComplete={setIsComplete} passage={passage} />
+            {JSON.stringify(session, null, 2)}
         </main>
     );
 }
