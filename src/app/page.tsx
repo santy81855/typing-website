@@ -21,6 +21,7 @@ export default function Home() {
     const [startTime, setStartTime] = useState(0); // time when the user starts typing
     const [endTime, setEndTime] = useState(0); // time when the user finishes typing
     const [wordFile, setWordFile] = useState(english); // the file of words to use for the test
+    var timer: string | number | NodeJS.Timeout | undefined;
 
     // create a reference for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -51,14 +52,27 @@ export default function Home() {
     }, [testType, wordCount, time]);
 
     useEffect(() => {
+        console.log((endTime - startTime) / 1000);
+        console.log(numErrors);
         setAccuracy(
             `${(((numChars - numErrors) / numChars) * 100).toFixed(2)}%`
         );
         setWpm(
-            Math.round(((numChars / 5) * 60) / ((endTime - startTime) / 100)) ||
-                0
+            Math.round(
+                ((numChars / 5) * 60) / ((endTime - startTime) / 1000)
+            ) || 0
         );
     }, [isComplete]);
+
+    const startTimer = () => {
+        timer = setTimeout(() => {
+            setIsComplete(true);
+        }, time * 1000);
+    };
+
+    const stopTimer = () => {
+        clearTimeout(timer);
+    };
 
     const getRandomWordLower = () => {
         const randomIndex = Math.floor(Math.random() * wordFile.length);
@@ -78,9 +92,13 @@ export default function Home() {
             <TypingOptions
                 testType={testType}
                 setTestType={setTestType}
+                time={time}
                 setWordCount={setWordCount}
+                wordCount={wordCount}
                 setTime={setTime}
                 focusTypingArea={focusTypingArea}
+                setIsComplete={setIsComplete}
+                stopTimer={stopTimer}
             />
             {isComplete ? (
                 <TestInformation
@@ -101,6 +119,8 @@ export default function Home() {
                         setEndTime={setEndTime}
                         testType={testType}
                         getRandomWordLower={getRandomWordLower}
+                        startTimer={startTimer}
+                        stopTimer={stopTimer}
                     />
                 </div>
             )}

@@ -10,7 +10,6 @@
 }
 
 .typingContainer {
-    padding-block-start: var(--padding-block-x2large);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -49,6 +49,9 @@
     --correct-letter-color: rgb(var(--accent-color-light-2-rgb));
     --incorrect-letter-color: rgb(219, 109, 109);
     --paper-texture-url: url("/images/paper-3.jpg");
+    --cursor-color: green;
+    --cursor-width: 4px;
+    --cursor-blink-speed: 1s;
 }
 
 :root.font-small {

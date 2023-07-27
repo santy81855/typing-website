@@ -1,12 +1,12 @@
 .main {
     display: flex;
-    width: fit-content;
+    flex-direction: column;
     align-self: center;
     gap: var(--gap-medium);
     justify-content: center;
     align-items: center;
     position: relative;
-    padding-inline: var(--padding-inline-large);
+    padding-inline: var(--padding-inline-xlarge);
     padding-block: var(--padding-block-large);
     background-color: rgb(var(--background-color-rgb));
     -webkit-box-shadow: var(--inset-box-shadow);
@@ -16,7 +16,10 @@
 
 .mainOptions {
     display: flex;
+    justify-content: center;
     gap: var(--gap-medium);
+    width: 100%;
+    
 }
 
 .mainOptions button {
@@ -46,11 +49,8 @@
     cursor: pointer;
     font-size: var(--font-size-medium);
 
-    border: none;
     outline: none;
     background-color: rgb(var(--background-color-rgb));
-    -webkit-box-shadow: var(--button-box-shadow);
-    box-shadow: var(--button-box-shadow);
     border-radius: 50%;
     width: 2.5rem;
     height: 2.5rem;

@@ -1,6 +1,6 @@
 "use client";
 import styles from "@/styles/TypingSection.module.css";
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 type InputArray = JSX.Element[];
 type props = {
@@ -13,6 +13,8 @@ type props = {
     setEndTime: (endTime: number) => void;
     testType: string;
     getRandomWordLower: () => string;
+    startTimer: () => void;
+    stopTimer: () => void;
 };
 
 const TypingSection = ({
@@ -25,6 +27,8 @@ const TypingSection = ({
     setEndTime,
     testType,
     getRandomWordLower,
+    startTimer,
+    stopTimer,
 }: props) => {
     // everytime the passage changes
     useEffect(() => {
@@ -41,6 +45,7 @@ const TypingSection = ({
     var cursorPositionY = 0;
     var numErrors = 0;
     var newLineCounter = 0;
+    var typedFirstLetter = false;
     var startTime = 0;
     // variable to track how many extra words we have dynamically added to avoid running out of words
     var numExtraWords = 0;
@@ -178,8 +183,18 @@ const TypingSection = ({
     };
 
     const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        if (curLetterIndex === 0) {
+        // if it is the very first letter we want to start the timer
+        if (
+            curWordIndex === 0 &&
+            curLetterIndex === 0 &&
+            typedFirstLetter === false
+        ) {
             startTime = new Date().getTime();
+            typedFirstLetter = true;
+            // if this is a time test then we want to start a timer for "time" length
+            if (testType === "time") {
+                startTimer();
+            }
         }
 
         // get the event target

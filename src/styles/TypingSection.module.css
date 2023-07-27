@@ -8,10 +8,7 @@
     -webkit-box-shadow: var(--inset-box-shadow);
     box-shadow: var(--inset-box-shadow);
     border-radius: 1.2rem;
-    background-image: var(--paper-texture-url);
-    background-repeat: repeat;
-    background-size: cover;
-    background-position: center;
+
     overflow: hidden;
 }
 
@@ -104,28 +101,15 @@
     color: rgba(218, 44, 44, 1);
 }
 
-.invisible {
-    opacity: 0;
-}
-
-.givenTextContainer {
-    color: black;
-}
-
-.typedTextContainer {
-    color: green;
-}
-
 .cursor {
-    color: black;
-    background-color: black;
-    width: 2px;
+    background-color: var(--cursor-color);
+    width: var(--cursor-width);
     height: 1.5rem;
     display: inline;
     position: absolute;
     left: 0;
     top: 0;
-    animation: blink 1s infinite;
+    animation: blink var(--cursor-blink-speed) infinite;
 }
 
 @keyframes blink {
