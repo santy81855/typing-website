@@ -18,6 +18,8 @@ export default function Home() {
     const [numChars, setNumChars] = useState(0); // number of characters to type
     const [numErrors, setNumErrors] = useState(0); // number of errors made while typing
     const [accuracy, setAccuracy] = useState(""); // accuracy of typing
+    const [startTime, setStartTime] = useState(0); // time when the user starts typing
+    const [endTime, setEndTime] = useState(0); // time when the user finishes typing
 
     // create a reference for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -52,6 +54,10 @@ export default function Home() {
     useEffect(() => {
         setAccuracy(
             `${(((numChars - numErrors) / numChars) * 100).toFixed(2)}%`
+        );
+        setWpm(
+            Math.round(((numChars / 5) * 60) / ((endTime - startTime) / 100)) ||
+                0
         );
     }, [isComplete]);
 
@@ -88,6 +94,8 @@ export default function Home() {
                         passage={passage}
                         setNumErrors={setNumErrors}
                         focusTypingArea={focusTypingArea}
+                        setStartTime={setStartTime}
+                        setEndTime={setEndTime}
                     />
                 </div>
             )}

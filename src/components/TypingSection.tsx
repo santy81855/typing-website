@@ -10,6 +10,8 @@ type props = {
     setNumErrors: (numErrors: number) => void;
     areaRef: React.RefObject<HTMLDivElement>;
     focusTypingArea: () => void;
+    setStartTime: (startTime: number) => void;
+    setEndTime: (endTime: number) => void;
 };
 
 const TypingSection = ({
@@ -19,6 +21,8 @@ const TypingSection = ({
     setNumErrors,
     areaRef,
     focusTypingArea,
+    setStartTime,
+    setEndTime,
 }: props) => {
     useEffect(() => {
         createTextArray();
@@ -33,6 +37,8 @@ const TypingSection = ({
     var cursorPositionY = 0;
     var numErrors = 0;
     var newLineCounter = 0;
+    var startTime = 0;
+    var endTime = 0;
 
     var letterStack: string[] = [];
 
@@ -138,7 +144,17 @@ const TypingSection = ({
         element.classList.remove(styles.incorrect);
     };
 
+    const testFinished = () => {
+        setIsComplete(true);
+        setNumErrors(numErrors);
+        setStartTime(startTime);
+        setEndTime(new Date().getTime());
+    };
+
     const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        if (curLetterIndex === 0) {
+            startTime = new Date().getTime();
+        }
         // get the event target
         var target = e.target as HTMLElement;
         if (target?.tagName.toLowerCase() === "input") {
@@ -164,10 +180,7 @@ const TypingSection = ({
                 if (key === " ") {
                     // if the user is on the last word
                     if (curWordIndex === passage.length - 1) {
-                        // end the typing test
-                        setIsComplete(true);
-                        // set how many errors there were
-                        setNumErrors(numErrors);
+                        testFinished();
                         return;
                     }
                     curWordIndex++;
@@ -272,8 +285,7 @@ const TypingSection = ({
                 curLetterIndex = numLetters - 1;
                 moveCursor("forward", "letter");
                 // end the typing test
-                setIsComplete(true);
-                setNumErrors(numErrors);
+                testFinished();
                 return;
             }
             curWordIndex++;
@@ -296,9 +308,7 @@ const TypingSection = ({
                     curWordIndex === passage.length - 1 &&
                     curLetterIndex === numLetters - 1
                 ) {
-                    // end the typing test
-                    setIsComplete(true);
-                    setNumErrors(numErrors);
+                    testFinished();
                     return;
                 }
                 // move to the next letter
@@ -390,6 +400,7 @@ const TypingSection = ({
                     <div id="textArea" className={styles.textArea}>
                         {textArray}
                     </div>
+
                     <input
                         type="text"
                         value={""}

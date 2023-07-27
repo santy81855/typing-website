@@ -7,10 +7,10 @@
     align-items: center;
     position: relative;
     padding-inline: var(--padding-inline-large);
-    padding-block: var(--padding-block-medium);
+    padding-block: var(--padding-block-large);
     background-color: rgb(var(--background-color-rgb));
-    -webkit-box-shadow: var(--top-left-box-shadow);
-    box-shadow: var(--top-left-box-shadow);
+    -webkit-box-shadow: var(--inset-box-shadow);
+    box-shadow: var(--inset-box-shadow);
     border-radius: 1.2rem;
 }
 
@@ -39,7 +39,7 @@
     gap: var(--gap-medium);
 }
 
-.activeSubButton {
+.subButton {
     border: none;
     background-color: transparent;
     color: rgb(var(--text-color-rgb));
@@ -57,7 +57,7 @@
     cursor: pointer;
 }
 
-.subButton {
+.activeSubButton {
     border: none;
     background-color: transparent;
     color: rgb(var(--text-color-rgb));

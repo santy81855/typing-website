@@ -48,6 +48,7 @@
 
     --correct-letter-color: rgb(var(--accent-color-light-2-rgb));
     --incorrect-letter-color: rgb(219, 109, 109);
+    --paper-texture-url: url("/images/paper-3.jpg");
 }
 
 :root.font-small {
@@ -80,6 +81,7 @@
         -0.3rem -0.3rem 0.6rem 0.1rem rgb(0, 0, 0);
     --button-box-shadow-hover: inset 0.3rem 0.3rem 0.6rem 0.1rem rgb(46, 46, 46),
         inset -0.3rem -0.3rem 0.6rem 0.1rem rgb(0, 0, 0);
+    --paper-texture-url: none;
 }
 
 * {

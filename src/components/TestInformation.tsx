@@ -12,6 +12,7 @@ const TestInformation = ({ accuracy, wpm, numChars, numErrors }: props) => {
     return (
         <main>
             <div className={styles.main}>Accuracy: {accuracy}</div>
+            <div className={styles.main}>WPM: {wpm}</div>
         </main>
     );
 };
