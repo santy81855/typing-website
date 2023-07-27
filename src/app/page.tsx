@@ -11,7 +11,7 @@ export default function Home() {
     const { data: session } = useSession();
     const [isComplete, setIsComplete] = useState(false);
     const [passage, setPassage] = useState([""]);
-    const [testType, setTestType] = useState("wordCount"); // "time" or "wordCount"
+    const [testType, setTestType] = useState("time"); // "time" or "wordCount"
     const [wordCount, setWordCount] = useState(50); // number of words to type
     const [time, setTime] = useState(60); // number of seconds to type for
     const [wpm, setWpm] = useState(0); // words per minute
@@ -20,6 +20,7 @@ export default function Home() {
     const [accuracy, setAccuracy] = useState(""); // accuracy of typing
     const [startTime, setStartTime] = useState(0); // time when the user starts typing
     const [endTime, setEndTime] = useState(0); // time when the user finishes typing
+    const [wordFile, setWordFile] = useState(english); // the file of words to use for the test
 
     // create a reference for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -31,16 +32,14 @@ export default function Home() {
         // if the user is taking a word count test, then create a random assortment of words from the 'english' array
         if (testType === "wordCount") {
             for (let i = 0; i < wordCount; i++) {
-                const randomIndex = Math.floor(Math.random() * english.length);
-                randomPassage.push(english[randomIndex].toLocaleLowerCase());
+                randomPassage.push(getRandomWordLower());
             }
         }
         // if the user is taking a time test, then create enough words to ensure they don't run out of words to type
         else if (testType === "time") {
             // since the longest test is 300 seconds (5 minutes), we'll create 2000 words
-            for (let i = 0; i < 2000; i++) {
-                const randomIndex = Math.floor(Math.random() * english.length);
-                randomPassage.push(english[randomIndex].toLocaleLowerCase());
+            for (let i = 0; i < 100; i++) {
+                randomPassage.push(getRandomWordLower());
             }
         }
         setPassage(randomPassage);
@@ -60,6 +59,11 @@ export default function Home() {
                 0
         );
     }, [isComplete]);
+
+    const getRandomWordLower = () => {
+        const randomIndex = Math.floor(Math.random() * wordFile.length);
+        return wordFile[randomIndex].toLocaleLowerCase();
+    };
 
     const focusTypingArea = () => {
         // set focus to the main typing area
@@ -89,13 +93,14 @@ export default function Home() {
                 <div className={styles.typingContainer}>
                     <TypingSection
                         areaRef={typingAreaRef}
-                        isComplete={isComplete}
                         setIsComplete={setIsComplete}
                         passage={passage}
                         setNumErrors={setNumErrors}
                         focusTypingArea={focusTypingArea}
                         setStartTime={setStartTime}
                         setEndTime={setEndTime}
+                        testType={testType}
+                        getRandomWordLower={getRandomWordLower}
                     />
                 </div>
             )}

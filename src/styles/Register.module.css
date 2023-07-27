@@ -98,6 +98,7 @@
     box-shadow: var(--inset-box-shadow);
     -webkit-appearance: none;
 }
+
 .inputContainer input:focus {
     -webkit-box-shadow: var(--inset-box-shadow-hover);
     box-shadow: var(--inset-box-shadow-hover);
@@ -117,6 +118,7 @@
     cursor: pointer;
     width: 100%;
     color: rgb(var(--text-color-rgb));
+    border-radius: 1.2rem;
 }
 
 .providerContainer button:hover {

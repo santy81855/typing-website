@@ -4,7 +4,6 @@ import React, { useState, useEffect, SyntheticEvent } from "react";
 
 type InputArray = JSX.Element[];
 type props = {
-    isComplete: boolean;
     setIsComplete: (isComplete: boolean) => void;
     passage: string[];
     setNumErrors: (numErrors: number) => void;
@@ -12,10 +11,11 @@ type props = {
     focusTypingArea: () => void;
     setStartTime: (startTime: number) => void;
     setEndTime: (endTime: number) => void;
+    testType: string;
+    getRandomWordLower: () => string;
 };
 
 const TypingSection = ({
-    isComplete,
     setIsComplete,
     passage,
     setNumErrors,
@@ -23,14 +23,18 @@ const TypingSection = ({
     focusTypingArea,
     setStartTime,
     setEndTime,
+    testType,
+    getRandomWordLower,
 }: props) => {
+    // everytime the passage changes
     useEffect(() => {
+        // if the passage changes create a new text array
         createTextArray();
+        // set the cursor to the first letter
+        resetCursor();
     }, [passage]);
 
-    //var passage = ["word1", "word2", "word3", "word4"];
     const [textArray, setTextArray] = useState<InputArray>([]);
-    const [userInput, setUserInput] = useState<InputArray>([]);
     var curLetterIndex = 0;
     var curWordIndex = 0;
     var cursorPositionX = 0;
@@ -38,9 +42,17 @@ const TypingSection = ({
     var numErrors = 0;
     var newLineCounter = 0;
     var startTime = 0;
-    var endTime = 0;
-
+    // variable to track how many extra words we have dynamically added to avoid running out of words
+    var numExtraWords = 0;
     var letterStack: string[] = [];
+    const resetCursor = () => {
+        // translate the cursor to 0,0
+        const cursor = document.getElementById("cursor");
+        if (cursor === null) {
+            return;
+        }
+        cursor.style.transform = "translate(0px, 0px)";
+    };
 
     const moveCursor = (direction: string, type: string) => {
         if (direction === "backward" && type === "word") {
@@ -82,7 +94,6 @@ const TypingSection = ({
         if (diffY > 5) {
             newLineCounter++;
             if (newLineCounter > 1) {
-                console.log("need to shift up");
                 const textArea = document.getElementById("textArea");
 
                 if (textArea !== null) {
@@ -151,10 +162,26 @@ const TypingSection = ({
         setEndTime(new Date().getTime());
     };
 
+    const addBufferIfNeeded = () => {
+        if (
+            testType === "time" &&
+            curWordIndex === textArray.length + numExtraWords - 50
+        ) {
+            for (let i = 0; i < 50; i++) {
+                addWord(getRandomWordLower());
+            }
+        }
+    };
+
+    const testFinishedCondition = () => {
+        return curWordIndex === passage.length + numExtraWords - 1;
+    };
+
     const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
         if (curLetterIndex === 0) {
             startTime = new Date().getTime();
         }
+
         // get the event target
         var target = e.target as HTMLElement;
         if (target?.tagName.toLowerCase() === "input") {
@@ -179,10 +206,12 @@ const TypingSection = ({
                 // if the key is a space move to the next word
                 if (key === " ") {
                     // if the user is on the last word
-                    if (curWordIndex === passage.length - 1) {
+                    if (testFinishedCondition()) {
                         testFinished();
                         return;
                     }
+                    // add a buffer if we are nearing the end of the passage
+                    addBufferIfNeeded();
                     curWordIndex++;
                     curLetterIndex = 0;
                     moveCursor("forward", "word");
@@ -279,9 +308,11 @@ const TypingSection = ({
                     makeIncorrect(child);
                 }
             }
+            // add a buffer if we are nearing the end of the passage
+            addBufferIfNeeded();
 
             // if the user is on the last word
-            if (curWordIndex === passage.length - 1) {
+            if (testFinishedCondition()) {
                 curLetterIndex = numLetters - 1;
                 moveCursor("forward", "letter");
                 // end the typing test
@@ -305,7 +336,7 @@ const TypingSection = ({
                 moveCursor("forward", "letter");
                 // if this is the last letter of the last word
                 if (
-                    curWordIndex === passage.length - 1 &&
+                    testFinishedCondition() &&
                     curLetterIndex === numLetters - 1
                 ) {
                     testFinished();
@@ -328,7 +359,63 @@ const TypingSection = ({
         }
     };
 
+    const addWord = (word: string) => {
+        // add the new div as the last child of textArea
+        const textArea = document.getElementById("textArea");
+        if (textArea === null) {
+            return;
+        }
+        // get the length of the children of textArea
+        var numChildren = textArea.childElementCount;
+
+        // create a new div element
+        var newDiv = document.createElement("div");
+        // give it the correct id
+        newDiv.id = `word${numChildren}`;
+        // give it the "word" class
+        newDiv.classList.add(styles.word);
+        // give it the class "extra word"
+        newDiv.classList.add(styles.extraWord);
+        // add each letter as an array of div elements
+        for (var i = 0; i < word.length; i++) {
+            var letterDiv = document.createElement("div");
+            letterDiv.classList.add(styles.letter);
+            letterDiv.id = `letter${numChildren}${i}`;
+            letterDiv.innerText = word[i];
+            newDiv.appendChild(letterDiv);
+        }
+        textArea.appendChild(newDiv);
+        numExtraWords++;
+    };
+
     const createTextArray = () => {
+        // remove any extra words
+        var extraWords = document.getElementsByClassName(styles.extraWord);
+        for (var i = 0; i < extraWords.length; i++) {
+            extraWords[i].remove();
+            i--;
+        }
+        // remove any extra classes from any typed letters
+        var typedLetters = document.getElementsByClassName(styles.letter);
+        for (var i = 0; i < typedLetters.length; i++) {
+            // if the letter doesn't contain the correct, incorrect, or extra class then we can stop the loop
+            if (
+                !typedLetters[i].classList.contains(styles.correct) &&
+                !typedLetters[i].classList.contains(styles.incorrect) &&
+                !typedLetters[i].classList.contains(styles.extra)
+            ) {
+                break;
+            }
+            // if it is an extra letter just delete it
+            if (typedLetters[i].classList.contains(styles.extra)) {
+                typedLetters[i].remove();
+                i--;
+                continue;
+            }
+            typedLetters[i].classList.remove(styles.correct);
+            typedLetters[i].classList.remove(styles.incorrect);
+        }
+
         // for every word in the array creat an input element
         setTextArray(
             passage.map((word, wordIndex) => {
@@ -362,7 +449,7 @@ const TypingSection = ({
                                 <div
                                     key={letterIndex}
                                     id={`letter${wordIndex}${letterIndex}`}
-                                    className={styles.letter}
+                                    className={`${styles.letter}`}
                                 >
                                     {letter}
                                 </div>
@@ -403,6 +490,7 @@ const TypingSection = ({
 
                     <input
                         type="text"
+                        title="invisibleInput"
                         value={""}
                         onChange={() => {}}
                         onKeyDown={handleInvisibleInput}
