@@ -77,9 +77,9 @@ const TypingSection = ({
             newLineCounter++;
             if (newLineCounter > 1) {
                 console.log("need to shift up");
-                const textContainer = document.getElementById("textContainer");
+                const textArea = document.getElementById("textArea");
 
-                if (textContainer !== null) {
+                if (textArea !== null) {
                     // get the line height
                     const rowHeight = getComputedStyle(
                         document.documentElement
@@ -90,7 +90,15 @@ const TypingSection = ({
                         parseFloat(
                             getComputedStyle(document.documentElement).fontSize
                         );
-                    textContainer.scrollBy(0, pixels * 2);
+                    //textArea.scrollBy(0, pixels);
+
+                    // increase the height by 2 * pixels and transformY up by 2 * pixels
+                    // get the current height of the textcontainer
+                    const height = textArea.clientHeight;
+                    //                    textArea.style.height = `${height + 2 * pixels}px`;
+                    textArea.style.top = `${
+                        (newLineCounter - 1) * -2 * pixels
+                    }px`;
                 }
                 // transforrm the area ref up by 20px
             }
@@ -379,7 +387,9 @@ const TypingSection = ({
                 ref={areaRef}
             >
                 <div id="textContainer" className={styles.textContainer}>
-                    {textArray}
+                    <div id="textArea" className={styles.textArea}>
+                        {textArray}
+                    </div>
                     <input
                         type="text"
                         value={""}

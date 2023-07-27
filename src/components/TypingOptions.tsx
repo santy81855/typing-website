@@ -67,7 +67,6 @@ const TypingOptions = ({
             <main className={styles.main} onClick={focusTypingArea}>
                 <div className={styles.mainOptions}>
                     <button
-                        className={styles.activeButton}
                         onClick={() => {
                             wordButtonRef.current?.classList.remove(
                                 `${styles.activeButton}`
@@ -82,6 +81,7 @@ const TypingOptions = ({
                         time
                     </button>
                     <button
+                        className={styles.activeButton}
                         onClick={() => {
                             timeButtonRef.current?.classList.remove(
                                 `${styles.activeButton}`

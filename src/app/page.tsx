@@ -11,7 +11,7 @@ export default function Home() {
     const { data: session } = useSession();
     const [isComplete, setIsComplete] = useState(false);
     const [passage, setPassage] = useState([""]);
-    const [testType, setTestType] = useState("time"); // "time" or "wordCount"
+    const [testType, setTestType] = useState("wordCount"); // "time" or "wordCount"
     const [wordCount, setWordCount] = useState(50); // number of words to type
     const [time, setTime] = useState(60); // number of seconds to type for
     const [wpm, setWpm] = useState(0); // words per minute

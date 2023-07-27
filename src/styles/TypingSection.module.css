@@ -12,6 +12,7 @@
     background-repeat: repeat;
     background-size: cover;
     background-position: center;
+    overflow: hidden;
 }
 
 .main:focus {
@@ -26,6 +27,20 @@
     display: none;
 }
 
+.textArea {
+    position: absolute;
+    /*top: calc(-2 * var(--row-height));*/
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    row-gap: var(--row-height);
+    column-gap: 0.5rem;
+}
+
 .textContainer {
     width: 100%;
     display: flex;
@@ -36,15 +51,16 @@
     row-gap: var(--row-height);
     column-gap: 0.5rem;
     justify-content: var(--passage-text-align);
-    height: fit-content;
-    min-height: calc(3 * var(--row-height) + 3 * var(--row-height));
-    max-height: calc(3 * var(--row-height) + 3 * var(--row-height));
+    height: calc(3 * var(--row-height) + 3 * var(--row-height));
     position: relative;
     padding-block-start: calc(0.3 * var(--row-height));
+    overflow: hidden;
+    /*
     overflow-y: auto;
     -ms-overflow-style: none;
     scrollbar-width: none;
     padding-block-end: calc(3 * var(--row-height));
+    */
 }
 
 .textContainer .invisibleInput {
