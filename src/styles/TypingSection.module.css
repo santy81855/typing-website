@@ -39,6 +39,7 @@
     flex-wrap: wrap;
     row-gap: var(--row-height);
     column-gap: 0.5rem;
+    justify-content: var(--passage-text-align);
 }
 
 .textContainer {
