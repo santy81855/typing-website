@@ -5,7 +5,6 @@
     align-items: center;
     padding-inline: var(--padding-inline-xlarge);
     overflow-y: auto;
-    padding-block-start: var(--padding-block-large);
     gap: var(--gap-xlarge);
 }
 

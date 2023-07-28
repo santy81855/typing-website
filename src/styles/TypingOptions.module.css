@@ -6,8 +6,6 @@
     justify-content: center;
     align-items: center;
     position: relative;
-    padding-inline: var(--padding-inline-xlarge);
-    padding-block: var(--padding-block-large);
 }
 
 .mainOptions {
@@ -20,16 +18,19 @@
 .mainOptions button {
     border: none;
     background-color: transparent;
-    color: rgb(var(--text-color-rgb));
     cursor: pointer;
     font-size: var(--font-size-large);
-    padding-inline: var(--padding-inline-medium);
-    padding-block: var(--padding-block-medium);
+    text-shadow: -1px 0 var(--text-outline-color),
+        0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
+        0 -1px var(--text-outline-color);
+}
+
+.inactiveButton {
+    color: var(--passage-text-color);
 }
 
 .activeButton {
-    box-shadow: var(--inset-box-shadow);
-    border-radius: 1.2rem;
+    color: var(--accent-color-primary);
 }
 
 .subOptions {
@@ -37,34 +38,20 @@
     gap: var(--gap-medium);
 }
 
-.subButton {
+.subOptions button {
     border: none;
     background-color: transparent;
-    color: rgb(var(--text-color-rgb));
     cursor: pointer;
     font-size: var(--font-size-medium);
-    outline: none;
-    background-color: rgb(var(--background-color-rgb));
-    border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
-    cursor: pointer;
+    text-shadow: -1px 0 var(--text-outline-color),
+        0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
+        0 -1px var(--text-outline-color);
 }
 
 .activeSubButton {
-    border: none;
-    background-color: transparent;
-    color: rgb(var(--text-color-rgb));
-    cursor: pointer;
-    font-size: var(--font-size-medium);
+    color: var(--accent-color-primary);
+}
 
-    border: none;
-    outline: none;
-    background-color: rgb(var(--background-color-rgb));
-    -webkit-box-shadow: var(--button-box-shadow);
-    box-shadow: var(--button-box-shadow-hover);
-    border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
-    cursor: pointer;
+.inactiveSubButton {
+    color: var(--passage-text-color);
 }

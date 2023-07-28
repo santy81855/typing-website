@@ -46,8 +46,9 @@ const TypingOptions = ({
                             <button
                                 key={index}
                                 className={`${
-                                    option.testType === testType &&
-                                    styles.activeButton
+                                    option.testType === testType
+                                        ? styles.activeButton
+                                        : styles.inactiveButton
                                 }`}
                                 onClick={() => {
                                     setTestType(option.testType);
@@ -80,7 +81,7 @@ const TypingOptions = ({
                                         className={`${
                                             isActive
                                                 ? styles.activeSubButton
-                                                : styles.subButton
+                                                : styles.inactiveSubButton
                                         }`}
                                         onClick={() => {
                                             testType === "time"

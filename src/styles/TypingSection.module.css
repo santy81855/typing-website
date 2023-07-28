@@ -2,8 +2,6 @@
     width: 100%;
     max-width: var(--max-width);
     position: relative;
-    padding-inline: var(--padding-inline-x2large);
-    padding-block: var(--padding-block-xlarge);
     overflow: hidden;
 }
 
@@ -58,27 +56,46 @@
     height: var(--row-height);
 }
 
-.textContainer .letter {
-    font-size: var(--passage-font-size);
-    text-shadow: 0 0 0 black;
+.textContainer .extraWord {
+    background-color: rgb(0, 0, 0, 0);
+    display: flex;
     position: relative;
+    align-items: center;
+    height: var(--row-height);
+}
+
+.textContainer .letter {
+    position: relative;
+    font-size: var(--passage-font-size);
     padding-inline: var(--letter-spacing);
 }
 
 .default {
-    color: black;
+    color: var(--passage-text-color);
+    text-shadow: -1px 0 var(--text-outline-color),
+        0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
+        0 -1px var(--text-outline-color);
 }
 
 .correct {
     color: var(--correct-letter-color);
+    text-shadow: -1px 0 var(--text-outline-color),
+        0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
+        0 -1px var(--text-outline-color);
 }
 
 .incorrect {
     color: var(--incorrect-letter-color);
+    text-shadow: -1px 0 var(--text-outline-color),
+        0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
+        0 -1px var(--text-outline-color);
 }
 
 .extra {
     color: rgba(218, 44, 44, 1);
+    text-shadow: -1px 0 var(--text-outline-color),
+        0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
+        0 -1px var(--text-outline-color);
 }
 
 .cursor {
@@ -90,6 +107,7 @@
     left: 0;
     top: 0;
     animation: blink var(--cursor-blink-speed) infinite;
+    z-index: 1;
 }
 
 @keyframes blink {

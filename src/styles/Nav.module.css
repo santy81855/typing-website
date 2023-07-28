@@ -1,5 +1,29 @@
 .main {
     width: 100%;
+    padding-inline: var(--padding-inline-xlarge);
     height: var(--nav-height);
-    background-color: grey;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.navContainer {
+    width: 100%;
+    max-width: 1500px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block: var(--padding-block-medium);
+    padding-inline: var(--padding-inline-xlarge);
+    gap: var(--gap-medium);
+    background-color: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(7px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.4);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
 }

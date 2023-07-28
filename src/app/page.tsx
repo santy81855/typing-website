@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import { english } from "@/lib/words";
 import styles from "./page.module.css";
+import Rain from "@/components/Rain";
 import TypingSection, { TypingSectionRef } from "@/components/TypingSection";
 import TypingOptions from "@/components/TypingOptions";
 import TestInformation from "@/components/TestInformation";
@@ -16,6 +17,9 @@ export default function Home() {
     const [time, setTime] = useState(60); // number of seconds to type for
     const [wpm, setWpm] = useState(0); // words per minute
     const [numChars, setNumChars] = useState(0); // number of characters to type
+    const [totalCharsTyped, setTotalCharsTyped] = useState(0); // total number of characters typed
+    const [numWordsTyped, setNumWordsTyped] = useState(0); // total number of words typed
+    const [numCorrectWords, setNumCorrectWords] = useState(0); // total number of correct words typed
     const [numErrors, setNumErrors] = useState(0); // number of errors made while typing
     const [accuracy, setAccuracy] = useState(""); // accuracy of typing
     const [startTime, setStartTime] = useState(0); // time when the user starts typing
@@ -34,6 +38,7 @@ export default function Home() {
         // set focus to the main typing area and fade it in
         if (passageRef.current !== null) {
             passageRef.current.style.opacity = "0";
+            passageRef.current.style.top = "0";
         }
         setTimeout(() => {
             const randomPassage = [];
@@ -65,8 +70,6 @@ export default function Home() {
     }, [testType, wordCount, time]);
 
     useEffect(() => {
-        console.log((endTime - startTime) / 1000);
-        console.log(numErrors);
         setAccuracy(
             `${(((numChars - numErrors) / numChars) * 100).toFixed(2)}%`
         );
@@ -143,6 +146,7 @@ export default function Home() {
                 </div>
             )}
             {JSON.stringify(session, null, 2)}
+            <Rain />
         </main>
     );
 }

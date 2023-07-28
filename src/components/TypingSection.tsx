@@ -195,6 +195,36 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             setIsComplete(true);
         };
 
+        const addWord = (word: string) => {
+            // add the new div as the last child of textArea
+            const textArea = document.getElementById("textArea");
+            if (textArea === null) {
+                return;
+            }
+            // get the length of the children of textArea
+            var numChildren = textArea.childElementCount;
+
+            // create a new div element
+            var newDiv = document.createElement("div");
+            // give it the correct id
+            newDiv.id = `word${numChildren}`;
+            // give it the "word" class
+            newDiv.classList.add(styles.word);
+            // give it the class "extra word"
+            newDiv.classList.add(styles.extraWord);
+            // add each letter as an array of div elements
+            for (var i = 0; i < word.length; i++) {
+                var letterDiv = document.createElement("div");
+                letterDiv.classList.add(styles.letter);
+                letterDiv.classList.add(styles.default);
+                letterDiv.id = `letter${numChildren}${i}`;
+                letterDiv.innerText = word[i];
+                newDiv.appendChild(letterDiv);
+            }
+            textArea.appendChild(newDiv);
+            numExtraWords++;
+        };
+
         const addBufferIfNeeded = () => {
             if (
                 testType === "time" &&
@@ -395,35 +425,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             }
         };
 
-        const addWord = (word: string) => {
-            // add the new div as the last child of textArea
-            const textArea = document.getElementById("textArea");
-            if (textArea === null) {
-                return;
-            }
-            // get the length of the children of textArea
-            var numChildren = textArea.childElementCount;
-
-            // create a new div element
-            var newDiv = document.createElement("div");
-            // give it the correct id
-            newDiv.id = `word${numChildren}`;
-            // give it the "word" class
-            newDiv.classList.add(styles.word);
-            // give it the class "extra word"
-            newDiv.classList.add(styles.extraWord);
-            // add each letter as an array of div elements
-            for (var i = 0; i < word.length; i++) {
-                var letterDiv = document.createElement("div");
-                letterDiv.classList.add(styles.letter);
-                letterDiv.id = `letter${numChildren}${i}`;
-                letterDiv.innerText = word[i];
-                newDiv.appendChild(letterDiv);
-            }
-            textArea.appendChild(newDiv);
-            numExtraWords++;
-        };
-
         const createTextArray = () => {
             // remove any extra words
             var extraWords = document.getElementsByClassName(styles.extraWord);
@@ -440,6 +441,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     !typedLetters[i].classList.contains(styles.incorrect) &&
                     !typedLetters[i].classList.contains(styles.extra)
                 ) {
+                    console.log(i + " here");
                     break;
                 }
                 // if it is an extra letter just delete it
@@ -450,6 +452,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                 }
                 typedLetters[i].classList.remove(styles.correct);
                 typedLetters[i].classList.remove(styles.incorrect);
+                typedLetters[i].classList.add(styles.default);
             }
 
             // for every word in the array creat an input element
@@ -467,7 +470,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                                     <div
                                         key={letterIndex}
                                         id={`letter${wordIndex}${letterIndex}`}
-                                        className={styles.letter}
+                                        className={`${styles.letter} ${styles.default}`}
                                     >
                                         {letter}
                                     </div>
@@ -485,7 +488,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                                     <div
                                         key={letterIndex}
                                         id={`letter${wordIndex}${letterIndex}`}
-                                        className={`${styles.letter}`}
+                                        className={`${styles.letter} ${styles.default}`}
                                     >
                                         {letter}
                                     </div>
@@ -532,7 +535,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
 
                         <input
                             type="text"
-                            title="invisibleInput"
+                            title="text input"
                             value={""}
                             onChange={() => {}}
                             onKeyDown={handleInvisibleInput}

@@ -1,9 +1,7 @@
 :root {
     --max-width: 1200px;
     --doc-height: 100%;
-    --nav-height: 60px;
-    --passage-text-align: center;
-    --passage-font-size: 1.5rem;
+    --nav-height: 80px;
     --row-height: 1.5rem;
     --border-radius: 15px;
     --background-color-rgb: 240, 240, 240;
@@ -45,29 +43,22 @@
         -0.3rem -0.3rem 0.6rem 0.1rem #fff;
     --button-box-shadow-hover: inset 0.3rem 0.3rem 0.6rem 0.1rem #d1d9e6,
         inset -0.3rem -0.3rem 0.6rem 0.1rem #fff;
+}
 
+/* Customizable settings */
+:root {
+    --passage-text-align: center;
+    --passage-font-size: 1.5rem;
     --correct-letter-color: rgb(var(--accent-color-light-2-rgb));
     --incorrect-letter-color: rgb(219, 109, 109);
-    --paper-texture-url: url("/images/paper-3.jpg");
-    --cursor-color: green;
+    --cursor-color: rgb(235, 235, 235);
     --cursor-width: 4px;
     --cursor-blink-speed: 1s;
     --letter-spacing: 1px;
-}
-
-:root.font-small {
-    --passage-font-size: 1rem;
-    --row-height: 1rem;
-}
-
-:root.font-medium {
-    --passage-font-size: 1.5rem;
-    --row-height: 1.5rem;
-}
-
-:root.font-large {
-    --passage-font-size: 2rem;
-    --row-height: 2rem;
+    --rain-color: white;
+    --text-outline-color: grey;
+    --passage-text-color: rgb(235, 235, 235);
+    --accent-color-primary: lightblue;
 }
 
 :root.dark-theme {
@@ -86,6 +77,13 @@
     --button-box-shadow-hover: inset 0.3rem 0.3rem 0.6rem 0.1rem rgb(46, 46, 46),
         inset -0.3rem -0.3rem 0.6rem 0.1rem rgb(0, 0, 0);
     --paper-texture-url: none;
+    --cursor-color: rgb(235, 235, 235);
+    --cursor-width: 4px;
+    --cursor-blink-speed: 1s;
+    --letter-spacing: 1px;
+    --rain-color: rgb(var(--text-color-rgb));
+    --text-outline-color: grey;
+    --passage-text-color: rgb(235, 235, 235);
 }
 
 * {
@@ -105,6 +103,10 @@ body {
 body {
     color: rgb(var(--text-color-rgb));
     background-color: rgb(var(--background-color-rgb));
+    background-image: url("/images/background-sofa-zoomedout.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 a {
