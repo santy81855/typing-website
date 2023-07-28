@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
 import { english } from "@/lib/words";
 import styles from "./page.module.css";
-import TypingSection from "@/components/TypingSection";
+import TypingSection, { TypingSectionRef } from "@/components/TypingSection";
 import TypingOptions from "@/components/TypingOptions";
 import TestInformation from "@/components/TestInformation";
 import { useSession } from "next-auth/react";
@@ -25,6 +25,8 @@ export default function Home() {
 
     // create a reference for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
+    // create a reference for the typing component
+    const typingSectionRef = useRef<TypingSectionRef>(null);
 
     useEffect(() => {
         // create a random assortment of 100 words from the 'english' array that will be loaded by default
@@ -49,6 +51,7 @@ export default function Home() {
         setNumChars(numChars);
         // set focus to the main typing area
         focusTypingArea();
+        stopTimer();
     }, [testType, wordCount, time]);
 
     useEffect(() => {
@@ -65,8 +68,11 @@ export default function Home() {
     }, [isComplete]);
 
     const startTimer = () => {
+        stopTimer();
         timer = setTimeout(() => {
-            setIsComplete(true);
+            if (typingSectionRef.current) {
+                typingSectionRef.current.testFinished();
+            }
         }, time * 1000);
     };
 
@@ -110,6 +116,7 @@ export default function Home() {
             ) : (
                 <div className={styles.typingContainer}>
                     <TypingSection
+                        ref={typingSectionRef}
                         areaRef={typingAreaRef}
                         setIsComplete={setIsComplete}
                         passage={passage}
@@ -119,8 +126,8 @@ export default function Home() {
                         setEndTime={setEndTime}
                         testType={testType}
                         getRandomWordLower={getRandomWordLower}
+                        time={time}
                         startTimer={startTimer}
-                        stopTimer={stopTimer}
                     />
                 </div>
             )}
