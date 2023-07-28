@@ -25,6 +25,7 @@ type props = {
     getRandomWordLower: () => string;
     time: number;
     startTimer: () => void;
+    passageRef: React.RefObject<HTMLDivElement>;
 };
 
 const TypingSection = forwardRef<TypingSectionRef, props>(
@@ -41,6 +42,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             getRandomWordLower,
             time,
             startTimer,
+            passageRef,
         }: props,
         ref
     ) => {
@@ -520,7 +522,11 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     ref={areaRef}
                 >
                     <div id="textContainer" className={styles.textContainer}>
-                        <div id="textArea" className={styles.textArea}>
+                        <div
+                            id="textArea"
+                            ref={passageRef}
+                            className={styles.textArea}
+                        >
                             {textArray}
                         </div>
 

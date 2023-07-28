@@ -52,6 +52,7 @@
     --cursor-color: green;
     --cursor-width: 4px;
     --cursor-blink-speed: 1s;
+    --letter-spacing: 1px;
 }
 
 :root.font-small {

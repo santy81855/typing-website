@@ -8,10 +8,6 @@
     position: relative;
     padding-inline: var(--padding-inline-xlarge);
     padding-block: var(--padding-block-large);
-    background-color: rgb(var(--background-color-rgb));
-    -webkit-box-shadow: var(--inset-box-shadow);
-    box-shadow: var(--inset-box-shadow);
-    border-radius: 1.2rem;
 }
 
 .mainOptions {
@@ -19,7 +15,6 @@
     justify-content: center;
     gap: var(--gap-medium);
     width: 100%;
-    
 }
 
 .mainOptions button {
@@ -48,7 +43,6 @@
     color: rgb(var(--text-color-rgb));
     cursor: pointer;
     font-size: var(--font-size-medium);
-
     outline: none;
     background-color: rgb(var(--background-color-rgb));
     border-radius: 50%;

@@ -25,32 +25,42 @@ export default function Home() {
 
     // create a reference for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
+    // reference to the passage
+    const passageRef = useRef<HTMLDivElement>(null);
     // create a reference for the typing component
     const typingSectionRef = useRef<TypingSectionRef>(null);
 
     useEffect(() => {
+        // set focus to the main typing area and fade it in
+        if (passageRef.current !== null) {
+            passageRef.current.style.opacity = "0";
+        }
+        setTimeout(() => {
+            const randomPassage = [];
+            // if the user is taking a word count test, then create a random assortment of words from the 'english' array
+            if (testType === "wordCount") {
+                for (let i = 0; i < wordCount; i++) {
+                    randomPassage.push(getRandomWordLower());
+                }
+            }
+            // if the user is taking a time test, then create enough words to ensure they don't run out of words to type
+            else if (testType === "time") {
+                // since the longest test is 300 seconds (5 minutes), we'll create 2000 words
+                for (let i = 0; i < 100; i++) {
+                    randomPassage.push(getRandomWordLower());
+                }
+            }
+            setPassage(randomPassage);
+            // get the length of the characters in the passage
+            const numChars = randomPassage.join("").length;
+            if (passageRef.current !== null) {
+                passageRef.current.style.opacity = "1";
+            }
+            focusTypingArea();
+        }, 300);
         // create a random assortment of 100 words from the 'english' array that will be loaded by default
         setNumErrors(0);
-        const randomPassage = [];
-        // if the user is taking a word count test, then create a random assortment of words from the 'english' array
-        if (testType === "wordCount") {
-            for (let i = 0; i < wordCount; i++) {
-                randomPassage.push(getRandomWordLower());
-            }
-        }
-        // if the user is taking a time test, then create enough words to ensure they don't run out of words to type
-        else if (testType === "time") {
-            // since the longest test is 300 seconds (5 minutes), we'll create 2000 words
-            for (let i = 0; i < 100; i++) {
-                randomPassage.push(getRandomWordLower());
-            }
-        }
-        setPassage(randomPassage);
-        // get the length of the characters in the passage
-        const numChars = randomPassage.join("").length;
         setNumChars(numChars);
-        // set focus to the main typing area
-        focusTypingArea();
         stopTimer();
     }, [testType, wordCount, time]);
 
@@ -118,6 +128,7 @@ export default function Home() {
                     <TypingSection
                         ref={typingSectionRef}
                         areaRef={typingAreaRef}
+                        passageRef={passageRef}
                         setIsComplete={setIsComplete}
                         passage={passage}
                         setNumErrors={setNumErrors}
