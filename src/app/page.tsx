@@ -7,7 +7,6 @@ import TypingSection, { TypingSectionRef } from "@/components/TypingSection";
 import TypingOptions from "@/components/TypingOptions";
 import RefreshTestButton from "@/components/RefreshTestButton";
 import TestInformation from "@/components/TestInformation";
-import Nav from "@/components/Nav";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
@@ -20,7 +19,9 @@ export default function Home() {
     const [time, setTime] = useState(60); // number of seconds to type for
     const [timeTaken, setTimeTaken] = useState(0); // number of seconds taken to type
     const [wpm, setWpm] = useState(0); // words per minute
-    const [wordsTypedCorrectly, setWordsTypedCorrectly] = useState([""]); // array of words typed correctly
+    const [wordsTypedCorrectly, setWordsTypedCorrectly] = useState<string[]>(
+        []
+    ); // array of words typed correctly
     const [wpmRaw, setWpmRaw] = useState(0); // words per minute without accountinf for wrong words
     const [cpm, setCpm] = useState(0); // characters per minute
     const [totalCharsTyped, setTotalCharsTyped] = useState(0); // total number of characters typed
@@ -33,6 +34,7 @@ export default function Home() {
     const [endTime, setEndTime] = useState(0); // time when the user finishes typing
     const [wordFile, setWordFile] = useState(english100); // the file of words to use for the test
     const [restartTestState, setRestartTestState] = useState(false); // whether or not to restart the test
+    const [curTime, setCurTime] = useState(0); // current time
     var timer: string | number | NodeJS.Timeout | undefined;
 
     // create a reference for the main typing area
@@ -71,10 +73,18 @@ export default function Home() {
         }, 300);
         // create a random assortment of 100 words from the 'english' array that will be loaded by default
         setNumErrors(0);
+        setNumCorrectWords(0);
+        setNumIncorrectWords(0);
+        setTotalCharsTyped(0);
+        setWordsTypedCorrectly([]);
         stopTimer();
     }, [testType, wordCount, time, restartTestState]);
 
     useEffect(() => {
+        console.log(`startTime = ${startTime} and endTime = ${endTime} totalTime = ${
+            endTime - startTime
+        } numCorrectWords = ${numCorrectWords} numIncorrectWords = ${numIncorrectWords} numErrors = ${numErrors} totalCharsTyped = ${totalCharsTyped}
+        `);
         var totalTime = 0;
         if (testType === "time") {
             setTimeTaken(endTime - startTime);
@@ -103,7 +113,7 @@ export default function Home() {
         wordsTypedCorrectly.forEach((word) => {
             sumOfChars += word.length;
         });
-        sumOfChars /= 5;
+        sumOfChars = sumOfChars /= 4; // < numCorrectWords ? numCorrectWords : sumOfChars / 4;
         setWpm(Math.round((sumOfChars * 60) / totalTime) || 0);
         setWpmRaw(
             Math.round(((sumOfChars + numIncorrectWords) * 60) / totalTime) || 0
@@ -229,6 +239,7 @@ export default function Home() {
                             stopTimer={stopTimer}
                         />
                     </div>
+                    {timer && curTime}
                     <div className={styles.typingContainer}>
                         <TypingSection
                             ref={typingSectionRef}
@@ -236,17 +247,23 @@ export default function Home() {
                             passageRef={passageRef}
                             setIsComplete={setIsComplete}
                             passage={passage}
+                            setPassage={setPassage}
                             setNumErrors={setNumErrors}
+                            numErrors={numErrors}
                             setStartTime={setStartTime}
                             setEndTime={setEndTime}
                             testType={testType}
-                            getRandomWordLower={getRandomWordLower}
+                            getRandomWord={getRandomWord}
                             time={time}
                             startTimer={startTimer}
                             setTotalCharsTyped={setTotalCharsTyped}
+                            totalCharsTyped={totalCharsTyped}
                             setNumIncorrectWords={setNumIncorrectWords}
+                            numIncorrectWords={numIncorrectWords}
                             setNumCorrectWords={setNumCorrectWords}
+                            numCorrectWords={numCorrectWords}
                             setWordsTypedCorrectly={setWordsTypedCorrectly}
+                            wordsTypedCorrectly={wordsTypedCorrectly}
                         />
                     </div>
                 </>
