@@ -1,3 +1,4 @@
+"use client";
 import styles from "@/styles/Nav.module.css";
 import { useSession } from "next-auth/react";
 import Link from "next/link";

@@ -255,7 +255,6 @@ export default function Home() {
                 <RefreshTestButton restartTest={restartTest} />
             </div>
             <Rain />
-            <Nav />
         </main>
     );
 }
