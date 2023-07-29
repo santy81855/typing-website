@@ -1,5 +1,7 @@
-import React from "react";
+"use client";
+import React, { useState, useEffect } from "react";
 import styles from "@/styles/TestInformation.module.css";
+import axios from "axios";
 
 import {
     Chart as ChartJS,
@@ -48,6 +50,12 @@ const TestInformation = ({
     timeTaken,
     totalCharsTyped,
 }: props) => {
+    const [averageWpm, setAverageWpm] = useState(0);
+
+    useEffect(() => {
+        getUserResults();
+    }, []);
+
     const options = {
         responsive: true,
         plugins: {
@@ -64,6 +72,11 @@ const TestInformation = ({
         },
         scales: {
             y: {
+                title: {
+                    display: true,
+                    text: "wpm",
+                    color: "white",
+                },
                 type: "linear" as const,
                 display: true,
                 position: "left" as const,
@@ -82,7 +95,7 @@ const TestInformation = ({
         },
     };
 
-    const labels = ["wpm"];
+    const labels = [""];
 
     const data = {
         labels,
@@ -93,11 +106,29 @@ const TestInformation = ({
                 backgroundColor: "rgba(255, 99, 132, 0.5)",
             },
             {
-                label: "Average",
-                data: labels.map(() => 25),
+                label: "Lifetime",
+                data: [averageWpm],
                 backgroundColor: "rgba(53, 162, 235, 0.5)",
             },
         ],
+    };
+
+    const getAverageWpm = (resultsArr: string | any[]) => {
+        let totalWpm = 0;
+        for (let i = 0; i < resultsArr.length; i++) {
+            totalWpm += resultsArr[i].wpm;
+        }
+        setAverageWpm(totalWpm / resultsArr.length);
+    };
+
+    const getUserResults = async () => {
+        // post request with axios
+        axios
+            .get("/api/get-all-user-results")
+            .then((res) => {
+                getAverageWpm(res.data);
+            })
+            .catch((res) => alert(res));
     };
 
     return (

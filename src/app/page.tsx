@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef, MutableRefObject } from "react";
-import { english } from "@/lib/words";
+import { english100, english500, english1000 } from "@/lib/words";
 import styles from "./page.module.css";
 import Rain from "@/components/Rain";
 import TypingSection, { TypingSectionRef } from "@/components/TypingSection";
@@ -31,7 +31,7 @@ export default function Home() {
     const [characterAccuracy, setCharacterAccuracy] = useState(""); // accuracy of getting characters correct
     const [startTime, setStartTime] = useState(0); // time when the user starts typing
     const [endTime, setEndTime] = useState(0); // time when the user finishes typing
-    const [wordFile, setWordFile] = useState(english); // the file of words to use for the test
+    const [wordFile, setWordFile] = useState(english100); // the file of words to use for the test
     const [restartTestState, setRestartTestState] = useState(false); // whether or not to restart the test
     var timer: string | number | NodeJS.Timeout | undefined;
 
@@ -53,14 +53,14 @@ export default function Home() {
             // if the user is taking a word count test, then create a random assortment of words from the 'english' array
             if (testType === "wordCount") {
                 for (let i = 0; i < wordCount; i++) {
-                    randomPassage.push(getRandomWordLower());
+                    randomPassage.push(getRandomWord());
                 }
             }
             // if the user is taking a time test, then create enough words to ensure they don't run out of words to type
             else if (testType === "time") {
                 // since the longest test is 300 seconds (5 minutes), we'll create 2000 words
                 for (let i = 0; i < 100; i++) {
-                    randomPassage.push(getRandomWordLower());
+                    randomPassage.push(getRandomWord());
                 }
             }
             setPassage(randomPassage);
@@ -151,6 +151,11 @@ export default function Home() {
         clearTimeout(timer);
     };
 
+    const getRandomWord = () => {
+        const randomIndex = Math.floor(Math.random() * wordFile.length);
+        return wordFile[randomIndex];
+    };
+
     const getRandomWordLower = () => {
         const randomIndex = Math.floor(Math.random() * wordFile.length);
         return wordFile[randomIndex].toLocaleLowerCase();
@@ -165,6 +170,7 @@ export default function Home() {
     };
 
     const restartTest = () => {
+        setIsComplete(false);
         setRestartTestState(!restartTestState);
     };
 
@@ -242,10 +248,12 @@ export default function Home() {
                             setNumCorrectWords={setNumCorrectWords}
                             setWordsTypedCorrectly={setWordsTypedCorrectly}
                         />
-                        <RefreshTestButton restartTest={restartTest} />
                     </div>
                 </>
             )}
+            <div className={styles.refreshButton}>
+                <RefreshTestButton restartTest={restartTest} />
+            </div>
             <Rain />
             <Nav />
         </main>

@@ -1,4 +1,3 @@
-"use client";
 import styles from "@/styles/Nav.module.css";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
@@ -10,16 +9,17 @@ const Nav = () => {
         <main className={styles.main}>
             <div className={styles.navContainer}>
                 <div className={styles.container}>
-                    <Image
-                        className={styles.logo}
-                        src="/images/logo-circular.webp"
-                        width={30}
-                        height={30}
-                        alt="logo"
-                        unoptimized={true}
-                    />
-
-                    <p className={styles.appName}>Blah Type</p>
+                    <Link href="/" className={styles.leftContainer}>
+                        <Image
+                            className={styles.logo}
+                            src="/images/logo-circular.webp"
+                            width={30}
+                            height={30}
+                            alt="logo"
+                            unoptimized={true}
+                        />
+                        <p className={styles.appName}>Blah Type</p>
+                    </Link>
                     {session !== null && (
                         <i
                             className={`fas fa-fw fa-cog ${styles.settingsIcon}`}

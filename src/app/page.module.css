@@ -33,3 +33,7 @@
     width: 100%;
     margin-block-start: 20vh;
 }
+
+.refreshButton {
+    margin-block-start: 2rem;
+}
