@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Inter, Montserrat, Open_Sans } from "next/font/google";
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import AuthProvider from "./context/AuthProvider";
 import Nav from "@/components/Nav";
 

@@ -5,8 +5,10 @@ import styles from "./page.module.css";
 import Rain from "@/components/Rain";
 import TypingSection, { TypingSectionRef } from "@/components/TypingSection";
 import TypingOptions from "@/components/TypingOptions";
+import RefreshTestButton from "@/components/RefreshTestButton";
 import TestInformation from "@/components/TestInformation";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 
 export default function Home() {
     const { data: session } = useSession();
@@ -15,16 +17,21 @@ export default function Home() {
     const [testType, setTestType] = useState("time"); // "time" or "wordCount"
     const [wordCount, setWordCount] = useState(50); // number of words to type
     const [time, setTime] = useState(60); // number of seconds to type for
+    const [timeTaken, setTimeTaken] = useState(0); // number of seconds taken to type
     const [wpm, setWpm] = useState(0); // words per minute
-    const [numChars, setNumChars] = useState(0); // number of characters to type
+    const [wordsTypedCorrectly, setWordsTypedCorrectly] = useState([""]); // array of words typed correctly
+    const [wpmRaw, setWpmRaw] = useState(0); // words per minute without accountinf for wrong words
+    const [cpm, setCpm] = useState(0); // characters per minute
     const [totalCharsTyped, setTotalCharsTyped] = useState(0); // total number of characters typed
-    const [numWordsTyped, setNumWordsTyped] = useState(0); // total number of words typed
+    const [numIncorrectWords, setNumIncorrectWords] = useState(0); // total number of words typed incorrectly
     const [numCorrectWords, setNumCorrectWords] = useState(0); // total number of correct words typed
     const [numErrors, setNumErrors] = useState(0); // number of errors made while typing
-    const [accuracy, setAccuracy] = useState(""); // accuracy of typing
+    const [wordAccuracy, setWordAccuracy] = useState(""); // accuracy of getting words correct
+    const [characterAccuracy, setCharacterAccuracy] = useState(""); // accuracy of getting characters correct
     const [startTime, setStartTime] = useState(0); // time when the user starts typing
     const [endTime, setEndTime] = useState(0); // time when the user finishes typing
     const [wordFile, setWordFile] = useState(english); // the file of words to use for the test
+    const [restartTestState, setRestartTestState] = useState(false); // whether or not to restart the test
     var timer: string | number | NodeJS.Timeout | undefined;
 
     // create a reference for the main typing area
@@ -56,8 +63,6 @@ export default function Home() {
                 }
             }
             setPassage(randomPassage);
-            // get the length of the characters in the passage
-            const numChars = randomPassage.join("").length;
             if (passageRef.current !== null) {
                 passageRef.current.style.opacity = "1";
             }
@@ -65,19 +70,71 @@ export default function Home() {
         }, 300);
         // create a random assortment of 100 words from the 'english' array that will be loaded by default
         setNumErrors(0);
-        setNumChars(numChars);
         stopTimer();
-    }, [testType, wordCount, time]);
+    }, [testType, wordCount, time, restartTestState]);
 
     useEffect(() => {
-        setAccuracy(
-            `${(((numChars - numErrors) / numChars) * 100).toFixed(2)}%`
+        var totalTime = 0;
+        if (testType === "time") {
+            setTimeTaken(endTime - startTime);
+            totalTime = endTime - startTime;
+        } else if (testType === "wordCount") {
+            setTimeTaken((endTime - startTime) / 1000);
+            totalTime = (endTime - startTime) / 1000;
+        }
+
+        setWordAccuracy(
+            `${(
+                (numCorrectWords / (numCorrectWords + numIncorrectWords)) *
+                100
+            ).toFixed(2)}%`
         );
-        setWpm(
-            Math.round(
-                ((numChars / 5) * 60) / ((endTime - startTime) / 1000)
-            ) || 0
+        setCharacterAccuracy(
+            `${(
+                ((totalCharsTyped - numErrors) / totalCharsTyped) *
+                100
+            ).toFixed(2)}%`
         );
+        // we will calculate wpm by considering the average word to be 5 characters long
+        // so first get the length of all the characters in the wordsTypedCorrectly array
+        // then divide by 5 to get the number of words typed correctly
+        var sumOfChars = 0;
+        wordsTypedCorrectly.forEach((word) => {
+            sumOfChars += word.length;
+        });
+        sumOfChars /= 5;
+        setWpm(Math.round((sumOfChars * 60) / totalTime) || 0);
+        setWpmRaw(
+            Math.round(((sumOfChars + numIncorrectWords) * 60) / totalTime) || 0
+        );
+        setCpm(
+            Math.round(((totalCharsTyped - numErrors) * 60) / totalTime) || 0
+        );
+        if (isComplete === true) {
+            const data = {
+                type: testType,
+                time: totalTime,
+                numCorrectWords: sumOfChars,
+                numIncorrectWords: numIncorrectWords,
+                numCorrectCharacters: totalCharsTyped - numErrors,
+                numIncorrectCharacters: numErrors,
+                wordAccuracy:
+                    (numCorrectWords / (numCorrectWords + numIncorrectWords)) *
+                    100,
+                characterAccuracy:
+                    ((totalCharsTyped - numErrors) / totalCharsTyped) * 100,
+                wpm: Math.round((sumOfChars * 60) / totalTime) || 0,
+                wpmRaw:
+                    Math.round(
+                        ((sumOfChars + numIncorrectWords) * 60) / totalTime
+                    ) || 0,
+                cpm:
+                    Math.round(
+                        ((totalCharsTyped - numErrors) * 60) / totalTime
+                    ) || 0,
+            };
+            addResult(data);
+        }
     }, [isComplete]);
 
     const startTimer = () => {
@@ -106,44 +163,111 @@ export default function Home() {
         }
     };
 
+    const restartTest = () => {
+        setRestartTestState(!restartTestState);
+    };
+
+    /*
+    const addResult = async () => {
+        // post request with axios
+        axios
+            .post("/api/add-result", data)
+            .then(() => {
+                alert("User has been registered");
+                // log in the user
+                signIn("credentials", {
+                    ...data,
+                    redirect: false, // to prevent being redirected to one of the next auth default pages
+                }).then((callback) => {
+                    if (callback?.error) {
+                        alert(callback.error);
+                    } else if (callback?.ok) {
+                        alert("User logged in!");
+                    }
+                });
+            })
+            .catch((res) => alert(res));
+    };
+
+    */
+
+    const addResult = async (data: {
+        type: string;
+        time: number;
+        numCorrectWords: number;
+        numIncorrectWords: number;
+        numCorrectCharacters: number;
+        numIncorrectCharacters: number;
+        wordAccuracy: number;
+        characterAccuracy: number;
+        wpm: number;
+        wpmRaw: number;
+        cpm: number;
+    }) => {
+        // post request with axios
+        axios
+            .post("/api/add-result", data)
+            .then(() => {
+                alert("Result has been added.");
+            })
+            .catch((res) => alert(res));
+    };
+
     return (
         <main className={styles.main}>
-            <TypingOptions
-                testType={testType}
-                setTestType={setTestType}
-                time={time}
-                setWordCount={setWordCount}
-                wordCount={wordCount}
-                setTime={setTime}
-                focusTypingArea={focusTypingArea}
-                setIsComplete={setIsComplete}
-                stopTimer={stopTimer}
-            />
             {isComplete ? (
-                <TestInformation
-                    wpm={wpm}
-                    numChars={numChars}
-                    numErrors={numErrors}
-                    accuracy={accuracy}
-                />
-            ) : (
-                <div className={styles.typingContainer}>
-                    <TypingSection
-                        ref={typingSectionRef}
-                        areaRef={typingAreaRef}
-                        passageRef={passageRef}
-                        setIsComplete={setIsComplete}
-                        passage={passage}
-                        setNumErrors={setNumErrors}
-                        focusTypingArea={focusTypingArea}
-                        setStartTime={setStartTime}
-                        setEndTime={setEndTime}
+                <div className={styles.testResultContainer}>
+                    <TestInformation
+                        wordAccuracy={wordAccuracy}
+                        characterAccuracy={characterAccuracy}
+                        wpm={wpm}
+                        wpmRaw={wpmRaw}
+                        cpm={cpm}
+                        numErrors={numErrors}
                         testType={testType}
-                        getRandomWordLower={getRandomWordLower}
+                        wordCount={wordCount}
                         time={time}
-                        startTimer={startTimer}
+                        timeTaken={timeTaken}
+                        totalCharsTyped={totalCharsTyped}
                     />
                 </div>
+            ) : (
+                <>
+                    <div className={styles.typingOptionsContainer}>
+                        <TypingOptions
+                            testType={testType}
+                            setTestType={setTestType}
+                            time={time}
+                            setWordCount={setWordCount}
+                            wordCount={wordCount}
+                            setTime={setTime}
+                            focusTypingArea={focusTypingArea}
+                            setIsComplete={setIsComplete}
+                            stopTimer={stopTimer}
+                        />
+                    </div>
+                    <div className={styles.typingContainer}>
+                        <TypingSection
+                            ref={typingSectionRef}
+                            areaRef={typingAreaRef}
+                            passageRef={passageRef}
+                            setIsComplete={setIsComplete}
+                            passage={passage}
+                            setNumErrors={setNumErrors}
+                            setStartTime={setStartTime}
+                            setEndTime={setEndTime}
+                            testType={testType}
+                            getRandomWordLower={getRandomWordLower}
+                            time={time}
+                            startTimer={startTimer}
+                            setTotalCharsTyped={setTotalCharsTyped}
+                            setNumIncorrectWords={setNumIncorrectWords}
+                            setNumCorrectWords={setNumCorrectWords}
+                            setWordsTypedCorrectly={setWordsTypedCorrectly}
+                        />
+                        <RefreshTestButton restartTest={restartTest} />
+                    </div>
+                </>
             )}
             {JSON.stringify(session, null, 2)}
             <Rain />

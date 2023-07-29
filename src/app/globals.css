@@ -31,6 +31,7 @@
     --gap-medium: 1rem;
     --gap-large: 2rem;
     --gap-xlarge: 3rem;
+    --gap-x2large: 4rem;
     --card-box-shadow: 0 0 20px 10px rgb(var(--text-color-rgb), 0.2);
     --top-left-box-shadow: 1rem 1rem 1rem 0.1rem #d1d9e6,
         -0.5rem -0.5rem 1rem 0.1rem #fff;
@@ -47,10 +48,12 @@
 
 /* Customizable settings */
 :root {
+    --accent-color: lightblue;
     --passage-text-align: center;
     --passage-font-size: 1.5rem;
-    --correct-letter-color: rgb(var(--accent-color-light-2-rgb));
+    --correct-letter-color: rgb(127, 198, 164);
     --incorrect-letter-color: rgb(219, 109, 109);
+    --extra-letter-color: rgb(208, 130, 130);
     --cursor-color: rgb(235, 235, 235);
     --cursor-width: 4px;
     --cursor-blink-speed: 1s;
@@ -59,6 +62,11 @@
     --text-outline-color: grey;
     --passage-text-color: rgb(235, 235, 235);
     --accent-color-primary: lightblue;
+    --restart-button-size: 25px;
+    --restart-button-outline-color: grey;
+    --restart-button-color: white;
+    --restart-button-outline-color-hover: white;
+    --restart-button-color-hover: lightblue;
 }
 
 :root.dark-theme {

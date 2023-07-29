@@ -92,7 +92,7 @@
 }
 
 .extra {
-    color: rgba(218, 44, 44, 1);
+    color: var(--extra-letter-color);
     text-shadow: -1px 0 var(--text-outline-color),
         0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
         0 -1px var(--text-outline-color);

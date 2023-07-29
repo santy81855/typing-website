@@ -5,12 +5,31 @@
     align-items: center;
     padding-inline: var(--padding-inline-xlarge);
     overflow-y: auto;
-    gap: var(--gap-xlarge);
+    overflow-x: hidden;
+}
+
+.typingOptionsContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-block-start: 20vh;
 }
 
 .typingContainer {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     min-width: 100%;
+    margin-block-start: 4rem;
+    gap: 2rem;
+}
+
+.testResultContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-block-start: 20vh;
 }

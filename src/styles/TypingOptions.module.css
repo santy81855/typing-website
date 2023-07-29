@@ -19,7 +19,7 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
-    font-size: var(--font-size-large);
+    font-size: var(--font-size-xlarge);
     text-shadow: -1px 0 var(--text-outline-color),
         0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
         0 -1px var(--text-outline-color);
@@ -42,7 +42,7 @@
     border: none;
     background-color: transparent;
     cursor: pointer;
-    font-size: var(--font-size-medium);
+    font-size: var(--font-size-large);
     text-shadow: -1px 0 var(--text-outline-color),
         0 1px var(--text-outline-color), 1px 0 var(--text-outline-color),
         0 -1px var(--text-outline-color);

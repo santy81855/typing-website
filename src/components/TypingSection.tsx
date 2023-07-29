@@ -3,7 +3,6 @@ import styles from "@/styles/TypingSection.module.css";
 import React, {
     useState,
     useEffect,
-    useRef,
     forwardRef,
     useImperativeHandle,
 } from "react";
@@ -18,7 +17,6 @@ type props = {
     passage: string[];
     setNumErrors: (numErrors: number) => void;
     areaRef: React.RefObject<HTMLDivElement>;
-    focusTypingArea: () => void;
     setStartTime: (startTime: number) => void;
     setEndTime: (endTime: number) => void;
     testType: string;
@@ -26,6 +24,10 @@ type props = {
     time: number;
     startTimer: () => void;
     passageRef: React.RefObject<HTMLDivElement>;
+    setTotalCharsTyped: (totalCharsTyped: number) => void;
+    setNumIncorrectWords: (numIncorrectWords: number) => void;
+    setNumCorrectWords: (numCorrectWords: number) => void;
+    setWordsTypedCorrectly: (wordsTypedCorrectly: string[]) => void;
 };
 
 const TypingSection = forwardRef<TypingSectionRef, props>(
@@ -35,7 +37,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             passage,
             setNumErrors,
             areaRef,
-            focusTypingArea,
             setStartTime,
             setEndTime,
             testType,
@@ -43,6 +44,10 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             time,
             startTimer,
             passageRef,
+            setTotalCharsTyped,
+            setNumIncorrectWords,
+            setNumCorrectWords,
+            setWordsTypedCorrectly,
         }: props,
         ref
     ) => {
@@ -61,12 +66,17 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
         TypingSection.displayName = "TypingSection";
 
         const [textArray, setTextArray] = useState<InputArray>([]);
+        var correctWordsList: string[] = [];
         var curLetterIndex = 0;
         var curWordIndex = 0;
         var cursorPositionX = 0;
         var cursorPositionY = 0;
         var numErrors = 0;
+        var numCharsTyped = 0;
+        var numIncorrectWords = 0;
+        var numCorrectWords = 0;
         var newLineCounter = 0;
+        var curIncorrectLetters: number[] = [];
         var typedFirstLetter = false;
         var startTime = 0;
         // variable to track how many extra words we have dynamically added to avoid running out of words
@@ -185,6 +195,10 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
 
         const testFinished = () => {
             setNumErrors(numErrors);
+            setNumIncorrectWords(numIncorrectWords);
+            setNumCorrectWords(numCorrectWords);
+            setTotalCharsTyped(numCharsTyped);
+            setWordsTypedCorrectly(correctWordsList);
             if (testType === "time") {
                 setStartTime(0);
                 setEndTime(time);
@@ -278,6 +292,21 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                 if (key.length === 1) {
                     // if the key is a space move to the next word
                     if (key === " ") {
+                        // if the user has typed extra letters on the word then increase the wrong word counter, otherwise increase the correct word counter
+                        if (
+                            letterStack.length === 0 &&
+                            curIncorrectLetters.length === 0
+                        ) {
+                            // get the current word
+                            var currentWord = curWordElement.innerText;
+                            // remove all new lines from the string
+                            currentWord = currentWord.replace(/\n/g, "");
+                            // add this array of letters as a single string to correctWordsList
+                            correctWordsList.push(currentWord);
+                            numCorrectWords++;
+                        } else {
+                            numIncorrectWords++;
+                        }
                         // if the user is on the last word
                         if (testFinishedCondition()) {
                             testFinished();
@@ -290,10 +319,14 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                         moveCursor("forward", "word");
                         // clear the stack
                         letterStack = [];
+                        // clear the incorrect letters
+                        curIncorrectLetters = [];
                         return;
                     }
                     // otherwise the user is adding extra letters to the word
                     else {
+                        // increase the number of characters typed
+                        numCharsTyped++;
                         // increment the number of incorrect letters
                         numErrors++;
                         // add a div element to the curWordElement as a new child
@@ -331,7 +364,9 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                             var lastChild = curWordElement.lastChild;
                             if (lastChild !== null) {
                                 // remove the child
-                                curWordElement.removeChild(lastChild);
+                                if (curWordElement !== null) {
+                                    curWordElement.removeChild(lastChild);
+                                }
                                 // delete the lastChild element
                                 lastChild = null;
                             }
@@ -359,6 +394,14 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     return;
                 }
                 curLetterIndex--;
+                // if we just deleted a letter that was incorrect
+                if (
+                    curIncorrectLetters[curIncorrectLetters.length - 1] ===
+                    curLetterIndex
+                ) {
+                    // pop it from the incorrect letters
+                    curIncorrectLetters.pop();
+                }
                 moveCursor("backward", "letter");
                 // make the letter before default
                 var prevLetter = document.getElementById(
@@ -371,6 +414,8 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             }
             // if it is a space in the middle of a word move to the next word
             if (key === " ") {
+                // increaese the number of incorrect words
+                numIncorrectWords++;
                 // for each of the remaining children of the curWordElement make them incorrect
                 var start =
                     curWordIndex === 0 ? curLetterIndex + 1 : curLetterIndex;
@@ -397,12 +442,17 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                 moveCursor("forward", "word");
                 // clear the stack
                 letterStack = [];
+                // clear curIncorrectLetters
+                curIncorrectLetters = [];
                 return;
             }
             // if it is a letter
             if (key.length === 1) {
+                // increase the number of characters typed
+                numCharsTyped++;
                 // if it is incorrect
                 if (activeLetter.innerText !== key) {
+                    curIncorrectLetters.push(curLetterIndex);
                     numErrors++;
                     // make the letter incorrect
                     makeIncorrect(activeLetter);
@@ -415,6 +465,18 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     testFinishedCondition() &&
                     curLetterIndex === numLetters - 1
                 ) {
+                    // if it was correct increase correct words
+                    if (activeLetter.innerText === key) {
+                        numCorrectWords++;
+                        // get the current word
+                        var currentWord = curWordElement.innerText;
+                        // remove all new lines from the string
+                        currentWord = currentWord.replace(/\n/g, "");
+                        // add this array of letters as a single string to correctWordsList
+                        correctWordsList.push(currentWord);
+                    } else {
+                        numIncorrectWords++;
+                    }
                     testFinished();
                     return;
                 }
@@ -441,7 +503,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     !typedLetters[i].classList.contains(styles.incorrect) &&
                     !typedLetters[i].classList.contains(styles.extra)
                 ) {
-                    console.log(i + " here");
                     break;
                 }
                 // if it is an extra letter just delete it

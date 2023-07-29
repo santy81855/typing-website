@@ -1,0 +1,20 @@
+.refreshButton {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: var(--restart-button-size);
+    color: var(--restart-button-color);
+    text-shadow: -1px 0 var(--restart-button-outline-color),
+        0 1px var(--restart-button-outline-color),
+        1px 0 var(--restart-button-outline-color),
+        0 -1px var(--restart-button-outline-color);
+    transition: all 0.2s ease-in-out;
+}
+
+.refreshButton:hover {
+    color: var(--restart-button-color-hover);
+    text-shadow: -2px 0 var(--restart-button-outline-color-hover),
+        0 2px var(--restart-button-outline-color-hover),
+        2px 0 var(--restart-button-outline-color-hover),
+        0 -2px var(--restart-button-outline-color-hover);
+}
