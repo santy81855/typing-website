@@ -7,6 +7,7 @@ import TypingSection, { TypingSectionRef } from "@/components/TypingSection";
 import TypingOptions from "@/components/TypingOptions";
 import RefreshTestButton from "@/components/RefreshTestButton";
 import TestInformation from "@/components/TestInformation";
+import Nav from "@/components/Nav";
 import { useSession } from "next-auth/react";
 import axios from "axios";
 
@@ -246,6 +247,7 @@ export default function Home() {
                 </>
             )}
             <Rain />
+            <Nav />
         </main>
     );
 }

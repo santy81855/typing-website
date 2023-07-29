@@ -1,10 +1,12 @@
 .main {
     width: 100%;
-    padding-inline: var(--padding-inline-xlarge);
-    height: var(--nav-height);
+    position: absolute;
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
+
+    padding-inline: 1.5rem;
+    padding-top: 1.5rem;
 }
 
 .navContainer {

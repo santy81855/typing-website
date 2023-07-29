@@ -21,10 +21,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={montserrat.className}>
-                <AuthProvider>
-                    <Nav />
-                    {children}
-                </AuthProvider>
+                <AuthProvider>{children}</AuthProvider>
             </body>
         </html>
     );
