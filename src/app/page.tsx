@@ -167,30 +167,6 @@ export default function Home() {
         setRestartTestState(!restartTestState);
     };
 
-    /*
-    const addResult = async () => {
-        // post request with axios
-        axios
-            .post("/api/add-result", data)
-            .then(() => {
-                alert("User has been registered");
-                // log in the user
-                signIn("credentials", {
-                    ...data,
-                    redirect: false, // to prevent being redirected to one of the next auth default pages
-                }).then((callback) => {
-                    if (callback?.error) {
-                        alert(callback.error);
-                    } else if (callback?.ok) {
-                        alert("User logged in!");
-                    }
-                });
-            })
-            .catch((res) => alert(res));
-    };
-
-    */
-
     const addResult = async (data: {
         type: string;
         time: number;
@@ -269,7 +245,6 @@ export default function Home() {
                     </div>
                 </>
             )}
-            {JSON.stringify(session, null, 2)}
             <Rain />
         </main>
     );

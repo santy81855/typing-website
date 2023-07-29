@@ -27,3 +27,39 @@
     border: 1px solid rgba(150, 150, 150, 0.2);
     border-radius: 1.2rem;
 }
+
+.settingsIcon {
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.userImage {
+    border-radius: 50%;
+}
+
+@media screen and (max-width: 500px) {
+    .username {
+        display: none;
+    }
+    .navContainer {
+        background-color: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(7px);
+        box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(150, 150, 150, 0.2);
+        border-radius: 1.2rem;
+    }
+    .container {
+        background-color: transparent;
+        backdrop-filter: none;
+        box-shadow: none;
+        border: none;
+        border-radius: none;
+        gap: none;
+    }
+}
+
+@media screen and (max-width: 445px) {
+    .appName {
+        display: none;
+    }
+}
