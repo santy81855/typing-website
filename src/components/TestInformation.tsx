@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "@/styles/TestInformation.module.css";
 import axios from "axios";
+import { useSession } from "next-auth/react";
 
 import {
     Chart as ChartJS,
@@ -50,10 +51,13 @@ const TestInformation = ({
     timeTaken,
     totalCharsTyped,
 }: props) => {
+    const { data: session, status } = useSession();
     const [averageWpm, setAverageWpm] = useState(0);
 
     useEffect(() => {
-        getUserResults();
+        if (status === "authenticated") {
+            getUserResults();
+        }
     }, []);
 
     const options = {
@@ -99,18 +103,27 @@ const TestInformation = ({
 
     const data = {
         labels,
-        datasets: [
-            {
-                label: "Current",
-                data: [wpm],
-                backgroundColor: "rgba(255, 99, 132, 0.5)",
-            },
-            {
-                label: "Lifetime",
-                data: [averageWpm],
-                backgroundColor: "rgba(53, 162, 235, 0.5)",
-            },
-        ],
+        datasets:
+            status === "authenticated"
+                ? [
+                      {
+                          label: "Current",
+                          data: [wpm],
+                          backgroundColor: "rgba(255, 99, 132, 0.5)",
+                      },
+                      {
+                          label: "Lifetime",
+                          data: [averageWpm],
+                          backgroundColor: "rgba(53, 162, 235, 0.5)",
+                      },
+                  ]
+                : [
+                      {
+                          label: "Current",
+                          data: [wpm],
+                          backgroundColor: "rgba(255, 99, 132, 0.5)",
+                      },
+                  ],
     };
 
     const getAverageWpm = (resultsArr: string | any[]) => {

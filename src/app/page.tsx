@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import axios from "axios";
 
 export default function Home() {
-    const { data: session } = useSession();
+    const { data: session, status } = useSession();
     const [isComplete, setIsComplete] = useState(false);
     const [passage, setPassage] = useState([""]);
     const [testType, setTestType] = useState("time"); // "time" or "wordCount"
@@ -70,6 +70,7 @@ export default function Home() {
                 passageRef.current.style.opacity = "1";
             }
             focusTypingArea();
+            console.log(session);
         }, 300);
         // create a random assortment of 100 words from the 'english' array that will be loaded by default
         setNumErrors(0);
@@ -144,7 +145,9 @@ export default function Home() {
                         ((totalCharsTyped - numErrors) * 60) / totalTime
                     ) || 0,
             };
-            addResult(data);
+            if (status === "authenticated") {
+                addResult(data);
+            }
         }
     }, [isComplete]);
 

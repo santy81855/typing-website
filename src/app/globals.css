@@ -67,6 +67,7 @@
     --restart-button-color: white;
     --restart-button-outline-color-hover: white;
     --restart-button-color-hover: lightblue;
+    --nav-icon-color: white;
 }
 
 :root.dark-theme {

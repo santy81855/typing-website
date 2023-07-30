@@ -15,20 +15,33 @@ export const options: NextAuthOptions = {
         signOut: "/path/to/signout",
     }
     */
+    // functions to that get called upon eeach callback
+    callbacks: {
+        async signIn({ user, account, profile, email, credentials }) {
+            return true;
+        },
+        async redirect({ url, baseUrl }) {
+            return baseUrl;
+        },
+        async session({ session, user, token }) {
+            return session;
+        },
+        async jwt({ token, user, account, profile, isNewUser }) {
+            return token;
+        },
+    },
     providers: [
-        /*Removed github because user can't login with both and it might confuse the user*/
-        /*
         GitHubProvider({
             clientId: process.env.GITHUB_ID as string,
             clientSecret: process.env.GITHUB_SECRET as string,
         }),
-        */
+
         /*Google only provides a refresh token the FIRST time so it needs to be stored in the database*/
         GoogleProvider({
             clientId: process.env.GOOGLE_ID as string,
             clientSecret: process.env.GOOGLE_SECRET as string,
         }),
-
+        // currently not using credentials provider but it is here for reference
         CredentialsProvider({
             name: "Credentials",
             credentials: {

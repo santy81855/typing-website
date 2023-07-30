@@ -40,10 +40,28 @@
 .settingsIcon {
     font-size: 1.2rem;
     cursor: pointer;
+    color: var(--nav-icon-color);
+}
+
+.appName {
+    font-size: var(--font-size-medium);
+    font-weight: 600;
 }
 
 .userImage {
     border-radius: 50%;
+}
+
+.signOutButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.signOutButton i {
+    font-size: 1.2rem;
+    color: var(--nav-icon-color);
 }
 
 @media screen and (max-width: 500px) {

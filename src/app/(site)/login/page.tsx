@@ -1,15 +1,45 @@
 "use client";
 import styles from "@/styles/Register.module.css";
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useState, useEffect } from "react";
 import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 
 const Login = () => {
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    useEffect(() => {
+        const getUser = async () => {
+            await axios
+                .get("/api/user")
+                .then((res) => {
+                    // if the user does not have a username, redirect to the username page
+                    if (res.data.username === null) {
+                        router.push("/create-username");
+                    } else {
+                        router.push("/");
+                    }
+                })
+                .catch((err) => {
+                    alert("Error Fetching User " + err.message);
+                });
+        };
+        console.log("status: ", status);
+        if (status === "authenticated") {
+            // check if the user has been initialized properly with a username and settings file in the database
+            getUser();
+        }
+    }, [status]);
+
     const [data, setData] = useState({
         email: "",
         password: "",
     });
 
+    // not using credentials, only using google and github
     const loginUser = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         signIn("credentials", {
@@ -34,82 +64,31 @@ const Login = () => {
                     <div className={styles.providerContainer}>
                         <button
                             className={styles.button}
-                            onClick={() => signIn("google")}
+                            onClick={() => {
+                                signIn("google");
+                            }}
                         >
                             <div className={styles.logoContainer}>
-                                <Image
-                                    className={styles.googleLogo}
-                                    src="/images/google-logo.png"
-                                    width={25}
-                                    height={25}
-                                    alt="google"
-                                    unoptimized={true}
-                                />
-                                Login with Google
+                                <i
+                                    className={`fab fa-google ${styles.logo}`}
+                                ></i>
+                                Google
+                            </div>
+                        </button>
+                        <button
+                            className={styles.button}
+                            onClick={() => {
+                                signIn("github");
+                            }}
+                        >
+                            <div className={styles.logoContainer}>
+                                <i
+                                    className={`fab fa-github ${styles.logo}`}
+                                ></i>
+                                Github
                             </div>
                         </button>
                     </div>
-                    <div className={styles.line}>
-                        <hr />
-                        OR
-                        <hr />
-                    </div>
-                    <form className={styles.form} onSubmit={loginUser}>
-                        <div className={styles.inputContainer}>
-                            <Image
-                                className={styles.image}
-                                src="/images/envelope.png"
-                                width={25}
-                                height={25}
-                                alt="envelope"
-                                unoptimized={true}
-                            />
-                            <input
-                                id="email"
-                                name="email"
-                                type="text"
-                                required
-                                value={data.email}
-                                onChange={(e) => {
-                                    setData({
-                                        ...data,
-                                        email: e.target.value,
-                                    });
-                                }}
-                                placeholder="Email:"
-                            />
-                        </div>
-                        <div className={styles.inputContainer}>
-                            <Image
-                                className={styles.image}
-                                src="/images/password.png"
-                                width={20}
-                                height={20}
-                                alt="password"
-                                unoptimized={true}
-                            />
-                            <input
-                                id="password"
-                                name="password"
-                                type="password"
-                                required
-                                value={data.password}
-                                onChange={(e) => {
-                                    setData({
-                                        ...data,
-                                        password: e.target.value,
-                                    });
-                                }}
-                                placeholder="Password:"
-                            />
-                        </div>
-                        <button
-                            className={`${styles.button} ${styles.submit}`}
-                            type="submit"
-                        >
-                            Login
-                        </button>
-                    </form>
                 </div>
             </div>
         </main>
