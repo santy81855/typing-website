@@ -3,6 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     padding-inline: var(--padding-inline-xlarge);
     overflow-y: auto;
     overflow-x: hidden;
@@ -12,8 +13,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    margin-block-start: 20vh;
+
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-block: var(--padding-block-small);
+    padding-inline: var(--padding-inline-xlarge);
 }
 
 .typingContainer {
@@ -21,9 +28,18 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-width: 100%;
-    margin-block-start: 4rem;
+    width: 100%;
+    max-width: var(--max-width);
     gap: 2rem;
+
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(2px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-large);
+    margin-block-start: var(--padding-block-large);
 }
 
 .testResultContainer {
@@ -31,9 +47,8 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-block-start: 20vh;
 }
 
 .refreshButton {
-    margin-block-start: 2rem;
+    margin-block-start: var(--padding-block-large);
 }

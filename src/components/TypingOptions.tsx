@@ -61,6 +61,7 @@ const TypingOptions = ({
                         );
                     })}
                 </div>
+                <p className={styles.divider}>|</p>
                 <div className={styles.subOptions}>
                     {options.map((option, index) => {
                         return (

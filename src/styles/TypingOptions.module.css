@@ -1,6 +1,6 @@
 .main {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-self: center;
     gap: var(--gap-medium);
     justify-content: center;
@@ -54,4 +54,26 @@
 
 .inactiveSubButton {
     color: var(--passage-text-color);
+}
+
+.divider {
+    color: lightgrey;
+}
+
+@media (max-width: 768px) {
+    .mainOptions button {
+        font-size: var(--font-size-large);
+    }
+    .subOptions button {
+        font-size: var(--font-size-medium);
+    }
+}
+
+@media (max-width: 425px) {
+    .divider {
+        display: none;
+    }
+    .main {
+        flex-direction: column;
+    }
 }

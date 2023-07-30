@@ -110,6 +110,19 @@
     z-index: 1;
 }
 
+@media (max-width: 768px) {
+    .textContainer .letter {
+        font-size: calc(var(--passage-font-size) * 0.8);
+    }
+}
+
+@media (max-width: 425px) {
+    .textContainer .letter {
+        font-size: calc(var(--passage-font-size) * 0.6);
+        letter-spacing: 0;
+    }
+}
+
 @keyframes blink {
     0% {
         opacity: 1;
