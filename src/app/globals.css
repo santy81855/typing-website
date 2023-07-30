@@ -1,7 +1,7 @@
 :root {
     --max-width: 1200px;
     --doc-height: 100%;
-    --nav-height: 80px;
+    --nav-height: 100px;
     --row-height: 1.5rem;
     --border-radius: 15px;
     --background-color-rgb: 240, 240, 240;

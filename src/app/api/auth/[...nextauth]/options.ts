@@ -9,12 +9,15 @@ import bcrypt from "bcrypt";
 export const options: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     /*custom sign in / create account / or signout pages*/
-    /*
+
     pages: {
-        signIn: "/path/to/signin",
-        signOut: "/path/to/signout",
-    }
-    */
+        //signIn: '/auth/signin',
+        //signOut: '/auth/signout',
+        //error: '/auth/error', // Error code passed in query string as ?error=
+        //verifyRequest: '/auth/verify-request', // (used for check email message)
+        newUser: "/user-setup", // New users will be directed here on first sign in (leave the property out if not of interest)
+    },
+
     // functions to that get called upon eeach callback
     callbacks: {
         async signIn({ user, account, profile, email, credentials }) {

@@ -18,7 +18,7 @@ const Nav = () => {
                 .then((res) => {
                     // if the user does not have a username, just display their name
                     if (res.data.username === null) {
-                        setUserName("hi");
+                        setUserName("");
                     } else {
                         setUserName(res.data.username);
                     }

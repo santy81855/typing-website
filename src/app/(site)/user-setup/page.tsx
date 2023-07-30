@@ -1,14 +1,25 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import styles from "@/styles/CreateUsername.module.css";
+import styles from "@/styles/UserSetup.module.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import {
+    RegExpMatcher,
+    TextCensor,
+    englishDataset,
+    englishRecommendedTransformers,
+} from "obscenity";
 
-const CreateUsername = () => {
+const UserSetup = () => {
+    const matcher = new RegExpMatcher({
+        ...englishDataset.build(),
+        ...englishRecommendedTransformers,
+    });
     const router = useRouter();
     const [usernames, setUsernames] = useState<string[]>([]);
     const [userText, setUserText] = useState("");
     const [showLabel, setShowLabel] = useState(false);
+    const [warningMessage, setWarningMessage] = useState("");
     useEffect(() => {
         const getUsernames = async () => {
             await axios
@@ -30,33 +41,38 @@ const CreateUsername = () => {
     // everytime that the user updates the text, check if the username is taken
     useEffect(() => {
         if (usernames.includes(userText)) {
-            setShowLabel(true);
+            setWarningMessage("Username is taken.");
+        } else if (matcher.hasMatch(userText)) {
+            setWarningMessage("Username contains profanity.");
         } else {
-            setShowLabel(false);
+            setWarningMessage("");
         }
     }, [userText]);
 
     const submitUsername = async () => {
-        if (showLabel) {
-            alert("Username is taken");
-        } else {
-            const data = { username: userText };
-            // add the username to the user in the database
-            await axios
-                .post("/api/update-username", data)
-                .then((res) => {
-                    router.push("/");
-                })
-                .catch((err) => {
-                    alert("Error Creating Usernames " + err.message);
-                });
+        if (matcher.hasMatch(userText)) {
+            return;
         }
+        if (usernames.includes(userText)) {
+            alert("Username is taken");
+            return;
+        }
+        const data = { username: userText };
+        // add the username to the user in the database
+        await axios
+            .post("/api/update-username", data)
+            .then((res) => {
+                router.push("/");
+            })
+            .catch((err) => {
+                alert("Error Creating Usernames " + err.message);
+            });
     };
 
     return (
         <main className={styles.main}>
             <div className={styles.container}>
-                <h2 className={styles.title}>Create your username</h2>
+                <h2 className={styles.title}>Setup your account</h2>
                 <div className={styles.inputContainer}>
                     <p className={styles.description}>
                         Your username will be public and used to show your
@@ -68,9 +84,7 @@ const CreateUsername = () => {
                         value={userText}
                         onChange={(e) => setUserText(e.target.value)}
                     />
-                    {showLabel && (
-                        <p className={styles.label}>username is taken</p>
-                    )}
+                    <p className={styles.label}>{warningMessage}</p>
                 </div>
                 <button
                     onClick={() => {
@@ -84,4 +98,4 @@ const CreateUsername = () => {
     );
 };
 
-export default CreateUsername;
+export default UserSetup;

@@ -18,7 +18,7 @@ const Login = () => {
                 .then((res) => {
                     // if the user does not have a username, redirect to the username page
                     if (res.data.username === null) {
-                        router.push("/create-username");
+                        router.push("/user-setup");
                     } else {
                         router.push("/");
                     }
@@ -30,7 +30,9 @@ const Login = () => {
         console.log("status: ", status);
         if (status === "authenticated") {
             // check if the user has been initialized properly with a username and settings file in the database
-            getUser();
+            // if the user is authenticated send them to the home page
+            router.push("/");
+            //getUser();
         }
     }, [status]);
 

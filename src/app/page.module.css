@@ -1,5 +1,5 @@
 .main {
-    height: 100%;
+    height: calc(100% - var(--nav-height));
     display: flex;
     flex-direction: column;
     align-items: center;
