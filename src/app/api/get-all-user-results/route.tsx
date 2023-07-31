@@ -4,23 +4,9 @@ import { options } from "../auth/[...nextauth]/options";
 import { prisma } from "@/lib/prisma";
 
 export async function GET(request: Request) {
-    const session = await getServerSession(options);
+    const session = (await getServerSession(options)) as any;
     // get the email of the user
-    const email = session?.user?.email;
-
-    if (!email) {
-        throw new Error("User email not found or user not logged in.");
-    }
-
-    // query the database for the id of the user with this email
-    const id = await prisma.user.findUnique({
-        where: {
-            email,
-        },
-        select: {
-            id: true,
-        },
-    });
+    const id = session?.id;
 
     if (!id) {
         throw new Error("Not logged in.");
@@ -29,7 +15,7 @@ export async function GET(request: Request) {
     // get all the results of the user
     const result = await prisma.result.findMany({
         where: {
-            userId: id.id,
+            userId: id,
         },
     });
 

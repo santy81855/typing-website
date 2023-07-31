@@ -72,7 +72,11 @@ const UserSetup = () => {
     return (
         <main className={styles.main}>
             <div className={styles.container}>
-                <h2 className={styles.title}>Setup your account</h2>
+                <div className={styles.titleContainer}>
+                    <h2 className={styles.title}>Setup your account</h2>
+                    <div className={styles.horizontalLine}></div>
+                </div>
+
                 <div className={styles.inputContainer}>
                     <p className={styles.description}>
                         Your username will be public and used to show your

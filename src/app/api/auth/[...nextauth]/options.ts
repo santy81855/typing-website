@@ -5,13 +5,14 @@ import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import { User } from "@prisma/client";
 
 export const options: NextAuthOptions = {
     adapter: PrismaAdapter(prisma),
     /*custom sign in / create account / or signout pages*/
 
     pages: {
-        //signIn: '/auth/signin',
+        signIn: "/login",
         //signOut: '/auth/signout',
         //error: '/auth/error', // Error code passed in query string as ?error=
         //verifyRequest: '/auth/verify-request', // (used for check email message)
@@ -27,9 +28,19 @@ export const options: NextAuthOptions = {
             return baseUrl;
         },
         async session({ session, user, token }) {
+            // add custom keys to the session
+            if (token) {
+                return { ...session, id: token.id };
+            }
             return session;
         },
-        async jwt({ token, user, account, profile, isNewUser }) {
+        async jwt({ token, user, account, profile }) {
+            // add custom keys to the token that will be passed to the session
+            if (user) {
+                const u = user as unknown as User;
+                console.log("USEREUSERUSER: " + JSON.stringify(u));
+                return { ...token, id: u.id };
+            }
             return token;
         },
     },
@@ -109,7 +120,9 @@ export const options: NextAuthOptions = {
                 if (!passwordMatch) {
                     throw new Error("Incorrect password");
                 }
-
+                console.log(
+                    "CRLGCRGLRGLRCGRLGCRLGCRLGCRLGRLCGCGCGRLCGCRLGCRGCLRGCLRGGGGLGLCRCRLGCRLGGCRLGCRLRLGCGCRLRGCLRLGCRLGCRGGCRLRGCLLRRGCGRCLGRCRCRRGCRCGRLCCGGRCLRGCRGCLRG"
+                );
                 return user;
             },
         }),

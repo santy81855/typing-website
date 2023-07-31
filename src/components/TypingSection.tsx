@@ -443,7 +443,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             }
             // if it is a letter
             if (key.length === 1) {
-                console.log("heraoeueaoe");
                 // increase the number of characters typed
                 setTotalCharsTyped(totalCharsTyped + 1);
                 // add a letter to the current word on typedArray

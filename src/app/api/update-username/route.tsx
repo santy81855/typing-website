@@ -6,18 +6,18 @@ import { prisma } from "@/lib/prisma";
 export async function POST(request: Request) {
     const body = await request.json();
     const { username } = body;
-    const session = await getServerSession(options);
+    const session = (await getServerSession(options)) as any;
     // get the email of the user
-    const email = session?.user?.email;
+    const id = session?.id;
 
-    if (!email) {
-        throw new Error("User email not found or user not logged in.");
+    if (!id) {
+        throw new Error("User id not found or user not logged in.");
     }
 
     // update the user with the user name
     const result = await prisma.user.update({
         where: {
-            email: email,
+            id: id,
         },
         data: {
             username,

@@ -1,5 +1,5 @@
 .main {
-    height: 100%;
+    height: calc(100% - var(--nav-height));
     padding-inline: var(--padding-inline-large);
     display: flex;
     justify-content: center;
