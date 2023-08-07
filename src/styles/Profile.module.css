@@ -1,0 +1,29 @@
+.main {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: calc(100% - var(--nav-height));
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-large);
+}
+
+.section {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-large);
+}
+
+.graphContainer {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-large);
+}

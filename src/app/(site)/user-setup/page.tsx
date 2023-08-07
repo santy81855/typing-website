@@ -9,6 +9,7 @@ import {
     englishDataset,
     englishRecommendedTransformers,
 } from "obscenity";
+import settings from "@/lib/settings.json";
 
 const UserSetup = () => {
     const matcher = new RegExpMatcher({
@@ -18,8 +19,9 @@ const UserSetup = () => {
     const router = useRouter();
     const [usernames, setUsernames] = useState<string[]>([]);
     const [userText, setUserText] = useState("");
-    const [showLabel, setShowLabel] = useState(false);
     const [warningMessage, setWarningMessage] = useState("");
+    const [step, setStep] = useState(0);
+
     useEffect(() => {
         const getUsernames = async () => {
             await axios
@@ -36,6 +38,11 @@ const UserSetup = () => {
                 });
         };
         getUsernames();
+
+        // add the settings to the local storage if they are not already there
+        if (localStorage.getItem("settings") === null) {
+            localStorage.setItem("settings", JSON.stringify(settings));
+        }
     }, []);
 
     // everytime that the user updates the text, check if the username is taken
@@ -49,23 +56,16 @@ const UserSetup = () => {
         }
     }, [userText]);
 
-    const submitUsername = async () => {
-        if (matcher.hasMatch(userText)) {
-            return;
-        }
-        if (usernames.includes(userText)) {
-            alert("Username is taken");
-            return;
-        }
-        const data = { username: userText };
+    const updateUser = async () => {
+        const data = { username: userText, settings: settings };
         // add the username to the user in the database
         await axios
-            .post("/api/update-username", data)
+            .post("/api/update-user", data)
             .then((res) => {
-                router.push("/");
+                console.log("user updated");
             })
             .catch((err) => {
-                alert("Error Creating Usernames " + err.message);
+                alert("Error Updating User " + err.message);
             });
     };
 
@@ -77,26 +77,76 @@ const UserSetup = () => {
                     <div className={styles.horizontalLine}></div>
                 </div>
 
-                <div className={styles.inputContainer}>
-                    <p className={styles.description}>
-                        Your username will be public and used to show your
-                        results on the leaderboards.
-                    </p>
-                    <input
-                        type="text"
-                        placeholder="username"
-                        value={userText}
-                        onChange={(e) => setUserText(e.target.value)}
-                    />
-                    <p className={styles.label}>{warningMessage}</p>
+                {step === 0 && (
+                    <div className={styles.inputContainer}>
+                        <p className={styles.stepTitle}>
+                            Step 1 - Choose your username
+                        </p>
+                        <p className={styles.description}>
+                            Your username will be public and used to show your
+                            results on the leaderboards.
+                        </p>
+                        <input
+                            type="text"
+                            placeholder="username"
+                            value={userText}
+                            onChange={(e) => setUserText(e.target.value)}
+                        />
+                        <p className={styles.label}>{warningMessage}</p>
+                    </div>
+                )}
+                {step === 1 && (
+                    <div className={styles.settingsContainer}>
+                        <p className={styles.stepTitle}>
+                            Step 2 - Choose your theme
+                        </p>
+                        <p className={styles.description}>
+                            You can change your theme at any point by clicking
+                            on the settings icon in the top right corner.
+                        </p>
+                        <div className={styles.presetContainer}>
+                            ALL PRESETS
+                            {settings.themes.map(
+                                (preset: any, index: number) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            className={styles.preset}
+                                        >
+                                            <p>{preset.name}</p>
+                                            {JSON.stringify(preset)}
+                                        </div>
+                                    );
+                                }
+                            )}
+                        </div>
+                    </div>
+                )}
+                <div className={styles.buttonContainer}>
+                    {step === 1 && (
+                        <button
+                            onClick={() => {
+                                if (step === 1) {
+                                    setStep(0);
+                                }
+                            }}
+                        >
+                            Back
+                        </button>
+                    )}
+                    <button
+                        onClick={() => {
+                            if (step === 0) {
+                                setStep(1);
+                            }
+                            if (step === 1) {
+                                updateUser();
+                            }
+                        }}
+                    >
+                        Continue
+                    </button>
                 </div>
-                <button
-                    onClick={() => {
-                        submitUsername();
-                    }}
-                >
-                    Continue
-                </button>
             </div>
         </main>
     );

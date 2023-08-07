@@ -9,6 +9,7 @@ import RefreshTestButton from "@/components/RefreshTestButton";
 import TestInformation from "@/components/TestInformation";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import settings from "@/lib/settings.json";
 
 export default function Home() {
     const { data: session, status } = useSession();
@@ -70,7 +71,6 @@ export default function Home() {
                 passageRef.current.style.opacity = "1";
             }
             focusTypingArea();
-            console.log(session);
         }, 300);
         // create a random assortment of 100 words from the 'english' array that will be loaded by default
         setNumErrors(0);
@@ -150,6 +150,36 @@ export default function Home() {
             }
         }
     }, [isComplete]);
+
+    // useEffect that will get the user at the start of a session
+    useEffect(() => {
+        // get the user and their settings
+        const getUser = async () => {
+            await axios
+                .get("/api/user")
+                .then((res) => {
+                    // if the local storage doesn't have the settings stored then store them
+                    if (localStorage.getItem("settings") === null) {
+                        localStorage.setItem(
+                            "settings",
+                            JSON.stringify(res.data.settings)
+                        );
+                    }
+                })
+                .catch((err) => {
+                    alert("Error Fetching User " + err.message);
+                });
+        };
+        // only get the user and settings if the user is logged in
+        if (status === "authenticated") {
+            getUser();
+        } else if (status === "unauthenticated") {
+            // if the user is not logged in, then get the default settings file if there is not already one
+            if (localStorage.getItem("settings") === null) {
+                localStorage.setItem("settings", JSON.stringify(settings));
+            }
+        }
+    }, []);
 
     const startTimer = () => {
         stopTimer();
@@ -267,6 +297,7 @@ export default function Home() {
                             numCorrectWords={numCorrectWords}
                             setWordsTypedCorrectly={setWordsTypedCorrectly}
                             wordsTypedCorrectly={wordsTypedCorrectly}
+                            restartTest={restartTest}
                         />
                     </div>
                 </>

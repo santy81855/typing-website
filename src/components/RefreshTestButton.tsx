@@ -13,6 +13,7 @@ const RefreshTestButton = ({ restartTest }: props) => {
             onClick={() => {
                 restartTest();
             }}
+            tabIndex={0}
         ></i>
     );
 };

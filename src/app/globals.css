@@ -48,7 +48,9 @@
 
 /* Customizable settings */
 :root {
-    --accent-color: lightblue;
+    --background-color: rgb(255, 255, 255);
+    --text-color: rgb(0, 0, 0);
+    --accent-color: rgb(173, 216, 230);
     --passage-text-align: center;
     --passage-font-size: 1.5rem;
     --correct-letter-color: rgb(127, 198, 164);
@@ -59,7 +61,7 @@
     --cursor-blink-speed: 1s;
     --letter-spacing: 1px;
     --rain-color: white;
-    --text-outline-color: grey;
+    --text-outline-color: rgb(128, 128, 128);
     --passage-text-color: rgb(235, 235, 235);
     --accent-color-primary: lightblue;
     --restart-button-size: 25px;
@@ -68,6 +70,7 @@
     --restart-button-outline-color-hover: white;
     --restart-button-color-hover: lightblue;
     --nav-icon-color: white;
+    --background-image-url: url("/images/background-magical.webp");
 }
 
 :root.dark-theme {
@@ -110,12 +113,12 @@ body {
 }
 
 body {
-    color: rgb(var(--text-color-rgb));
-    background-color: rgb(var(--background-color-rgb));
-    background-image: url("/images/background-sofa-zoomedout.webp");
+    background-image: var(--background-image-url);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    background-color: var(--background-color);
+    color: var(--text-color);
 }
 
 a {

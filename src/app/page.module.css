@@ -51,4 +51,5 @@
 
 .refreshButton {
     margin-block-start: var(--padding-block-large);
+    outline: none;
 }

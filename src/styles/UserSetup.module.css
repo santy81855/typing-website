@@ -9,7 +9,7 @@
 }
 
 .container {
-    max-width: 400px;
+    max-width: 1000px;
     background-color: rgba(255, 255, 255, 0.4);
     backdrop-filter: blur(7px);
     box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.4);
@@ -20,20 +20,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--gap-medium);
+}
+
+.stepTitle {
+    font-size: var(--font-size-medium);
+    font-weight: bold;
+    color: rgb(var(--text-color-rgb));
+    padding-block: var(--padding-block-medium);
 }
 
 .titleContainer {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: var(--gap-medium);
     justify-content: center;
     align-items: center;
 }
 
 .title {
     text-align: center;
+    padding-block-end: var(--padding-block-medium);
 }
 
 .horizontalLine {
@@ -44,7 +50,7 @@
 
 .container .description {
     font-size: var(--font-size-small);
-    padding-block-end: 0.5rem;
+    padding-block-end: var(--padding-block-medium);
 }
 
 .inputContainer {
@@ -55,24 +61,59 @@
 .label {
     font-size: var(--font-size-small);
     color: rgb(243, 96, 96);
+    text-align: center;
 }
 
 .container input {
     width: 100%;
     outline: none;
     border: none;
-    padding-inline: var(--padding-inline-small);
+    padding-inline: var(--padding-inline-medium);
     padding-block: var(--padding-block-small);
+    border-radius: 1.2rem;
+}
+
+.buttonContainer {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-block-start: var(--padding-block-large);
+    gap: var(--gap-medium);
 }
 
 .container button {
-    width: 100%;
     outline: none;
     border: none;
     padding-inline: var(--padding-inline-small);
     padding-block: var(--padding-block-medium);
     border-radius: 1.2rem;
     background-color: lightskyblue;
+    width: 100%;
+}
+
+.settingsContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.presetContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+    padding-block: var(--padding-block-medium);
+    padding-inline: var(--padding-inline-medium);
+}
+
+.preset {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+    border: 1px solid lightblue;
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-medium);
 }
 
 @media (pointer: fine) {

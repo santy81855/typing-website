@@ -63,6 +63,68 @@
     color: var(--nav-icon-color);
 }
 
+.profileLink {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--gap-small);
+    cursor: pointer;
+}
+
+.settingsContainer {
+    position: absolute;
+    top: calc(var(--nav-height) + var(--padding-inline-large));
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 500px;
+    height: fit-content;
+    z-index: 10;
+    padding-inline: var(--padding-inline-xlarge);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.settingsInput {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-medium);
+    outline: none;
+}
+
+.settingsInput::placeholder {
+    color: white;
+}
+
+.resultsContainer {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--gap-medium);
+    width: 100%;
+    margin-block-start: -3rem;
+    padding-block-start: 4rem;
+    padding-block-end: 1rem;
+    padding-inline: var(--padding-inline-large);
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    z-index: -1;
+}
+
+.result {
+    cursor: pointer;
+}
+
 @media screen and (max-width: 500px) {
     .username {
         display: none;
@@ -84,7 +146,7 @@
     }
 }
 
-@media screen and (max-width: 445px) {
+@media screen and (max-width: 470px) {
     .appName {
         display: none;
     }

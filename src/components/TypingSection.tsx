@@ -34,6 +34,7 @@ type props = {
     setWordsTypedCorrectly: (wordsTypedCorrectly: string[]) => void;
     wordsTypedCorrectly: string[];
     numErrors: number;
+    restartTest: () => void;
 };
 type ExtraLetterMap = {
     [key: number]: number[];
@@ -69,6 +70,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             setWordsTypedCorrectly,
             wordsTypedCorrectly,
             numErrors,
+            restartTest,
         }: props,
         ref
     ) => {
@@ -80,9 +82,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
 
         const [textArray, setTextArray] = useState<InputArray>([]);
         var curLetterIndex = 0;
-        var curWordIndex = 0;
-        var cursorPositionX = 0;
-        var cursorPositionY = 0;
         var newLineCounter = 0;
         var curIncorrectLetters: number[] = [];
         // variable to track how many extra words we have dynamically added to avoid running out of words
@@ -99,6 +98,7 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             y: 0,
         });
         const [curLine, setCurLine] = useState<number>(1);
+        const [isTabPressed, setIsTabPressed] = useState<boolean>(false);
 
         // everytime the passage changes
         useEffect(() => {
@@ -262,6 +262,13 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
         };
 
         const typing = (e: React.KeyboardEvent<HTMLDivElement>) => {
+            // code to restart test with tab + enter
+            if (e.key === "Tab") {
+                setIsTabPressed(true);
+                e.preventDefault();
+            } else {
+                setIsTabPressed(false);
+            }
             // if it is the very first letter we want to start the timer
             if (wi === 0 && li === 0) {
                 setStartTime(new Date().getTime());
@@ -270,11 +277,19 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     startTimer();
                 }
             }
-
             // get the event target
             var target = e.target as HTMLElement;
             if (target?.tagName.toLowerCase() === "input") {
                 return;
+            }
+            if (e.key === "Enter") {
+                if (isTabPressed === true) {
+                    restartTest();
+                    return;
+                }
+            }
+            if (e.key === "Escape") {
+                console.log("hey");
             }
             const key = e.key;
             // get the len of the current word

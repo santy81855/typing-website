@@ -1,0 +1,36 @@
+{
+    "currentTheme": "Default",
+    "themes": [
+        {
+            "name": "Default",
+            "backgroundImage": true,
+            "backgroundImageUrl": "/images/background-magical.webp",
+            "backgroundColor": "rgb(255,255,255)",
+            "textColor": "rgb(41,41,41)",
+            "textColorDefault": "rgb(235, 235, 235)",
+            "textColorCorrect": "rgb(127, 198, 164)",
+            "textColorIncorrect": "rgb(219, 109, 109)",
+            "textColorExtra": "rgb(208, 130, 130)",
+            "frostedEffect": true,
+            "sectionBackground": "rgb(255, 255, 255)",
+            "effects": {
+                "rain": true,
+                "rainType": 0,
+                "rainColor": "rgb(255,255,255)"
+            },
+            "borderRadius": "1.2rem"
+        }
+    ],
+    "caret": {
+        "width": 1,
+        "blinkSpeed": 1
+    },
+    "restartButton": {
+        "size": "25px"
+    },
+    "text": {
+        "alignment": "center",
+        "fontSize": "1.5rem",
+        "letterSpacing": "1px"
+    }
+}

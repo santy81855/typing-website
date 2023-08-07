@@ -89,10 +89,13 @@ const Rain: React.FC = () => {
 
     return (
         <main className={styles.main}>
+            <div className={styles.flash}></div>
+            <div className={styles.lightning}></div>
             <div className={`${styles.rain} ${styles.frontRow}`}>{drops}</div>
             <div className={`${styles.rain} ${styles.backRow}`}>
                 {backDrops}
             </div>
+            <div className={styles.rain2}></div>
         </main>
     );
 };
