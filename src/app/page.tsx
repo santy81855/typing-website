@@ -94,6 +94,7 @@ export default function Home() {
             setTimeTaken((endTime - startTime) / 1000);
             totalTime = (endTime - startTime) / 1000;
         }
+        console.log(totalTime);
 
         setWordAccuracy(
             `${(
@@ -126,7 +127,7 @@ export default function Home() {
             const data = {
                 type: testType,
                 time: totalTime,
-                numCorrectWords: sumOfChars,
+                numCorrectWords: numCorrectWords,
                 numIncorrectWords: numIncorrectWords,
                 numCorrectCharacters: totalCharsTyped - numErrors,
                 numIncorrectCharacters: numErrors,

@@ -26,7 +26,5 @@ export async function POST(request: Request) {
         throw new Error("Result not created.");
     }
 
-    console.log(result);
-
     return NextResponse.json(result);
 }

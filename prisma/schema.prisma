@@ -65,7 +65,7 @@ model Result {
     userId String
     date DateTime @default(now())
     type String
-    time Int
+    time Float
     numCorrectWords Int
     numIncorrectWords Int
     numCorrectCharacters Int

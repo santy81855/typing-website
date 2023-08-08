@@ -1,14 +1,29 @@
 .main {
     display: flex;
     flex-direction: column;
+    gap: var(--gap-large);
     width: 100%;
     height: calc(100% - var(--nav-height));
     padding-inline: var(--padding-inline-large);
     padding-block: var(--padding-block-large);
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.headerSection {
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-medium);
+    display: flex;
+    justify-content: space-between;
 }
 
 .section {
-    width: 100%;
     background-color: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(4px);
     box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
@@ -18,12 +33,86 @@
     padding-block: var(--padding-block-large);
 }
 
-.graphContainer {
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+}
+
+.tableContainer {
     width: 100%;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-large);
     background-color: rgba(255, 255, 255, 0.3);
     backdrop-filter: blur(4px);
     box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
     border: 1px solid rgba(150, 150, 150, 0.2);
     border-radius: 1.2rem;
-    padding-inline: var(--padding-inline-large);
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-medium);
+}
+
+.tableContainer table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    border: none;
+}
+
+.tableContainer thead {
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+}
+
+.tableContainer tr {
+    height: 2.5rem;
+}
+
+.tableContainer th,
+.tableContainer td {
+    padding-left: 1rem;
+}
+
+.tableContainer tr:nth-child(even) {
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+}
+
+.tableTitle {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.pagination button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.pagination i {
+    font-size: 1.5rem;
+}
+
+@media (max-width: 430px) {
+    .tableContainer table {
+        text-align: center;
+    }
+    .tableContainer th,
+    .tableContainer td {
+        padding-left: 0rem;
+    }
 }
