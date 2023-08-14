@@ -82,10 +82,10 @@ export default function Home() {
     }, [testType, wordCount, time, restartTestState]);
 
     useEffect(() => {
-        console.log(`startTime = ${startTime} and endTime = ${endTime} totalTime = ${
-            endTime - startTime
-        } numCorrectWords = ${numCorrectWords} numIncorrectWords = ${numIncorrectWords} numErrors = ${numErrors} totalCharsTyped = ${totalCharsTyped}
-        `);
+        // console.log(`startTime = ${startTime} and endTime = ${endTime} totalTime = ${
+        //     endTime - startTime
+        // } numCorrectWords = ${numCorrectWords} numIncorrectWords = ${numIncorrectWords} numErrors = ${numErrors} totalCharsTyped = ${totalCharsTyped}
+        // `);
         var totalTime = 0;
         if (testType === "time") {
             setTimeTaken(endTime - startTime);
@@ -94,7 +94,6 @@ export default function Home() {
             setTimeTaken((endTime - startTime) / 1000);
             totalTime = (endTime - startTime) / 1000;
         }
-        console.log(totalTime);
 
         setWordAccuracy(
             `${(
@@ -156,13 +155,12 @@ export default function Home() {
         if (timer) {
             const interval = setInterval(() => {
                 if (curTime > 0) {
-                    setCurTime(curTime - 1);
+                    setCurTime((prevTime) => prevTime - 1);
                 }
             }, 1000); // Update every second
-
             return () => clearInterval(interval); // Clean up on component unmount
         }
-    }, [curTime]);
+    }, [timer]);
 
     // useEffect that will get the user at the start of a session
     useEffect(() => {
@@ -195,7 +193,6 @@ export default function Home() {
     }, []);
 
     const startTimer = () => {
-        console.log("current timer = " + timer);
         if (timer) stopTimer();
         setTimer(
             setTimeout(() => {
@@ -209,7 +206,6 @@ export default function Home() {
     };
 
     const stopTimer = () => {
-        console.log(timer);
         clearTimeout(timer);
         setTimer(undefined);
     };
@@ -253,9 +249,7 @@ export default function Home() {
         // post request with axios
         axios
             .post("/api/add-result", data)
-            .then(() => {
-                alert("Result has been added.");
-            })
+            .then(() => {})
             .catch((res) => alert(res));
     };
 

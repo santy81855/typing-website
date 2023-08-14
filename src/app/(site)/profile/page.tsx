@@ -110,7 +110,6 @@ const Profile = () => {
                 var lastTen = temp.slice(0, 10);
                 var sum = 0;
                 lastTen.forEach((result: { wpm: number }) => {
-                    console.log(result.wpm);
                     sum += result.wpm;
                 });
                 if (temp.length < 10) {

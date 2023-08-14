@@ -42,7 +42,7 @@ const Nav = () => {
         // check if the typed text is part of any settings
         const set = JSON.parse(JSON.stringify(settings) || "{}");
         const keys = Object.keys(set);
-        console.log(keys);
+
         const tempResults: string[] = [];
         if (userText !== "") {
             if (resultsRef.current) resultsRef.current.style.display = "flex";
@@ -83,7 +83,6 @@ const Nav = () => {
                     <div ref={resultsRef} className={styles.resultsContainer}>
                         <div className={styles.result}>All settings</div>
                         {results.map((result, index) => {
-                            console.log(result);
                             return (
                                 <div key={index} className={styles.result}>
                                     <p>{result}</p>

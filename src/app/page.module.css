@@ -64,4 +64,6 @@
     transform: translate(-50%, 0);
     z-index: -1;
     letter-spacing: 3px;
+    /*make it italic*/
+    font-style: italic;
 }

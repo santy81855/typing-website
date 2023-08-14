@@ -251,7 +251,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                 setStartTime(new Date().getTime());
                 // if this is a time test then we want to start a timer for "time" length
                 if (testType === "time") {
-                    console.log("starting timer");
                     startTimer();
                 }
             }
@@ -262,7 +261,8 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                 }
             }
             if (e.key === "Escape") {
-                console.log("hey");
+                restartTest();
+                return;
             }
             const key = e.key;
             // get the len of the current word
@@ -343,7 +343,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                     }
                 } else {
                     if (key === "Backspace") {
-                        console.log("here");
                         // if the letter stack is empty then just normal delete
                         if (letterStack.length === 0) {
                             setLi(li - 1);

@@ -27,7 +27,6 @@ const Login = () => {
                     alert("Error Fetching User " + err.message);
                 });
         };
-        console.log("status: ", status);
         if (status === "authenticated") {
             // check if the user has been initialized properly with a username and settings file in the database
             // if the user is authenticated send them to the home page
