@@ -53,3 +53,15 @@
     margin-block-start: var(--padding-block-large);
     outline: none;
 }
+
+.countdown {
+    font-size: 12rem;
+    font-weight: 600;
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+    z-index: -1;
+    letter-spacing: 3px;
+}

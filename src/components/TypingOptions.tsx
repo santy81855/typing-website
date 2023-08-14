@@ -52,7 +52,6 @@ const TypingOptions = ({
                                 }`}
                                 onClick={() => {
                                     setTestType(option.testType);
-                                    stopTimer();
                                     setIsComplete(false);
                                 }}
                             >
@@ -88,7 +87,6 @@ const TypingOptions = ({
                                             testType === "time"
                                                 ? setTime(subOption)
                                                 : setWordCount(subOption);
-                                            stopTimer();
                                             setIsComplete(false);
                                         }}
                                     >

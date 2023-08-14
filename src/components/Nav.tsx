@@ -57,6 +57,16 @@ const Nav = () => {
         setResults(tempResults);
     }, [userText]);
 
+    const settingsIcon = (
+        <i
+            className={`fas fa-fw fa-cog ${styles.settingsIcon}`}
+            onClick={() => {
+                setIsSettingsOpen(!isSettingsOpen);
+                setUserText("");
+            }}
+        ></i>
+    );
+
     return (
         <main className={styles.main}>
             {isSettingsOpen && (
@@ -94,7 +104,7 @@ const Nav = () => {
                             alt="logo"
                             unoptimized={true}
                         />
-                        <p className={styles.appName}>Blah Type</p>
+                        <p className={styles.appName}>Cozy Type</p>
                     </Link>
                 </div>
                 <nav className={styles.container}>
@@ -118,13 +128,6 @@ const Nav = () => {
                                 )}
                                 <p className={styles.appName}>{userName}</p>
                             </Link>
-                            <i
-                                className={`fas fa-fw fa-cog ${styles.settingsIcon}`}
-                                onClick={() => {
-                                    setIsSettingsOpen(!isSettingsOpen);
-                                    setUserText("");
-                                }}
-                            ></i>
                             <button
                                 className={styles.signOutButton}
                                 onClick={() => {

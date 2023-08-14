@@ -5,6 +5,7 @@ import axios from "axios";
 import Rain from "@/components/Rain";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { getRank, getUrl } from "@/lib/RankList";
 
 import {
     Chart as ChartJS,
@@ -63,6 +64,7 @@ const Profile = () => {
     const [tableItems, setTableItems] = useState<UserResult[]>([]); // the items to show on the table
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const [fastestWPM, setFastestWPM] = useState(0);
+    const [lastTenWPMAvg, setLastTenWPMAvg] = useState(0);
 
     const numTests = 10;
     useEffect(() => {
@@ -104,11 +106,22 @@ const Profile = () => {
                 var fastest = temp.reduce((prev: any, current: any) => {
                     return prev.wpm > current.wpm ? prev : current;
                 });
+                // get the average of the last 10 wpm
+                var lastTen = temp.slice(0, 10);
+                var sum = 0;
+                lastTen.forEach((result: { wpm: number }) => {
+                    console.log(result.wpm);
+                    sum += result.wpm;
+                });
+                if (temp.length < 10) {
+                    setLastTenWPMAvg(-1);
+                }
+                setLastTenWPMAvg(sum / lastTen.length);
                 // set the fastest wpm
                 setFastestWPM(fastest.wpm);
                 setNumResults(temp.length);
                 // get the average wpm
-                var sum = 0;
+                sum = 0;
                 temp.forEach((result: { wpm: number }) => {
                     sum += result.wpm;
                 });
@@ -158,10 +171,36 @@ const Profile = () => {
         plugins: {
             legend: {
                 position: "top" as const,
+                labels: {
+                    color: "white",
+                },
             },
             title: {
                 display: false,
                 text: `Last ${numTests} Tests`,
+            },
+        },
+        scales: {
+            y: {
+                title: {
+                    display: true,
+                    text: "wpm",
+                    color: "white",
+                },
+                type: "linear" as const,
+                display: true,
+                position: "left" as const,
+                ticks: {
+                    color: "white",
+                },
+            },
+            x: {
+                type: "category" as const,
+                display: true,
+                position: "bottom" as const,
+                ticks: {
+                    color: "white",
+                },
             },
         },
     };
@@ -187,7 +226,7 @@ const Profile = () => {
     return (
         <main className={styles.main}>
             <div className={styles.pageContainer}>
-                <div className={styles.profileSection}>
+                <div className={styles.grid}>
                     <div className={styles.itemProfile}>
                         {session?.user?.image && (
                             <Image
@@ -202,21 +241,39 @@ const Profile = () => {
                         <p>{username}</p>
                     </div>
                     <div className={styles.item}>
+                        <p>tests taken</p> <p>{numResults}</p>
+                    </div>
+                    <div className={styles.itemLarge}>
+                        <div className={styles.rankTitle}>
+                            <div>
+                                <p>Rank:</p>
+                                <p className={styles.rank}>
+                                    {getRank(lastTenWPMAvg)}
+                                </p>
+                                {lastTenWPMAvg === -1 && (
+                                    <span>
+                                        Finish at least 10 races to get a rank!
+                                    </span>
+                                )}
+                            </div>
+                            <p>(wpm: {lastTenWPMAvg})</p>
+                        </div>
+                        <Image
+                            className={styles.rankImage}
+                            src={getUrl(lastTenWPMAvg) as string}
+                            width={100}
+                            height={100}
+                            alt="rank"
+                            unoptimized={true}
+                        />
+                    </div>
+                    <div className={styles.item}>
                         <p>wpm record</p>
                         <p>{fastestWPM}</p>
                     </div>
-                </div>
-                <div className={styles.headerSection}>
                     <div className={styles.item}>
                         <p>accuracy</p>
                         <p>{avgAccuracy.toFixed(2)}%</p>
-                    </div>
-                    <div className={styles.item}>
-                        <p>wpm</p>
-                        <p>{avgWPM.toFixed(0)}</p>
-                    </div>
-                    <div className={styles.item}>
-                        <p>tests taken</p> <p>{numResults}</p>
                     </div>
                 </div>
 

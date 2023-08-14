@@ -36,7 +36,7 @@ export default function Home() {
     const [wordFile, setWordFile] = useState(english100); // the file of words to use for the test
     const [restartTestState, setRestartTestState] = useState(false); // whether or not to restart the test
     const [curTime, setCurTime] = useState(0); // current time
-    var timer: string | number | NodeJS.Timeout | undefined;
+    const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined); // timer for the test
 
     // create a reference for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
@@ -46,6 +46,7 @@ export default function Home() {
     const typingSectionRef = useRef<TypingSectionRef>(null);
 
     useEffect(() => {
+        stopTimer();
         // set focus to the main typing area and fade it in
         if (passageRef.current !== null) {
             passageRef.current.style.opacity = "0";
@@ -78,7 +79,6 @@ export default function Home() {
         setNumIncorrectWords(0);
         setTotalCharsTyped(0);
         setWordsTypedCorrectly([]);
-        stopTimer();
     }, [testType, wordCount, time, restartTestState]);
 
     useEffect(() => {
@@ -152,6 +152,18 @@ export default function Home() {
         }
     }, [isComplete]);
 
+    useEffect(() => {
+        if (timer) {
+            const interval = setInterval(() => {
+                if (curTime > 0) {
+                    setCurTime(curTime - 1);
+                }
+            }, 1000); // Update every second
+
+            return () => clearInterval(interval); // Clean up on component unmount
+        }
+    }, [curTime]);
+
     // useEffect that will get the user at the start of a session
     useEffect(() => {
         // get the user and their settings
@@ -183,16 +195,23 @@ export default function Home() {
     }, []);
 
     const startTimer = () => {
-        stopTimer();
-        timer = setTimeout(() => {
-            if (typingSectionRef.current) {
-                typingSectionRef.current.testFinished();
-            }
-        }, time * 1000);
+        console.log("current timer = " + timer);
+        if (timer) stopTimer();
+        setTimer(
+            setTimeout(() => {
+                if (typingSectionRef.current) {
+                    typingSectionRef.current.testFinished();
+                }
+            }, time * 1000)
+        );
+        // immediately start the countdown
+        setCurTime(time);
     };
 
     const stopTimer = () => {
+        console.log(timer);
         clearTimeout(timer);
+        setTimer(undefined);
     };
 
     const getRandomWord = () => {
@@ -260,6 +279,7 @@ export default function Home() {
                 </div>
             ) : (
                 <>
+                    {timer && <p className={styles.countdown}>{curTime}</p>}
                     <div className={styles.typingOptionsContainer}>
                         <TypingOptions
                             testType={testType}
@@ -273,7 +293,6 @@ export default function Home() {
                             stopTimer={stopTimer}
                         />
                     </div>
-                    {timer && curTime}
                     <div className={styles.typingContainer}>
                         <TypingSection
                             ref={typingSectionRef}

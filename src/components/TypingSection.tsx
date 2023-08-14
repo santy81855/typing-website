@@ -214,34 +214,6 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
         };
 
         const addWord = (word: string) => {
-            /*
-            // add the new div as the last child of textArea
-            const textArea = document.getElementById("textArea");
-            if (textArea === null) {
-                return;
-            }
-            // get the length of the children of textArea
-            var numChildren = textArea.childElementCount;
-
-            // create a new div element
-            var newDiv = document.createElement("div");
-            // give it the correct id
-            newDiv.id = `word${numChildren}`;
-            // give it the "word" class
-            newDiv.classList.add(styles.word);
-            // give it the class "extra word"
-            newDiv.classList.add(styles.extraWord);
-            // add each letter as an array of div elements
-            for (var i = 0; i < word.length; i++) {
-                var letterDiv = document.createElement("div");
-                letterDiv.classList.add(styles.letter);
-                letterDiv.classList.add(styles.default);
-                letterDiv.id = `letter${numChildren}${i}`;
-                letterDiv.innerText = word[i];
-                newDiv.appendChild(letterDiv);
-            }
-            textArea.appendChild(newDiv);
-            */
             // add the word to the passage
             var temp = passage;
             temp.push(word);
@@ -269,18 +241,19 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
             } else {
                 setIsTabPressed(false);
             }
+            // get the event target
+            var target = e.target as HTMLElement;
+            if (target?.tagName.toLowerCase() === "input") {
+                return;
+            }
             // if it is the very first letter we want to start the timer
             if (wi === 0 && li === 0) {
                 setStartTime(new Date().getTime());
                 // if this is a time test then we want to start a timer for "time" length
                 if (testType === "time") {
+                    console.log("starting timer");
                     startTimer();
                 }
-            }
-            // get the event target
-            var target = e.target as HTMLElement;
-            if (target?.tagName.toLowerCase() === "input") {
-                return;
             }
             if (e.key === "Enter") {
                 if (isTabPressed === true) {
