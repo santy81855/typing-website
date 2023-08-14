@@ -65,7 +65,7 @@ const getRank = (lastTenWPMAvg: number) => {
     if (lastTenWPMAvg < 130) {
         return "GRANDMASTER 3";
     }
-    if (lastTenWPMAvg >= 136) {
+    if (lastTenWPMAvg >= 130) {
         return "LEGEND";
     }
 };
@@ -137,7 +137,7 @@ const getUrl = (lastTenWPMAvg: number) => {
     if (lastTenWPMAvg < 130) {
         return "/images/ranks/grandmaster-3.png";
     }
-    if (lastTenWPMAvg >= 136) {
+    if (lastTenWPMAvg >= 130) {
         return "/images/ranks/legend.png";
     }
 };

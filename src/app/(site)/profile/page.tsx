@@ -114,8 +114,9 @@ const Profile = () => {
                 });
                 if (temp.length < 10) {
                     setLastTenWPMAvg(-1);
+                } else {
+                    setLastTenWPMAvg(sum / lastTen.length);
                 }
-                setLastTenWPMAvg(sum / lastTen.length);
                 // set the fastest wpm
                 setFastestWPM(fastest.wpm);
                 setNumResults(temp.length);

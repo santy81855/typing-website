@@ -13,7 +13,9 @@ const Nav = () => {
     const [isSettingsOpen, setIsSettingsOpen] = useState(false);
     const [userText, setUserText] = useState("");
     const [results, setResults] = useState<string[]>([]);
+    const [rank, setRank] = useState("");
     const resultsRef = useRef<HTMLDivElement>(null);
+    const [rankUrl, setRankUrl] = useState("");
 
     useEffect(() => {
         // get the username
@@ -97,7 +99,11 @@ const Nav = () => {
                     <Link href="/" className={styles.leftContainer}>
                         <Image
                             className={styles.logo}
-                            src="/images/logo-magical-2-circle.png"
+                            src={
+                                rankUrl !== ""
+                                    ? rankUrl
+                                    : "/images/logo-magical-2-circle.png"
+                            }
                             width={30}
                             height={30}
                             alt="logo"
