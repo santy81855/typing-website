@@ -1,3 +1,13 @@
+# COZY TYPE 
+
+A typing website where you can relax while you practice your typing.
+  - Choose between timed tests and word count games
+  ![typing demo](https://github.com/santy81855/typing-website/blob/main/public/images/github/typing-demo.gif?raw=true)
+  - Every game is recorded and gives you insight into how you did
+  ![result demo](https://github.com/santy81855/typing-website/blob/main/public/images/github/test-result-demo.gif?raw=true)
+  - Make your way up the ranks from a bronze typer all the way up to a legend
+  ![result demo](https://github.com/santy81855/typing-website/blob/main/public/images/github/test-result-demo.gif?raw=true)
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
