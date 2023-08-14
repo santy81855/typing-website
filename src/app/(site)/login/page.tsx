@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import Rain from "@/components/Rain";
 
 const Login = () => {
     const { data: session, status } = useSession();
@@ -58,8 +59,6 @@ const Login = () => {
     return (
         <main className={styles.main}>
             <div className={styles.container}>
-                <div className={`${styles.circle} ${styles.topLeft}`}></div>
-                <div className={`${styles.circle} ${styles.bottomLeft}`}></div>
                 <div className={styles.content}>
                     <h1 className={styles.title}>Login</h1>
                     <div className={styles.providerContainer}>
@@ -92,6 +91,7 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            <Rain />
         </main>
     );
 };

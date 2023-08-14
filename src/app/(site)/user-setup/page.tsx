@@ -62,7 +62,7 @@ const UserSetup = () => {
         await axios
             .post("/api/update-user", data)
             .then((res) => {
-                console.log("user updated");
+                router.push("/");
             })
             .catch((err) => {
                 alert("Error Updating User " + err.message);
@@ -137,7 +137,7 @@ const UserSetup = () => {
                     <button
                         onClick={() => {
                             if (step === 0) {
-                                setStep(1);
+                                updateUser();
                             }
                             if (step === 1) {
                                 updateUser();

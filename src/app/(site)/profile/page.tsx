@@ -244,28 +244,36 @@ const Profile = () => {
                         <p>tests taken</p> <p>{numResults}</p>
                     </div>
                     <div className={styles.itemLarge}>
-                        <div className={styles.rankTitle}>
-                            <div>
-                                <p>Rank:</p>
-                                <p className={styles.rank}>
-                                    {getRank(lastTenWPMAvg)}
-                                </p>
-                                {lastTenWPMAvg === -1 && (
-                                    <span>
-                                        Finish at least 10 races to get a rank!
-                                    </span>
-                                )}
-                            </div>
-                            <p>(wpm: {lastTenWPMAvg})</p>
-                        </div>
-                        <Image
-                            className={styles.rankImage}
-                            src={getUrl(lastTenWPMAvg) as string}
-                            width={100}
-                            height={100}
-                            alt="rank"
-                            unoptimized={true}
-                        />
+                        {lastTenWPMAvg !== 0 && (
+                            <>
+                                <div className={styles.rankTitle}>
+                                    <div>
+                                        <p>Rank:</p>
+
+                                        <p className={styles.rank}>
+                                            {getRank(lastTenWPMAvg)}
+                                        </p>
+
+                                        {lastTenWPMAvg === -1 && (
+                                            <span>
+                                                Finish at least 10 races to get
+                                                a rank!
+                                            </span>
+                                        )}
+                                    </div>
+                                    <p>(wpm: {lastTenWPMAvg})</p>
+                                </div>
+
+                                <Image
+                                    className={styles.rankImage}
+                                    src={getUrl(lastTenWPMAvg) as string}
+                                    width={100}
+                                    height={100}
+                                    alt="rank"
+                                    unoptimized={true}
+                                />
+                            </>
+                        )}
                     </div>
                     <div className={styles.item}>
                         <p>wpm record</p>
