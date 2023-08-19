@@ -111,19 +111,19 @@ const TestInformation = ({
                       {
                           label: "Current",
                           data: [wpm],
-                          backgroundColor: "rgba(255, 99, 132, 0.5)",
+                          backgroundColor: "white",
                       },
                       {
                           label: "Lifetime",
                           data: [averageWpm],
-                          backgroundColor: "rgba(53, 162, 235, 0.5)",
+                          backgroundColor: "rgb(117, 206, 206)",
                       },
                   ]
                 : [
                       {
                           label: "Current",
                           data: [wpm],
-                          backgroundColor: "rgba(255, 99, 132, 0.5)",
+                          backgroundColor: "white",
                       },
                   ],
     };
