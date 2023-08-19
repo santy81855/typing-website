@@ -48,6 +48,14 @@
     font-weight: 600;
 }
 
+.userName {
+    font-size: var(--font-size-medium);
+    font-weight: 600;
+    max-width: 20ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 .userImage {
     border-radius: 50%;
 }
@@ -126,8 +134,17 @@
     cursor: pointer;
 }
 
+@media screen and (max-width: 615px) {
+    .userName {
+        max-width: 11ch;
+    }
+}
+
 @media screen and (max-width: 500px) {
     .username {
+        display: none;
+    }
+    .appName {
         display: none;
     }
     .navContainer {
@@ -147,8 +164,8 @@
     }
 }
 
-@media screen and (max-width: 470px) {
-    .appName {
+@media screen and (max-width: 400px) {
+    .userName {
         display: none;
     }
 }

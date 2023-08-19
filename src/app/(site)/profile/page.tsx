@@ -19,26 +19,6 @@ import {
 } from "chart.js";
 import { Line } from "react-chartjs-2";
 
-/*
-model Result {
-    id String @id @default(cuid())
-    user User @relation(fields: [userId], references: [id])
-    userId String
-    date DateTime @default(now())
-    type String
-    time Int
-    numCorrectWords Int
-    numIncorrectWords Int
-    numCorrectCharacters Int
-    numIncorrectCharacters Int
-    wordAccuracy Float
-    characterAccuracy Float
-    wpm Float
-    wpmRaw Float
-    cpm Float
-}
-*/
-
 // Define the interface for each object in the userResults array
 interface UserResult {
     date: string; // Or use Date type if it's in ISO string format
@@ -261,7 +241,7 @@ const Profile = () => {
                                             </span>
                                         )}
                                     </div>
-                                    <p>(wpm: {lastTenWPMAvg})</p>
+                                    <p>{lastTenWPMAvg} wpm</p>
                                 </div>
 
                                 <Image

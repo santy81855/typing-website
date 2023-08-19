@@ -131,7 +131,7 @@ const Nav = () => {
                                         unoptimized={true}
                                     />
                                 )}
-                                <p className={styles.appName}>{userName}</p>
+                                <p className={styles.userName}>{userName}</p>
                             </Link>
                             <button
                                 className={styles.signOutButton}
