@@ -652,6 +652,9 @@ const TypingSection = forwardRef<TypingSectionRef, props>(
                             onChange={() => {}}
                             onKeyDown={handleInvisibleInput}
                             className={styles.invisibleInput}
+                            autoCorrect="off"
+                            autoComplete="off"
+                            autoCapitalize="off"
                         />
                     </div>
                 </main>
