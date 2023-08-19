@@ -180,6 +180,7 @@ const Profile = () => {
             sum += result.wpm;
         });
         setTimed60Avg(timed60.length >= 10 ? sum / 10 : -1);
+        setLastTenWPMAvg(timed60.length >= 10 ? sum / 10 : -1);
         const timed120 = results
             .filter((result) => result.type === "time" && result.time === 120)
             .slice(0, 10);
@@ -198,7 +199,6 @@ const Profile = () => {
             sum += result.wpm;
         });
         setTimed300Avg(timed300.length >= 10 ? sum / 10 : -1);
-        setLastTenWPMAvg(timed60Avg);
     };
 
     const getUserResults = async () => {
@@ -570,6 +570,7 @@ const Profile = () => {
                         >
                             <i className="fa-solid fa-chevron-left"></i>
                         </button>
+                        <p className={styles.testType}>mode</p>
                         <p className={styles.testType}>{displayTestType()}</p>
                         <button
                             className={styles.rankButtonTop}
