@@ -218,7 +218,7 @@ const Profile = () => {
                                 unoptimized={true}
                             />
                         )}
-                        <p>{username}</p>
+                        <p className={styles.userName}>{username}</p>
                     </div>
                     <div className={styles.item}>
                         <p>tests taken</p> <p>{numResults}</p>
