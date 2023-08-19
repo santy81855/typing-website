@@ -64,6 +64,24 @@
     gap: 1rem;
 }
 
+.rankButtonsContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px 0 rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(150, 150, 150, 0.2);
+    border-radius: 1.2rem;
+    padding-inline: var(--padding-inline-large);
+    padding-block: var(--padding-block-medium);
+    min-height: 100px;
+    color: white;
+    grid-column: span 2; /* Take up 2 columns */
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
 .item {
     display: flex;
     justify-content: space-between;
@@ -94,6 +112,42 @@
     grid-row: span 2; /* Take up 2 rows */
     grid-column: span 2; /* Take up 2 columns */
     position: relative;
+    min-height: 240px;
+}
+
+.testType {
+    width: 110px;
+    text-align: center;
+}
+
+.rankButtonTop {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.rankButton {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+}
+
+.bottomRankButtonContainer {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    display: none;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    display: none;
 }
 
 .rankTitle {
@@ -205,9 +259,6 @@
     }
 }
 
-@media (max-width: 570px) {
-}
-
 @media (max-width: 430px) {
     .tableContainer table {
         text-align: center;
@@ -226,5 +277,17 @@
     }
     .rankTitle p {
         font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .rankButtonTop {
+        display: none;
+    }
+    .bottomRankButtonContainer {
+        display: flex;
+    }
+    .rankButton {
+        display: flex;
     }
 }
