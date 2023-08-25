@@ -62,6 +62,9 @@ const Profile = () => {
     const [timed60Avg, setTimed60Avg] = useState(0);
     const [timed120Avg, setTimed120Avg] = useState(0);
     const [timed300Avg, setTimed300Avg] = useState(0);
+    const [last10Dict, setLast10Dict] = useState<{
+        [key: string]: UserResult[];
+    }>({});
 
     const [testType, setTestType] = useState({
         type: "timed",
@@ -87,6 +90,7 @@ const Profile = () => {
     }, [tablePage]);
 
     const getAllAvgWpm = (results: UserResult[]) => {
+        var temp: { [key: string]: UserResult[] } = {};
         const word10 = results
             .filter(
                 (result) =>
@@ -94,6 +98,8 @@ const Profile = () => {
                     result.numCorrectWords + result.numIncorrectWords === 10
             )
             .slice(0, 10);
+        // add the word 10 array as the value to the key "word10" without changing the other values
+        temp["wordCount10"] = word10.reverse();
         // get the avg wpm of word 10
         var sum = 0;
         word10.forEach((result) => {
@@ -107,6 +113,7 @@ const Profile = () => {
                     result.numCorrectWords + result.numIncorrectWords === 25
             )
             .slice(0, 10);
+        temp["wordCount25"] = word25.reverse();
         // get the avg wpm of word 25
         sum = 0;
         word25.forEach((result) => {
@@ -120,6 +127,7 @@ const Profile = () => {
                     result.numCorrectWords + result.numIncorrectWords === 50
             )
             .slice(0, 10);
+        temp["wordCount50"] = word50.reverse();
         // get the avg wpm of word 50
         sum = 0;
         word50.forEach((result) => {
@@ -133,6 +141,7 @@ const Profile = () => {
                     result.numCorrectWords + result.numIncorrectWords === 100
             )
             .slice(0, 10);
+        temp["wordCount100"] = word100.reverse();
         // get the avg wpm of word 100
         sum = 0;
         word100.forEach((result) => {
@@ -146,6 +155,7 @@ const Profile = () => {
                     result.numCorrectWords + result.numIncorrectWords === 200
             )
             .slice(0, 10);
+        temp["wordCount200"] = word200.reverse();
         // get the avg wpm of word 200
         sum = 0;
         word200.forEach((result) => {
@@ -156,6 +166,7 @@ const Profile = () => {
         const timed15 = results
             .filter((result) => result.type === "time" && result.time === 15)
             .slice(0, 10);
+        temp["timed15"] = timed15.reverse();
         // get the avg wpm of timed 15
         sum = 0;
         timed15.forEach((result) => {
@@ -165,6 +176,7 @@ const Profile = () => {
         const timed30 = results
             .filter((result) => result.type === "time" && result.time === 30)
             .slice(0, 10);
+        temp["timed30"] = timed30.reverse();
         // get the avg wpm of timed 30
         sum = 0;
         timed30.forEach((result) => {
@@ -174,6 +186,7 @@ const Profile = () => {
         const timed60 = results
             .filter((result) => result.type === "time" && result.time === 60)
             .slice(0, 10);
+        temp["timed60"] = timed60.reverse();
         // get the avg wpm of timed 60
         sum = 0;
         timed60.forEach((result) => {
@@ -184,6 +197,7 @@ const Profile = () => {
         const timed120 = results
             .filter((result) => result.type === "time" && result.time === 120)
             .slice(0, 10);
+        temp["timed120"] = timed120.reverse();
         // get the avg wpm of timed 120
         sum = 0;
         timed120.forEach((result) => {
@@ -193,12 +207,16 @@ const Profile = () => {
         const timed300 = results
             .filter((result) => result.type === "time" && result.time === 300)
             .slice(0, 10);
+        temp["timed300"] = timed300.reverse();
         // get the avg wpm of timed 300
         sum = 0;
         timed300.forEach((result) => {
             sum += result.wpm;
         });
         setTimed300Avg(timed300.length >= 10 ? sum / 10 : -1);
+        setLast10Dict(temp);
+        // display the last 10 60 second tests at first
+        setUserResults(timed60);
     };
 
     const getUserResults = async () => {
@@ -256,10 +274,6 @@ const Profile = () => {
                 setAllUserResults(temp);
                 // get the first table results
                 setTableItems(temp.slice(0, itemsPerPage));
-                // get the last 10
-                temp = temp.slice(0, numTests);
-                // store temp backwards
-                setUserResults(temp.reverse());
             })
             .catch((res) => alert(res));
     };
@@ -296,8 +310,13 @@ const Profile = () => {
                 },
             },
             title: {
-                display: false,
-                text: `Last ${numTests} Tests`,
+                display: true,
+                text: `Recent ${
+                    testType.type == "wordCount"
+                        ? testType.subType + " word"
+                        : testType.subType + " second"
+                } Tests`,
+                color: "white",
             },
         },
         scales: {
@@ -352,35 +371,45 @@ const Profile = () => {
                 if (subType === 10) {
                     setTestType({ type: "wordCount", subType: 25 });
                     setLastTenWPMAvg(word25Avg);
+                    setUserResults(last10Dict["wordCount25"]);
                 } else if (subType === 25) {
                     setTestType({ type: "wordCount", subType: 50 });
                     setLastTenWPMAvg(word50Avg);
+                    setUserResults(last10Dict["wordCount50"]);
                 } else if (subType === 50) {
                     setTestType({ type: "wordCount", subType: 100 });
                     setLastTenWPMAvg(word100Avg);
+                    setUserResults(last10Dict["wordCount100"]);
                 } else if (subType === 100) {
                     setTestType({ type: "wordCount", subType: 200 });
                     setLastTenWPMAvg(word200Avg);
+                    setUserResults(last10Dict["wordCount200"]);
                 } else if (subType === 200) {
                     setTestType({ type: "timed", subType: 15 });
                     setLastTenWPMAvg(timed15Avg);
+                    setUserResults(last10Dict["timed15"]);
                 }
             } else if (type === "timed") {
                 if (subType === 15) {
                     setTestType({ type: "timed", subType: 30 });
                     setLastTenWPMAvg(timed30Avg);
+                    setUserResults(last10Dict["timed30"]);
                 } else if (subType === 30) {
                     setTestType({ type: "timed", subType: 60 });
                     setLastTenWPMAvg(timed60Avg);
+                    setUserResults(last10Dict["timed60"]);
                 } else if (subType === 60) {
                     setTestType({ type: "timed", subType: 120 });
                     setLastTenWPMAvg(timed120Avg);
+                    setUserResults(last10Dict["timed120"]);
                 } else if (subType === 120) {
                     setTestType({ type: "timed", subType: 300 });
                     setLastTenWPMAvg(timed300Avg);
+                    setUserResults(last10Dict["timed300"]);
                 } else if (subType === 300) {
                     setTestType({ type: "wordCount", subType: 10 });
                     setLastTenWPMAvg(word10Avg);
+                    setUserResults(last10Dict["wordCount10"]);
                 }
             }
         } else {
@@ -388,35 +417,45 @@ const Profile = () => {
                 if (subType === 10) {
                     setTestType({ type: "timed", subType: 300 });
                     setLastTenWPMAvg(timed300Avg);
+                    setUserResults(last10Dict["timed300"]);
                 } else if (subType === 25) {
                     setTestType({ type: "wordCount", subType: 10 });
                     setLastTenWPMAvg(word10Avg);
+                    setUserResults(last10Dict["wordCount10"]);
                 } else if (subType === 50) {
                     setTestType({ type: "wordCount", subType: 25 });
                     setLastTenWPMAvg(word25Avg);
+                    setUserResults(last10Dict["wordCount25"]);
                 } else if (subType === 100) {
                     setTestType({ type: "wordCount", subType: 50 });
                     setLastTenWPMAvg(word50Avg);
+                    setUserResults(last10Dict["wordCount50"]);
                 } else if (subType === 200) {
                     setTestType({ type: "wordCount", subType: 100 });
                     setLastTenWPMAvg(word100Avg);
+                    setUserResults(last10Dict["wordCount100"]);
                 }
             } else if (type === "timed") {
                 if (subType === 15) {
                     setTestType({ type: "wordCount", subType: 200 });
                     setLastTenWPMAvg(word200Avg);
+                    setUserResults(last10Dict["wordCount200"]);
                 } else if (subType === 30) {
                     setTestType({ type: "timed", subType: 15 });
                     setLastTenWPMAvg(timed15Avg);
+                    setUserResults(last10Dict["timed15"]);
                 } else if (subType === 60) {
                     setTestType({ type: "timed", subType: 30 });
                     setLastTenWPMAvg(timed30Avg);
+                    setUserResults(last10Dict["timed30"]);
                 } else if (subType === 120) {
                     setTestType({ type: "timed", subType: 60 });
                     setLastTenWPMAvg(timed60Avg);
+                    setUserResults(last10Dict["timed60"]);
                 } else if (subType === 300) {
                     setTestType({ type: "timed", subType: 120 });
                     setLastTenWPMAvg(timed120Avg);
+                    setUserResults(last10Dict["timed120"]);
                 }
             }
         }
@@ -526,6 +565,14 @@ const Profile = () => {
                     <div className={styles.itemLarge}>
                         {word10Avg !== 0 && (
                             <>
+                                <Image
+                                    className={styles.rankImage}
+                                    src={displayRankImage() as string}
+                                    width={100}
+                                    height={100}
+                                    alt="rank"
+                                    unoptimized={true}
+                                />
                                 <div className={styles.rankTitle}>
                                     <div>
                                         <p>Rank</p>
@@ -535,22 +582,14 @@ const Profile = () => {
                                     </div>
                                     {lastTenWPMAvg === -1 && (
                                         <span>
-                                            Finish at least 10 races to get a
-                                            rank!
+                                            Finish at least 10 races in this
+                                            mode to get a rank!
                                         </span>
                                     )}
                                     {lastTenWPMAvg !== -1 && (
                                         <p>{lastTenWPMAvg} wpm</p>
                                     )}
                                 </div>
-                                <Image
-                                    className={styles.rankImage}
-                                    src={displayRankImage() as string}
-                                    width={100}
-                                    height={100}
-                                    alt="rank"
-                                    unoptimized={true}
-                                />
                             </>
                         )}
                     </div>
