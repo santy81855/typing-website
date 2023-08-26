@@ -115,6 +115,11 @@
     min-height: 240px;
 }
 
+.testTypeTitle {
+    width: 110px;
+    text-align: center;
+}
+
 .testType {
     width: 110px;
     text-align: center;
@@ -240,6 +245,13 @@
 }
 .pagination i {
     font-size: 1.5rem;
+    color: rgb(224, 224, 224);
+}
+
+.testTypeContainer {
+    display: flex;
+    justify-content: space-around;
+    flex-grow: 1;
 }
 
 @media (max-width: 768px) {
@@ -280,12 +292,19 @@
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 615px) {
     .rankButtonTop {
         display: none;
     }
     .bottomRankButtonContainer {
         display: flex;
+        justify-content: space-between;
+    }
+    .testTypeContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
     .rankButton {
         display: flex;

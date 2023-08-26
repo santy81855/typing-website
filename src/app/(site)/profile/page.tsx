@@ -609,8 +609,12 @@ const Profile = () => {
                         >
                             <i className="fa-solid fa-chevron-left"></i>
                         </button>
-                        <p className={styles.testType}>mode</p>
-                        <p className={styles.testType}>{displayTestType()}</p>
+                        <div className={styles.testTypeContainer}>
+                            <p className={styles.testTypeTitle}>mode</p>
+                            <p className={styles.testType}>
+                                {displayTestType()}
+                            </p>
+                        </div>
                         <button
                             className={styles.rankButtonTop}
                             onClick={() => changeTestType("forward")}
@@ -693,6 +697,7 @@ const Profile = () => {
                     </table>
                     <div className={styles.pagination}>
                         <button
+                            className={styles.paginationButton}
                             onClick={() => {
                                 if (tablePage > 0) {
                                     setTablePage(tablePage - 1);
@@ -706,6 +711,7 @@ const Profile = () => {
                             {Math.ceil(numResults / itemsPerPage)}
                         </p>
                         <button
+                            className={styles.paginationButton}
                             onClick={() => {
                                 if (
                                     tablePage <
