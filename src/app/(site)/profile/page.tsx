@@ -65,13 +65,13 @@ const Profile = () => {
     const [last10Dict, setLast10Dict] = useState<{
         [key: string]: UserResult[];
     }>({});
+    const minTests = 5;
 
     const [testType, setTestType] = useState({
         type: "timed",
         subType: 60,
     }); // wordCount or timed
 
-    const numTests = 10;
     useEffect(() => {
         getUser();
         getUserResults();
@@ -97,7 +97,7 @@ const Profile = () => {
                     result.type === "wordCount" &&
                     result.numCorrectWords + result.numIncorrectWords === 10
             )
-            .slice(0, 10);
+            .slice(0, minTests);
         // add the word 10 array as the value to the key "word10" without changing the other values
         temp["wordCount10"] = word10.reverse();
         // get the avg wpm of word 10
@@ -105,115 +105,115 @@ const Profile = () => {
         word10.forEach((result) => {
             sum += result.wpm;
         });
-        setWord10Avg(word10.length >= 10 ? sum / 10 : -1);
+        setWord10Avg(word10.length >= minTests ? sum / minTests : -1);
         const word25 = results
             .filter(
                 (result) =>
                     result.type === "wordCount" &&
                     result.numCorrectWords + result.numIncorrectWords === 25
             )
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["wordCount25"] = word25.reverse();
         // get the avg wpm of word 25
         sum = 0;
         word25.forEach((result) => {
             sum += result.wpm;
         });
-        setWord25Avg(word25.length >= 10 ? sum / 10 : -1);
+        setWord25Avg(word25.length >= minTests ? sum / minTests : -1);
         const word50 = results
             .filter(
                 (result) =>
                     result.type === "wordCount" &&
                     result.numCorrectWords + result.numIncorrectWords === 50
             )
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["wordCount50"] = word50.reverse();
         // get the avg wpm of word 50
         sum = 0;
         word50.forEach((result) => {
             sum += result.wpm;
         });
-        setWord50Avg(word50.length >= 10 ? sum / 10 : -1);
+        setWord50Avg(word50.length >= minTests ? sum / minTests : -1);
         const word100 = results
             .filter(
                 (result) =>
                     result.type === "wordCount" &&
                     result.numCorrectWords + result.numIncorrectWords === 100
             )
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["wordCount100"] = word100.reverse();
         // get the avg wpm of word 100
         sum = 0;
         word100.forEach((result) => {
             sum += result.wpm;
         });
-        setWord100Avg(word100.length >= 10 ? sum / 10 : -1);
+        setWord100Avg(word100.length >= minTests ? sum / minTests : -1);
         const word200 = results
             .filter(
                 (result) =>
                     result.type === "wordCount" &&
                     result.numCorrectWords + result.numIncorrectWords === 200
             )
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["wordCount200"] = word200.reverse();
         // get the avg wpm of word 200
         sum = 0;
         word200.forEach((result) => {
             sum += result.wpm;
         });
-        setWord200Avg(word200.length >= 10 ? sum / 10 : -1);
+        setWord200Avg(word200.length >= minTests ? sum / minTests : -1);
         // get all the timed results
         const timed15 = results
             .filter((result) => result.type === "time" && result.time === 15)
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["timed15"] = timed15.reverse();
         // get the avg wpm of timed 15
         sum = 0;
         timed15.forEach((result) => {
             sum += result.wpm;
         });
-        setTimed15Avg(timed15.length >= 10 ? sum / 10 : -1);
+        setTimed15Avg(timed15.length >= minTests ? sum / minTests : -1);
         const timed30 = results
             .filter((result) => result.type === "time" && result.time === 30)
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["timed30"] = timed30.reverse();
         // get the avg wpm of timed 30
         sum = 0;
         timed30.forEach((result) => {
             sum += result.wpm;
         });
-        setTimed30Avg(timed30.length >= 10 ? sum / 10 : -1);
+        setTimed30Avg(timed30.length >= minTests ? sum / minTests : -1);
         const timed60 = results
             .filter((result) => result.type === "time" && result.time === 60)
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["timed60"] = timed60.reverse();
         // get the avg wpm of timed 60
         sum = 0;
         timed60.forEach((result) => {
             sum += result.wpm;
         });
-        setTimed60Avg(timed60.length >= 10 ? sum / 10 : -1);
-        setLastTenWPMAvg(timed60.length >= 10 ? sum / 10 : -1);
+        setTimed60Avg(timed60.length >= minTests ? sum / minTests : -1);
+        setLastTenWPMAvg(timed60.length >= minTests ? sum / minTests : -1);
         const timed120 = results
             .filter((result) => result.type === "time" && result.time === 120)
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["timed120"] = timed120.reverse();
         // get the avg wpm of timed 120
         sum = 0;
         timed120.forEach((result) => {
             sum += result.wpm;
         });
-        setTimed120Avg(timed120.length >= 10 ? sum / 10 : -1);
+        setTimed120Avg(timed120.length >= minTests ? sum / minTests : -1);
         const timed300 = results
             .filter((result) => result.type === "time" && result.time === 300)
-            .slice(0, 10);
+            .slice(0, minTests);
         temp["timed300"] = timed300.reverse();
         // get the avg wpm of timed 300
         sum = 0;
         timed300.forEach((result) => {
             sum += result.wpm;
         });
-        setTimed300Avg(timed300.length >= 10 ? sum / 10 : -1);
+        setTimed300Avg(timed300.length >= minTests ? sum / minTests : -1);
         setLast10Dict(temp);
         // display the last 10 60 second tests at first
         setUserResults(timed60);
@@ -242,7 +242,7 @@ const Profile = () => {
                     return prev.wpm > current.wpm ? prev : current;
                 });
                 // get the average of the last 10 wpm
-                var lastTen = temp.slice(0, 10);
+                var lastTen = temp.slice(0, minTests);
                 var sum = 0;
                 lastTen.forEach((result: { wpm: number }) => {
                     sum += result.wpm;
@@ -321,6 +321,14 @@ const Profile = () => {
         },
         scales: {
             y: {
+                // get the smalles value from the following: userResults.map((result) => result.wpm)
+
+                min:
+                    Math.min(...userResults.map((result) => result.wpm)) - 5 > 0
+                        ? Math.min(...userResults.map((result) => result.wpm)) -
+                          5
+                        : Math.min(...userResults.map((result) => result.wpm)),
+                max: Math.max(...userResults.map((result) => result.wpm)) + 5,
                 title: {
                     display: true,
                     text: "wpm",
@@ -572,6 +580,7 @@ const Profile = () => {
                                     height={100}
                                     alt="rank"
                                     unoptimized={true}
+                                    priority={true}
                                 />
                                 <div className={styles.rankTitle}>
                                     <div>
@@ -582,8 +591,8 @@ const Profile = () => {
                                     </div>
                                     {lastTenWPMAvg === -1 && (
                                         <span>
-                                            Finish at least 10 races in this
-                                            mode to get a rank!
+                                            Finish at least {minTests} races in
+                                            this mode to get a rank!
                                         </span>
                                     )}
                                     {lastTenWPMAvg !== -1 && (
@@ -697,7 +706,6 @@ const Profile = () => {
                     </table>
                     <div className={styles.pagination}>
                         <button
-                            className={styles.paginationButton}
                             onClick={() => {
                                 if (tablePage > 0) {
                                     setTablePage(tablePage - 1);
@@ -711,7 +719,6 @@ const Profile = () => {
                             {Math.ceil(numResults / itemsPerPage)}
                         </p>
                         <button
-                            className={styles.paginationButton}
                             onClick={() => {
                                 if (
                                     tablePage <
