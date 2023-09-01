@@ -57,13 +57,13 @@ const getRank = (lastTenWPMAvg: number) => {
         return "Master 3";
     }
     if (lastTenWPMAvg < 118) {
-        return "GRANDMASTER 1";
+        return "GRAND MASTER 1";
     }
     if (lastTenWPMAvg < 124) {
-        return "GRANDMASTER 2";
+        return "GRAND MASTER 2";
     }
     if (lastTenWPMAvg < 130) {
-        return "GRANDMASTER 3";
+        return "GRAND MASTER 3";
     }
     if (lastTenWPMAvg >= 130) {
         return "LEGEND";

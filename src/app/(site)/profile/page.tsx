@@ -82,6 +82,61 @@ const Profile = () => {
     }, []);
 
     useEffect(() => {
+        // if the testType changes we need to change the userResults and the last10WPMAvg
+        if (Object.keys(last10Dict).length !== 0) {
+            if (testType.type === "wordCount") {
+                const sub = testType.subType;
+                switch (sub) {
+                    case 10:
+                        setLastTenWPMAvg(word10Avg);
+                        setUserResults(last10Dict["wordCount10"]);
+                        return;
+                    case 25:
+                        setLastTenWPMAvg(word25Avg);
+                        setUserResults(last10Dict["wordCount25"]);
+                        return;
+                    case 50:
+                        setLastTenWPMAvg(word50Avg);
+                        setUserResults(last10Dict["wordCount50"]);
+                        return;
+                    case 100:
+                        setLastTenWPMAvg(word100Avg);
+                        setUserResults(last10Dict["wordCount100"]);
+                        return;
+                    case 200:
+                        setLastTenWPMAvg(word200Avg);
+                        setUserResults(last10Dict["wordCount200"]);
+                        return;
+                }
+            } else {
+                const sub = testType.subType;
+                switch (sub) {
+                    case 15:
+                        setLastTenWPMAvg(timed15Avg);
+                        setUserResults(last10Dict["timed15"]);
+                        return;
+                    case 30:
+                        setLastTenWPMAvg(timed30Avg);
+                        setUserResults(last10Dict["timed30"]);
+                        return;
+                    case 60:
+                        setLastTenWPMAvg(timed60Avg);
+                        setUserResults(last10Dict["timed60"]);
+                        return;
+                    case 120:
+                        setLastTenWPMAvg(timed120Avg);
+                        setUserResults(last10Dict["timed120"]);
+                        return;
+                    case 300:
+                        setLastTenWPMAvg(timed300Avg);
+                        setUserResults(last10Dict["timed300"]);
+                        return;
+                }
+            }
+        }
+    }, [testType]);
+
+    useEffect(() => {
         // calculate the items to show on the table based on the page
         const start = tablePage * itemsPerPage;
         const end = start + itemsPerPage;
@@ -322,7 +377,6 @@ const Profile = () => {
         scales: {
             y: {
                 // get the smalles value from the following: userResults.map((result) => result.wpm)
-
                 min:
                     Math.min(...userResults.map((result) => result.wpm)) - 5 > 0
                         ? Math.min(...userResults.map((result) => result.wpm)) -
@@ -369,104 +423,6 @@ const Profile = () => {
                 backgroundColor: "white",
             },
         ],
-    };
-
-    const changeTestType = (direction: string) => {
-        const type = testType.type;
-        const subType = testType.subType;
-        if (direction === "forward") {
-            if (type === "wordCount") {
-                if (subType === 10) {
-                    setTestType({ type: "wordCount", subType: 25 });
-                    setLastTenWPMAvg(word25Avg);
-                    setUserResults(last10Dict["wordCount25"]);
-                } else if (subType === 25) {
-                    setTestType({ type: "wordCount", subType: 50 });
-                    setLastTenWPMAvg(word50Avg);
-                    setUserResults(last10Dict["wordCount50"]);
-                } else if (subType === 50) {
-                    setTestType({ type: "wordCount", subType: 100 });
-                    setLastTenWPMAvg(word100Avg);
-                    setUserResults(last10Dict["wordCount100"]);
-                } else if (subType === 100) {
-                    setTestType({ type: "wordCount", subType: 200 });
-                    setLastTenWPMAvg(word200Avg);
-                    setUserResults(last10Dict["wordCount200"]);
-                } else if (subType === 200) {
-                    setTestType({ type: "timed", subType: 15 });
-                    setLastTenWPMAvg(timed15Avg);
-                    setUserResults(last10Dict["timed15"]);
-                }
-            } else if (type === "timed") {
-                if (subType === 15) {
-                    setTestType({ type: "timed", subType: 30 });
-                    setLastTenWPMAvg(timed30Avg);
-                    setUserResults(last10Dict["timed30"]);
-                } else if (subType === 30) {
-                    setTestType({ type: "timed", subType: 60 });
-                    setLastTenWPMAvg(timed60Avg);
-                    setUserResults(last10Dict["timed60"]);
-                } else if (subType === 60) {
-                    setTestType({ type: "timed", subType: 120 });
-                    setLastTenWPMAvg(timed120Avg);
-                    setUserResults(last10Dict["timed120"]);
-                } else if (subType === 120) {
-                    setTestType({ type: "timed", subType: 300 });
-                    setLastTenWPMAvg(timed300Avg);
-                    setUserResults(last10Dict["timed300"]);
-                } else if (subType === 300) {
-                    setTestType({ type: "wordCount", subType: 10 });
-                    setLastTenWPMAvg(word10Avg);
-                    setUserResults(last10Dict["wordCount10"]);
-                }
-            }
-        } else {
-            if (type === "wordCount") {
-                if (subType === 10) {
-                    setTestType({ type: "timed", subType: 300 });
-                    setLastTenWPMAvg(timed300Avg);
-                    setUserResults(last10Dict["timed300"]);
-                } else if (subType === 25) {
-                    setTestType({ type: "wordCount", subType: 10 });
-                    setLastTenWPMAvg(word10Avg);
-                    setUserResults(last10Dict["wordCount10"]);
-                } else if (subType === 50) {
-                    setTestType({ type: "wordCount", subType: 25 });
-                    setLastTenWPMAvg(word25Avg);
-                    setUserResults(last10Dict["wordCount25"]);
-                } else if (subType === 100) {
-                    setTestType({ type: "wordCount", subType: 50 });
-                    setLastTenWPMAvg(word50Avg);
-                    setUserResults(last10Dict["wordCount50"]);
-                } else if (subType === 200) {
-                    setTestType({ type: "wordCount", subType: 100 });
-                    setLastTenWPMAvg(word100Avg);
-                    setUserResults(last10Dict["wordCount100"]);
-                }
-            } else if (type === "timed") {
-                if (subType === 15) {
-                    setTestType({ type: "wordCount", subType: 200 });
-                    setLastTenWPMAvg(word200Avg);
-                    setUserResults(last10Dict["wordCount200"]);
-                } else if (subType === 30) {
-                    setTestType({ type: "timed", subType: 15 });
-                    setLastTenWPMAvg(timed15Avg);
-                    setUserResults(last10Dict["timed15"]);
-                } else if (subType === 60) {
-                    setTestType({ type: "timed", subType: 30 });
-                    setLastTenWPMAvg(timed30Avg);
-                    setUserResults(last10Dict["timed30"]);
-                } else if (subType === 120) {
-                    setTestType({ type: "timed", subType: 60 });
-                    setLastTenWPMAvg(timed60Avg);
-                    setUserResults(last10Dict["timed60"]);
-                } else if (subType === 300) {
-                    setTestType({ type: "timed", subType: 120 });
-                    setLastTenWPMAvg(timed120Avg);
-                    setUserResults(last10Dict["timed120"]);
-                }
-            }
-        }
     };
 
     const displayTestType = () => {
@@ -546,6 +502,122 @@ const Profile = () => {
         }
     };
 
+    const mainOptions = [
+        { name: "timed", sub: ["15", "30", "60", "120", "300"] },
+        { name: "words", sub: ["10", "25", "50", "100", "200"] },
+    ];
+
+    const optionClicked = (event: any) => {
+        const id = event.target.id;
+        const selectedElement = event.target;
+        if (id !== testType.type) {
+            if (id === "words") {
+                // add the selected class to the words and remove it from the timed
+                document
+                    .getElementById("timed")
+                    ?.classList.remove(styles.selectedOption);
+                selectedElement.classList.add(styles.selectedOption);
+                // remove the selected class from the current suboption
+                document
+                    .getElementById(testType.subType.toString())
+                    ?.classList.remove(styles.selectedOption);
+                // add the selected class to the 50 suboption
+                document
+                    .getElementById("50")
+                    ?.classList.add(styles.selectedOption);
+
+                setTestType({ type: "wordCount", subType: 50 });
+            } else {
+                // add the selected class to the words and remove it from the timed
+                document
+                    .getElementById("words")
+                    ?.classList.remove(styles.selectedOption);
+                selectedElement.classList.add(styles.selectedOption);
+                // remove the selected class from the current suboption
+                document
+                    .getElementById(testType.subType.toString())
+                    ?.classList.remove(styles.selectedOption);
+                // add the selected class to the 50 suboption
+                document
+                    .getElementById("60")
+                    ?.classList.add(styles.selectedOption);
+                setTestType({ type: "timed", subType: 60 });
+            }
+        }
+    };
+
+    const subOptionClicked = (event: any) => {
+        const id = event.target.id;
+        if (id !== testType.subType.toString()) {
+            setTestType((prev) => ({
+                ...prev,
+                subType: parseInt(id),
+            }));
+            // remove selected class from the current suboption
+            document
+                .getElementById(testType.subType.toString())
+                ?.classList.remove(styles.selectedOption);
+            // add it to the new subtype
+            document.getElementById(id)?.classList.add(styles.selectedOption);
+        }
+    };
+
+    const modeSelection = (
+        <div className={styles.rankButtonsContainer}>
+            <div className={styles.testTypeContainer}>
+                <p className={styles.testTypeTitle}>mode</p>
+                <div className={styles.modeOptions}>
+                    {mainOptions.map((cur, index) => {
+                        const type = testType.type.toString();
+                        return (
+                            <p
+                                key={index}
+                                id={cur.name}
+                                className={`${styles.option} ${
+                                    type === cur.name && styles.selectedOption
+                                }`}
+                                onClick={(event) => {
+                                    optionClicked(event);
+                                }}
+                            >
+                                {cur.name}
+                            </p>
+                        );
+                    })}
+                </div>
+                <div className={styles.modeOptions}>
+                    {mainOptions.map((cur, index) => {
+                        var type = testType.type;
+                        var subType = testType.subType.toString();
+                        if (type === "wordCount") {
+                            type = "words";
+                        }
+                        return (
+                            cur.name === type &&
+                            cur.sub.map((subOption, index) => {
+                                return (
+                                    <p
+                                        key={index}
+                                        id={subOption}
+                                        className={`${styles.option} ${
+                                            subOption === subType &&
+                                            styles.selectedOption
+                                        }`}
+                                        onClick={(event) => {
+                                            subOptionClicked(event);
+                                        }}
+                                    >
+                                        {subOption}
+                                    </p>
+                                );
+                            })
+                        );
+                    })}
+                </div>
+            </div>
+        </div>
+    );
+
     return (
         <main className={styles.main}>
             <div className={styles.pageContainer}>
@@ -567,8 +639,8 @@ const Profile = () => {
                         <p>tests taken</p> <p>{numResults}</p>
                     </div>
                     <div className={styles.item}>
-                        <p>wpm record</p>
-                        <p>{fastestWPM}</p>
+                        <p>accuracy</p>
+                        <p>{avgAccuracy.toFixed(2)}%</p>
                     </div>
                     <div className={styles.itemLarge}>
                         {word10Avg !== 0 && (
@@ -598,6 +670,7 @@ const Profile = () => {
                                     {lastTenWPMAvg !== -1 && (
                                         <p>{lastTenWPMAvg} wpm</p>
                                     )}
+                                    <p>{displayTestType()}</p>
                                 </div>
                             </>
                         )}
@@ -608,43 +681,10 @@ const Profile = () => {
                         <p>{avgCPM}</p>
                     </div>
                     <div className={styles.item}>
-                        <p>accuracy</p>
-                        <p>{avgAccuracy.toFixed(2)}%</p>
+                        <p>wpm record</p>
+                        <p>{fastestWPM}</p>
                     </div>
-                    <div className={styles.rankButtonsContainer}>
-                        <button
-                            className={styles.rankButtonTop}
-                            onClick={() => changeTestType("backward")}
-                        >
-                            <i className="fa-solid fa-chevron-left"></i>
-                        </button>
-                        <div className={styles.testTypeContainer}>
-                            <p className={styles.testTypeTitle}>mode</p>
-                            <p className={styles.testType}>
-                                {displayTestType()}
-                            </p>
-                        </div>
-                        <button
-                            className={styles.rankButtonTop}
-                            onClick={() => changeTestType("forward")}
-                        >
-                            <i className="fa-solid fa-chevron-right"></i>
-                        </button>
-                        <div className={styles.bottomRankButtonContainer}>
-                            <button
-                                className={styles.rankButton}
-                                onClick={() => changeTestType("backward")}
-                            >
-                                <i className="fa-solid fa-chevron-left"></i>
-                            </button>
-                            <button
-                                className={styles.rankButton}
-                                onClick={() => changeTestType("forward")}
-                            >
-                                <i className="fa-solid fa-chevron-right"></i>
-                            </button>
-                        </div>
-                    </div>
+                    {modeSelection}
                 </div>
                 <Line
                     options={options}

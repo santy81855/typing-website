@@ -161,6 +161,7 @@
     height: 100%;
     justify-content: space-around;
     color: white;
+    max-width: 100%;
 }
 
 .rankImage {
@@ -248,10 +249,23 @@
     color: rgb(224, 224, 224);
 }
 
+.modeOptions {
+    display: flex;
+    gap: var(--gap-small);
+}
+
+.option {
+    cursor: pointer;
+}
+
 .testTypeContainer {
     display: flex;
     justify-content: space-around;
-    flex-grow: 1;
+    width: 100%;
+}
+
+.selectedOption {
+    color: var(--accent-color);
 }
 
 @media (max-width: 768px) {
@@ -268,6 +282,12 @@
 
         height: 80%;
         width: auto;
+    }
+    .testTypeContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
     }
 }
 
@@ -292,6 +312,12 @@
     }
 }
 
+@media (max-width: 400px) {
+    .modeOptions p {
+        font-size: 0.8rem;
+    }
+}
+
 @media (max-width: 615px) {
     .rankButtonTop {
         display: none;
@@ -300,12 +326,7 @@
         display: flex;
         justify-content: space-between;
     }
-    .testTypeContainer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 1rem;
-    }
+
     .rankButton {
         display: flex;
     }
