@@ -113,6 +113,7 @@
     grid-column: span 2; /* Take up 2 columns */
     position: relative;
     min-height: 240px;
+    text-align: right;
 }
 
 .testTypeTitle {
