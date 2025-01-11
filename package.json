@@ -5,7 +5,7 @@
     "scripts": {
         "dev": "next dev",
         "build": "prisma generate && next build",
-        "start": "next start --port 3002",
+        "start": "next start",
         "lint": "next lint"
     },
     "prisma": {
@@ -33,7 +33,7 @@
         "@types/bcrypt": "^5.0.0",
         "eslint": "8.45.0",
         "eslint-config-next": "13.4.12",
-        "prisma": "^5.0.0",
+        "prisma": "^5.22.0",
         "serve": "^14.2.0",
         "ts-node": "^10.9.1",
         "webpack": "^5.88.2",
