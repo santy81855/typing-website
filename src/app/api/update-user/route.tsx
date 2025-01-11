@@ -27,7 +27,5 @@ export async function POST(request: Request) {
         throw new Error("User not updated.");
     }
 
-    console.log(result);
-
     return NextResponse.json(result);
 }

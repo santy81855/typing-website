@@ -12,7 +12,6 @@ async function main() {
             password: "testpassword",
         },
     });
-    console.log({ user });
 }
 
 main()

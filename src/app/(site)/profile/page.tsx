@@ -275,62 +275,79 @@ const Profile = () => {
     };
 
     const getUserResults = async () => {
-        // post request with axios
-        axios
-            .get("/api/get-all-user-results")
-            .then((res) => {
-                // order them by date
-                var temp = res.data;
-                temp.sort(
-                    (
-                        a: { date: string | number | Date },
-                        b: { date: string | number | Date }
-                    ) => {
-                        return (
-                            new Date(b.date).getTime() -
-                            new Date(a.date).getTime()
-                        );
-                    }
-                );
-                // get the result with the biggest wpm field
-                var fastest = temp.reduce((prev: any, current: any) => {
-                    return prev.wpm > current.wpm ? prev : current;
-                });
-                // get the average of the last 10 wpm
-                var lastTen = temp.slice(0, minTests);
-                var sum = 0;
-                lastTen.forEach((result: { wpm: number }) => {
-                    sum += result.wpm;
-                });
-                getAllAvgWpm(temp);
-                // set the fastest wpm
-                setFastestWPM(fastest.wpm);
-                setNumResults(temp.length);
-                // get the average wpm
-                sum = 0;
-                temp.forEach((result: { wpm: number }) => {
-                    sum += result.wpm;
-                });
-                setAvgWPM(sum / temp.length);
-                // get the average cpm
-                sum = 0;
-                temp.forEach((result: { cpm: number }) => {
-                    sum += result.cpm;
-                });
-                // set the cpm with max 2 decimal places
-                setAvgCPM(parseFloat((sum / temp.length).toFixed(2)));
-                // get the average accuracy
-                sum = 0;
-                temp.forEach((result: { characterAccuracy: number }) => {
-                    sum += result.characterAccuracy;
-                });
-                setAvgAccuracy(sum / temp.length);
-                // set all user results
-                setAllUserResults(temp);
-                // get the first table results
-                setTableItems(temp.slice(0, itemsPerPage));
-            })
-            .catch((res) => alert(res));
+        try {
+            // Fetch data using axios
+            const res = await axios.get("/api/get-all-user-results");
+            let temp = res.data;
+
+            // If no results, set default values and return early
+            if (temp.length === 0) {
+                setFastestWPM(0);
+                setNumResults(0);
+                setAvgWPM(0);
+                setAvgCPM(0);
+                setAvgAccuracy(0);
+                setAllUserResults([]);
+                setTableItems([]);
+                return;
+            }
+
+            // Order results by date
+            temp.sort(
+                (
+                    a: { date: string | number | Date },
+                    b: { date: string | number | Date }
+                ) => {
+                    return (
+                        new Date(b.date).getTime() - new Date(a.date).getTime()
+                    );
+                }
+            );
+
+            // Get the result with the highest WPM
+            const fastest = temp.reduce((prev: any, current: any) =>
+                prev.wpm > current.wpm ? prev : current
+            );
+
+            // Get the average of the last 10 results
+            const minTests = 10;
+            const lastTen = temp.slice(0, Math.min(temp.length, minTests));
+            let sum = lastTen.reduce(
+                (acc: number, result: { wpm: number }) => acc + result.wpm,
+                0
+            );
+            const avgLastTenWPM = sum / lastTen.length;
+
+            // Calculate averages for WPM, CPM, and accuracy
+            const avgWPM =
+                temp.reduce(
+                    (acc: number, result: { wpm: number }) => acc + result.wpm,
+                    0
+                ) / temp.length;
+            const avgCPM =
+                temp.reduce(
+                    (acc: number, result: { cpm: number }) => acc + result.cpm,
+                    0
+                ) / temp.length;
+            const avgAccuracy =
+                temp.reduce(
+                    (acc: number, result: { characterAccuracy: number }) =>
+                        acc + result.characterAccuracy,
+                    0
+                ) / temp.length;
+
+            // Update state with the results
+            setFastestWPM(fastest.wpm);
+            setNumResults(temp.length);
+            setAvgWPM(avgWPM);
+            setAvgCPM(parseFloat(avgCPM.toFixed(2))); // Limit to 2 decimal places
+            setAvgAccuracy(avgAccuracy);
+            setAllUserResults(temp);
+            setTableItems(temp.slice(0, itemsPerPage));
+            getAllAvgWpm(temp);
+        } catch (error) {
+            alert(error);
+        }
     };
 
     // get the user and their settings
@@ -509,6 +526,7 @@ const Profile = () => {
 
     const optionClicked = (event: any) => {
         const id = event.target.id;
+
         const selectedElement = event.target;
         if (id !== testType.type) {
             if (id === "words") {
@@ -525,7 +543,6 @@ const Profile = () => {
                 document
                     .getElementById("50")
                     ?.classList.add(styles.selectedOption);
-
                 setTestType({ type: "wordCount", subType: 50 });
             } else {
                 // add the selected class to the words and remove it from the timed
@@ -548,6 +565,7 @@ const Profile = () => {
 
     const subOptionClicked = (event: any) => {
         const id = event.target.id;
+
         if (id !== testType.subType.toString()) {
             setTestType((prev) => ({
                 ...prev,
@@ -643,8 +661,8 @@ const Profile = () => {
                         <p>{avgAccuracy.toFixed(2)}%</p>
                     </div>
                     <div className={styles.itemLarge}>
-                        {word10Avg !== 0 && (
-                            <>
+                        <>
+                            {Object.keys(userResults).length >= minTests && (
                                 <Image
                                     className={styles.rankImage}
                                     src={displayRankImage() as string}
@@ -654,26 +672,29 @@ const Profile = () => {
                                     unoptimized={true}
                                     priority={true}
                                 />
-                                <div className={styles.rankTitle}>
-                                    <div>
-                                        <p>Rank</p>
+                            )}
+                            <div className={styles.rankTitle}>
+                                <div>
+                                    {Object.keys(userResults).length >=
+                                        minTests && <p>Rank</p>}
+                                    {Object.keys(userResults).length >=
+                                        minTests && (
                                         <p className={styles.rank}>
                                             {displayRank()}
                                         </p>
-                                    </div>
-                                    {lastTenWPMAvg === -1 && (
-                                        <span>
-                                            Finish at least {minTests} races in
-                                            this mode to get a rank!
-                                        </span>
                                     )}
-                                    {lastTenWPMAvg !== -1 && (
-                                        <p>{lastTenWPMAvg} wpm</p>
-                                    )}
-                                    <p>{displayTestType()}</p>
                                 </div>
-                            </>
-                        )}
+                                {Object.keys(userResults).length === 0 && (
+                                    <span>
+                                        Finish at least {minTests} races in this
+                                        mode to get a rank!
+                                    </span>
+                                )}
+                                {Object.keys(userResults).length >=
+                                    minTests && <p>{lastTenWPMAvg} wpm</p>}
+                                <p>{displayTestType()}</p>
+                            </div>
+                        </>
                     </div>
 
                     <div className={styles.item}>
@@ -686,92 +707,108 @@ const Profile = () => {
                     </div>
                     {modeSelection}
                 </div>
-                <Line
-                    options={options}
-                    data={data}
-                    style={{
-                        backgroundColor: "rgba(255, 255, 255, 0.3)",
-                        backdropFilter: "blur(4px)",
-                        borderRadius: "1.2rem",
-                        paddingInline: "1rem",
-                        paddingBlock: "1rem",
-                    }}
-                />
-
-                <div className={styles.tableContainer}>
-                    <p className={styles.tableTitle}>Previous Results</p>
-                    <table>
-                        <thead>
-                            <tr>
-                                {width > 430 && <th>test type</th>}
-                                <th>wpm</th>
-                                <th>accuracy</th>
-                                {width > 545 && <th>time</th>}
-                                {width > 650 && <th>words</th>}
-                                <th>date</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {tableItems.map((result, index) => {
-                                const type =
-                                    result.type === "wordCount"
-                                        ? "words"
-                                        : "timed";
-                                const date = new Date(result.date);
-                                const dateString = `${
-                                    date.getMonth() + 1
-                                }/${date.getDate()}/${date.getFullYear()}`;
-                                const numWords =
-                                    result.numCorrectWords +
-                                    result.numIncorrectWords;
-                                return (
-                                    <tr key={index}>
-                                        {width > 430 && <td>{type}</td>}
-                                        <td>{result.wpm}</td>
-                                        <td>
-                                            {result.characterAccuracy.toFixed(
-                                                2
-                                            )}
-                                            %
-                                        </td>
-                                        {width > 545 && (
-                                            <td>{result.time.toFixed(2)}s</td>
-                                        )}
-                                        {width > 650 && <td>{numWords}</td>}
-                                        <td>{dateString}</td>
-                                    </tr>
-                                );
-                            })}
-                        </tbody>
-                    </table>
-                    <div className={styles.pagination}>
-                        <button
-                            onClick={() => {
-                                if (tablePage > 0) {
-                                    setTablePage(tablePage - 1);
-                                }
-                            }}
-                        >
-                            <i className="fa-solid fa-chevron-left"></i>
-                        </button>
+                {Object.keys(userResults).length !== 0 ? (
+                    <Line
+                        options={options}
+                        data={data}
+                        style={{
+                            backgroundColor: "rgba(255, 255, 255, 0.3)",
+                            backdropFilter: "blur(4px)",
+                            borderRadius: "1.2rem",
+                            paddingInline: "1rem",
+                            paddingBlock: "1rem",
+                        }}
+                    />
+                ) : (
+                    <div className={styles.item}>
                         <p>
-                            {tablePage + 1} /{" "}
-                            {Math.ceil(numResults / itemsPerPage)}
+                            Finish at least 1 test in this category to see your
+                            previous results!
                         </p>
-                        <button
-                            onClick={() => {
-                                if (
-                                    tablePage <
-                                    Math.ceil(numResults / itemsPerPage) - 1
-                                ) {
-                                    setTablePage(tablePage + 1);
-                                }
-                            }}
-                        >
-                            <i className="fa-solid fa-chevron-right"></i>
-                        </button>
                     </div>
-                </div>
+                )}
+                {tableItems.length > 0 && (
+                    <div className={styles.tableContainer}>
+                        <p className={styles.tableTitle}>Previous Results</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    {width > 430 && <th>test type</th>}
+                                    <th>wpm</th>
+                                    <th>accuracy</th>
+                                    {width > 545 && <th>time</th>}
+                                    {width > 650 && <th>words</th>}
+                                    <th>date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tableItems.length > 0 &&
+                                    tableItems.map((result, index) => {
+                                        const type =
+                                            result.type === "wordCount"
+                                                ? "words"
+                                                : "timed";
+                                        const date = new Date(result.date);
+                                        const dateString = `${
+                                            date.getMonth() + 1
+                                        }/${date.getDate()}/${date.getFullYear()}`;
+                                        const numWords =
+                                            result.numCorrectWords +
+                                            result.numIncorrectWords;
+                                        return (
+                                            <tr key={index}>
+                                                {width > 430 && <td>{type}</td>}
+                                                <td>{result.wpm}</td>
+                                                <td>
+                                                    {result.characterAccuracy.toFixed(
+                                                        2
+                                                    )}
+                                                    %
+                                                </td>
+                                                {width > 545 && (
+                                                    <td>
+                                                        {result.time.toFixed(2)}
+                                                        s
+                                                    </td>
+                                                )}
+                                                {width > 650 && (
+                                                    <td>{numWords}</td>
+                                                )}
+                                                <td>{dateString}</td>
+                                            </tr>
+                                        );
+                                    })}
+                            </tbody>
+                        </table>
+                        <div className={styles.pagination}>
+                            <button
+                                onClick={() => {
+                                    if (tablePage > 0) {
+                                        setTablePage(tablePage - 1);
+                                    }
+                                }}
+                            >
+                                <i className="fa-solid fa-chevron-left"></i>
+                            </button>
+                            <p>
+                                {tablePage + 1} /{" "}
+                                {Math.ceil(numResults / itemsPerPage)}
+                            </p>
+                            <button
+                                onClick={() => {
+                                    if (
+                                        tablePage <
+                                        Math.ceil(numResults / itemsPerPage) - 1
+                                    ) {
+                                        setTablePage(tablePage + 1);
+                                    }
+                                }}
+                            >
+                                <i className="fa-solid fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                )}
             </div>
             <Rain />
         </main>

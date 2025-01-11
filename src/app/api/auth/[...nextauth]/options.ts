@@ -38,7 +38,6 @@ export const options: NextAuthOptions = {
             // add custom keys to the token that will be passed to the session
             if (user) {
                 const u = user as unknown as User;
-                console.log("USEREUSERUSER: " + JSON.stringify(u));
                 return { ...token, id: u.id };
             }
             return token;
@@ -120,9 +119,6 @@ export const options: NextAuthOptions = {
                 if (!passwordMatch) {
                     throw new Error("Incorrect password");
                 }
-                console.log(
-                    "CRLGCRGLRGLRCGRLGCRLGCRLGCRLGRLCGCGCGRLCGCRLGCRGCLRGCLRGGGGLGLCRCRLGCRLGGCRLGCRLRLGCGCRLRGCLRLGCRLGCRGGCRLRGCLLRRGCGRCLGRCRCRRGCRCGRLCCGGRCLRGCRGCLRG"
-                );
                 return user;
             },
         }),
