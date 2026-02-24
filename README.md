@@ -1,6 +1,6 @@
 # COZY TYPE 
 
-A typing website where you can relax while you practice your typing.
+A typing website where you can relax while you practice typing.
   - Choose between timed tests and word count games
   ![typing demo](https://github.com/santy81855/typing-website/blob/main/public/images/github/typing-demo.gif?raw=true)
   - Every game is recorded and gives you insight into how you did
