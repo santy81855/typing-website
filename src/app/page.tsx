@@ -38,7 +38,7 @@ export default function Home() {
     const [curTime, setCurTime] = useState(0); // current time
     const [timer, setTimer] = useState<NodeJS.Timeout | undefined>(undefined); // timer for the test
 
-    // create a reference for the main typing area
+    // create a ref for the main typing area
     const typingAreaRef = useRef<HTMLDivElement>(null);
     // reference to the passage
     const passageRef = useRef<HTMLDivElement>(null);
